@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cruise Club | 크루즈 라이프 허브</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+KR:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --deep-blue: #0d2045;
+    --mid-blue: #1a3a6b;
+    --ocean: #1e5799;
+    --teal: #2a9d8f;
+    --aqua: #48cae4;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --cream: #f5f0e8;
+    --white: #ffffff;
+    --text-muted: rgba(255,255,255,0.55);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'Noto Sans KR', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── 배경 바다 ── */
+  .ocean-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .ocean-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(26,58,107,0.7) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 80% at 80% 80%, rgba(42,157,143,0.25) 0%, transparent 60%),
+      radial-gradient(ellipse 100% 50% at 50% 100%, rgba(30,87,153,0.5) 0%, transparent 70%),
+      linear-gradient(180deg, #060e1c 0%, #0a1628 30%, #0d2045 70%, #0a2a3a 100%);
+  }
+  /* 별빛 */
+  .stars {
+    position: absolute;
+    inset: 0;
+  }
+  .star {
+    position: absolute;
+    border-radius: 50%;
+    background: white;
+    animation: twinkle var(--dur, 3s) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: var(--min-op, 0.2); transform: scale(1); }
+    50% { opacity: var(--max-op, 0.8); transform: scale(1.3); }
+  }
+
+  /* 물결 */
+  .waves-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 220px;
+  }
+  .wave {
+    position: absolute;
+    bottom: 0;
+    left: -50%;
+    width: 200%;
+    height: 100%;
+  }
+  .wave svg { width: 100%; height: 100%; }
+  .wave-1 { animation: waveMove 8s ease-in-out infinite; opacity: 0.3; }
+  .wave-2 { animation: waveMove 10s ease-in-out infinite reverse; opacity: 0.2; }
+  .wave-3 { animation: waveMove 12s ease-in-out infinite; opacity: 0.15; }
+  @keyframes waveMove {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(5%); }
+  }
+
+  /* ── 메인 컨테이너 ── */
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+  }
+
+  /* ── 헤더 ── */
+  .header {
+    text-align: center;
+    margin-bottom: 52px;
+    animation: fadeUp 0.9s ease both;
+  }
+  .profile-ring {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--teal), var(--aqua));
+    padding: 2.5px;
+    margin-bottom: 20px;
+  }
+  .profile-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-style: italic;
+    color: var(--gold-light);
+    letter-spacing: 1px;
+  }
+  .header-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    font-weight: 300;
+    letter-spacing: 3px;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+  .header-name em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+  .header-tagline {
+    font-size: 12.5px;
+    font-weight: 300;
+    color: var(--text-muted);
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .header-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 0;
+  }
+  .divider-line {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .divider-icon { color: var(--gold); font-size: 14px; }
+
+  /* ── SNS 바 ── */
+  .sns-bar {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 44px;
+    animation: fadeUp 0.9s 0.15s ease both;
+  }
+  .sns-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 16px;
+    border-radius: 40px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 12.5px;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(6px);
+  }
+  .sns-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold-light);
+    background: rgba(201,168,76,0.1);
+    transform: translateY(-2px);
+  }
+  .sns-btn svg { width: 15px; height: 15px; }
+
+  /* ── 섹션 제목 ── */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    animation: fadeUp 0.9s ease both;
+  }
+  .section-label-text {
+    font-size: 10.5px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+  }
+  .section-label-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(201,168,76,0.4), transparent);
+  }
+
+  /* ── 카드 ── */
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+
+  .card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px 22px;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(10px);
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    animation: fadeUp 0.9s ease both;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .card:hover {
+    border-color: rgba(201,168,76,0.35);
+    background: rgba(255,255,255,0.08);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,168,76,0.15);
+  }
+  .card:hover::before { opacity: 1; }
+
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .card-icon.blue   { background: linear-gradient(135deg, #1a3a6b, #1e5799); box-shadow: 0 4px 15px rgba(30,87,153,0.4); }
+  .card-icon.teal   { background: linear-gradient(135deg, #1a5f6e, #2a9d8f); box-shadow: 0 4px 15px rgba(42,157,143,0.4); }
+  .card-icon.gold   { background: linear-gradient(135deg, #7a5c1e, #c9a84c); box-shadow: 0 4px 15px rgba(201,168,76,0.4); }
+  .card-icon.aqua   { background: linear-gradient(135deg, #1a5c7a, #48cae4); box-shadow: 0 4px 15px rgba(72,202,228,0.4); }
+  .card-icon.purple { background: linear-gradient(135deg, #3a1a6b, #7c4dff); box-shadow: 0 4px 15px rgba(124,77,255,0.4); }
+  .card-icon.rose   { background: linear-gradient(135deg, #6b1a3a, #e91e8c); box-shadow: 0 4px 15px rgba(233,30,140,0.35); }
+
+  .card-body { flex: 1; min-width: 0; }
+  .card-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+  .card-desc {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    font-weight: 300;
+    line-height: 1.5;
+  }
+  .card-badge {
+    font-size: 10px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+  }
+  .badge-new { background: rgba(42,157,143,0.25); color: var(--teal); border: 1px solid rgba(42,157,143,0.3); }
+  .badge-hot { background: rgba(201,168,76,0.2); color: var(--gold-light); border: 1px solid rgba(201,168,76,0.25); }
+  .badge-open { background: rgba(72,202,228,0.15); color: var(--aqua); border: 1px solid rgba(72,202,228,0.2); }
+
+  .card-arrow {
+    color: rgba(255,255,255,0.3);
+    font-size: 18px;
+    transition: all 0.3s;
+    flex-shrink: 0;
+  }
+  .card:hover .card-arrow { color: var(--gold); transform: translateX(4px); }
+
+  /* ── 파트너 섹션 미니 그리드 ── */
+  .partner-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 36px;
+  }
+  .partner-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 18px 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(10px);
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: fadeUp 0.9s ease both;
+    position: relative;
+    overflow: hidden;
+  }
+  .partner-card::after {
+    content: '›';
+    position: absolute;
+    bottom: 14px;
+    right: 16px;
+    font-size: 18px;
+    color: rgba(255,255,255,0.25);
+    transition: all 0.3s;
+  }
+  .partner-card:hover {
+    border-color: rgba(201,168,76,0.35);
+    background: rgba(255,255,255,0.08);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+  }
+  .partner-card:hover::after { color: var(--gold); transform: translateX(3px); }
+  .partner-card-icon { font-size: 22px; }
+  .partner-card-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--white);
+    line-height: 1.3;
+    padding-right: 16px;
+  }
+  .partner-card-desc {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    font-weight: 300;
+    line-height: 1.4;
+  }
+  @media (max-width: 400px) {
+    .partner-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── FAQ 아코디언 ── */
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 36px;
+  }
+  .faq-item {
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    animation: fadeUp 0.9s ease both;
+  }
+  .faq-q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 20px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+  }
+  .faq-q:hover { background: rgba(255,255,255,0.04); }
+  .faq-q-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--white);
+    line-height: 1.4;
+  }
+  .faq-q-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: var(--gold);
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+    line-height: 1;
+  }
+  .faq-item.open .faq-q-icon { transform: rotate(45deg); }
+  .faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s;
+    padding: 0 20px;
+  }
+  .faq-item.open .faq-a { max-height: 400px; padding: 0 20px 18px; }
+  .faq-a-inner {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.8;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding-top: 14px;
+  }
+  .faq-a-inner a {
+    color: var(--aqua);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .faq-a-inner strong { color: var(--gold-light); font-weight: 500; }
+
+  /* ── 푸터 ── */
+  .footer {
+    text-align: center;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    animation: fadeUp 0.9s 0.5s ease both;
+  }
+  .footer-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-style: italic;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 1px;
+  }
+  .footer-anchor {
+    color: var(--gold);
+    opacity: 0.6;
+    font-size: 18px;
+    display: block;
+    margin: 10px auto 0;
+  }
+
+  /* ── 애니메이션 딜레이 ── */
+  .card:nth-child(1) { animation-delay: 0.1s; }
+  .card:nth-child(2) { animation-delay: 0.18s; }
+  .card:nth-child(3) { animation-delay: 0.26s; }
+  .card:nth-child(4) { animation-delay: 0.34s; }
+  .card:nth-child(5) { animation-delay: 0.42s; }
+  .card:nth-child(6) { animation-delay: 0.50s; }
+  .card:nth-child(7) { animation-delay: 0.58s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── 모바일 ── */
+  @media (max-width: 480px) {
+    .container { padding: 44px 16px 60px; }
+    .header-name { font-size: 30px; }
+    .card { padding: 16px 16px; gap: 14px; }
+    .card-icon { width: 42px; height: 42px; font-size: 19px; }
+    .sns-bar { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 배경 -->
+<div class="ocean-bg">
+  <div class="stars" id="stars"></div>
+  <div class="waves-container">
+    <div class="wave wave-1">
+      <svg viewBox="0 0 1440 150" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,80 C240,130 480,30 720,80 C960,130 1200,30 1440,80 L1440,150 L0,150 Z" fill="rgba(26,87,153,0.4)"/>
+      </svg>
+    </div>
+    <div class="wave wave-2">
+      <svg viewBox="0 0 1440 150" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,100 C240,50 480,130 720,90 C960,50 1200,120 1440,90 L1440,150 L0,150 Z" fill="rgba(42,157,143,0.3)"/>
+      </svg>
+    </div>
+    <div class="wave wave-3">
+      <svg viewBox="0 0 1440 150" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,60 C360,110 720,20 1080,70 C1260,95 1380,55 1440,60 L1440,150 L0,150 Z" fill="rgba(10,38,90,0.5)"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- 메인 -->
+<div class="container">
+
+  <!-- 헤더 -->
+  <div class="header">
+    <div class="profile-ring">
+      <div class="profile-inner">CC</div>
+    </div>
+    <h1 class="header-name"><em>Cruise</em> Club</h1>
+    <p class="header-tagline">7급 퇴사 · 크루즈 디지털노마드 · 세계여행</p>
+    <div class="header-divider">
+      <div class="divider-line"></div>
+      <span class="divider-icon">⚓</span>
+      <div class="divider-line"></div>
+    </div>
+  </div>
+
+  <!-- SNS -->
+  <div class="sns-bar">
+    <a href="https://instagram.com/bellaleeon" target="_blank" class="sns-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>
+      @bellaleeon
+    </a>
+    <a href="https://youtube.com/@bellaleeon" target="_blank" class="sns-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 8s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C15.4 3.8 12 3.8 12 3.8s-3.4 0-5.8.1c-.6.1-1.9.1-3 1.3C2.3 6 2 8 2 8S1.8 10.3 1.8 12.5v2.1c0 2.2.2 4.4.2 4.4s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C8.6 23 12 23 12 23s3.4 0 5.8-.1c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.2-2.3.2-4.5v-2.1C22.2 10.3 22 8 22 8z"/><polygon points="9.5,15.5 15.5,12 9.5,8.5" fill="currentColor" stroke="none"/></svg>
+      7급퇴사 세계여행
+    </a>
+  </div>
+
+  <!-- 섹션: 비즈니스 -->
+  <div class="section-label" style="animation-delay:0.05s">
+    <span class="section-label-text">🚢 크루즈 멤버십</span>
+    <div class="section-label-line"></div>
+  </div>
+
+  <div class="cards">
+    <a href="https://kbellalee4808-star.github.io/-3.X/" target="_blank" class="card">
+      <div class="card-icon blue">🚢</div>
+      <div class="card-body">
+        <div class="card-title">크루즈 멤버십 구독 플랫폼</div>
+        <div class="card-desc">크루즈 라이프를 구독처럼 — 멤버십 소개 & 신청</div>
+      </div>
+      <span class="card-badge badge-hot">인기</span>
+      <span class="card-arrow">›</span>
+    </a>
+
+    <a href="https://kbellalee4808-star.github.io/rome261016/" target="_blank" class="card">
+      <div class="card-icon aqua">🌊</div>
+      <div class="card-body">
+        <div class="card-title">MSC 지중해 그룹크루즈 2026</div>
+        <div class="card-desc">10월 지중해 항해 · MSC Seaview · 모집 중</div>
+      </div>
+      <span class="card-badge badge-new">모집중</span>
+      <span class="card-arrow">›</span>
+    </a>
+
+    <a href="https://kbellalee4808-star.github.io/Join-Cal/" target="_blank" class="card">
+      <div class="card-icon gold">💰</div>
+      <div class="card-body">
+        <div class="card-title">크루즈 수익 시뮬레이터</div>
+        <div class="card-desc">내가 받을 수 있는 보너스 직접 계산해보기</div>
+      </div>
+      <span class="card-arrow">›</span>
+    </a>
+  </div>
+
+  <!-- 섹션: 가이드 & 도구 -->
+  <div class="section-label" style="animation-delay:0.38s">
+    <span class="section-label-text">🗺️ 가이드 & 도구</span>
+    <div class="section-label-line"></div>
+  </div>
+
+  <div class="cards">
+    <a href="https://kbellalee4808-star.github.io/Nomad-Blue-Map/" target="_blank" class="card">
+      <div class="card-icon teal">🗺️</div>
+      <div class="card-body">
+        <div class="card-title">노마드 로드맵 시뮬레이터</div>
+        <div class="card-desc">팀 구조에 따른 월 수입 예측 시뮬레이션</div>
+      </div>
+      <span class="card-arrow">›</span>
+    </a>
+
+    <a href="https://kbellalee4808-star.github.io/cruiseculb/" target="_blank" class="card">
+      <div class="card-icon rose">💼</div>
+      <div class="card-body">
+        <div class="card-title">전자명함</div>
+        <div class="card-desc">Cruise Club 디지털 명함 — 공유용 프로필 페이지</div>
+      </div>
+      <span class="card-arrow">›</span>
+    </a>
+
+    <a href="https://kbellalee4808-star.github.io/Leadership/" target="_blank" class="card">
+      <div class="card-icon purple">🎓</div>
+      <div class="card-body">
+        <div class="card-title">리더십 아카데미</div>
+        <div class="card-desc">팀 리더 성장을 위한 교육 & 훈련 과정</div>
+      </div>
+      <span class="card-arrow">›</span>
+    </a>
+
+    <a href="크루즈_생활백서.pdf" target="_blank" class="card" id="ebook-card">
+      <div class="card-icon" style="background:linear-gradient(135deg,#2d4a7a,#4a7cc7);box-shadow:0 4px 15px rgba(74,124,199,0.4)">📖</div>
+      <div class="card-body">
+        <div class="card-title">크루즈 생활백서 e-Book</div>
+        <div class="card-desc">승선부터 절약팁까지 — 입문자 완벽 가이드 PDF</div>
+      </div>
+      <span class="card-badge badge-new">FREE</span>
+      <span class="card-arrow">›</span>
+    </a>
+  </div>
+
+  <!-- 섹션: 파트너 시스템 -->
+  <div class="section-label" style="animation-delay:0.52s">
+    <span class="section-label-text">💼 파트너 시스템</span>
+    <div class="section-label-line"></div>
+  </div>
+
+  <div class="partner-grid">
+    <a href="https://www.notion.so/17358cb970728332900501fa97154a3c" target="_blank" class="partner-card">
+      <div class="partner-card-icon">🔗</div>
+      <div class="partner-card-title">추천링크 만드는법</div>
+      <div class="partner-card-desc">내 링크로 팀원 초대하기</div>
+    </a>
+    <a href="https://www.notion.so/5e258cb970728396b0e90196d9e47aba" target="_blank" class="partner-card">
+      <div class="partner-card-icon">💳</div>
+      <div class="partner-card-title">페이퀴커 신청방법</div>
+      <div class="partner-card-desc">수익금 출금 계좌 등록</div>
+    </a>
+    <a href="https://www.notion.so/2eb58cb970728040ae05ea0bc34da308" target="_blank" class="partner-card">
+      <div class="partner-card-icon">💸</div>
+      <div class="partner-card-title">인페이 신청방법</div>
+      <div class="partner-card-desc">이월렛 → 인페이 출금</div>
+    </a>
+    <a href="https://www.notion.so/19e58cb9707283c4be9101a79771536b" target="_blank" class="partner-card">
+      <div class="partner-card-icon">🏆</div>
+      <div class="partner-card-title">랭크 표</div>
+      <div class="partner-card-desc">등급별 혜택 한눈에 보기</div>
+    </a>
+    <a href="https://www.notion.so/75b58cb97072824290868136f1857e8b" target="_blank" class="partner-card">
+      <div class="partner-card-icon">📋</div>
+      <div class="partner-card-title">미팅 전 준비물</div>
+      <div class="partner-card-desc">파트너 미팅 체크리스트</div>
+    </a>
+    <a href="https://www.notion.so/31c58cb9707280b2a40dc2cbd4648f9b" target="_blank" class="partner-card">
+      <div class="partner-card-icon">🖨️</div>
+      <div class="partner-card-title">인쇄신청</div>
+      <div class="partner-card-desc">명함·홍보물 신청하기</div>
+    </a>
+  </div>
+
+  <!-- 섹션: 자주 묻는 질문 -->
+  <div class="section-label" style="animation-delay:0.6s">
+    <span class="section-label-text">❓ 자주 묻는 질문</span>
+    <div class="section-label-line"></div>
+  </div>
+
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">수익금은 어떻게 출금하나요?</span>
+        <span class="faq-q-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          출금 방법은 두 가지예요.<br><br>
+          <strong>① 페이퀴커</strong> — 해외 계좌로 직접 송금. 신청 후 계좌 등록 필요.<br>
+          <strong>② 인페이</strong> — 플랫폼 로그인 → 이월렛 → 인페이 메뉴에서 신청. 본인인증 먼저 완료해 주세요.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">추천링크는 어떻게 만드나요?</span>
+        <span class="faq-q-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          플랫폼 로그인 후 <strong>연락처 → 추천 링크들</strong> 메뉴에서 내 개인 추천 링크를 생성할 수 있어요.<br><br>
+          생성된 링크를 팀원 후보에게 공유하면 가입 시 자동으로 연결됩니다.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">자동결제 카드는 어떻게 등록하나요?</span>
+        <span class="faq-q-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          플랫폼 로그인 후 결제 관리 메뉴에서 카드를 등록할 수 있어요.<br><br>
+          <strong>주의:</strong> 카드 등록 전 본인인증이 완료되어 있어야 합니다. 문제가 생기면 지원요청 기능으로 문의해 주세요.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">로그인이 안 돼요 / 오류가 나요</span>
+        <span class="faq-q-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          <strong>① 비밀번호 재설정</strong>을 먼저 시도해 보세요.<br>
+          <strong>② 앱 캐시 삭제</strong> 후 재설치해보세요.<br>
+          <strong>③ 본인인증</strong>이 완료되지 않은 경우 일부 기능이 제한될 수 있어요.<br><br>
+          위 방법으로도 해결 안 되면 플랫폼 내 <strong>지원요청</strong>으로 문의해 주세요.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">리워드 보호(Re paid)란 무엇인가요?</span>
+        <span class="faq-q-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          미납 팀원이 발생했을 때 내 수익이 보호되는 시스템이에요.<br><br>
+          자세한 조건과 신청 방법은 파트너 시스템 내 <strong>리워드보호 Re paid</strong> 페이지를 확인해 주세요.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">프로필 사진은 어떻게 변경하나요?</span>
+        <span class="faq-q-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          플랫폼 로그인 → 마이페이지 → 프로필 사진 클릭 후 변경 가능해요.<br>
+          사진 용량이 크면 업로드가 안 될 수 있으니 <strong>5MB 이하</strong>로 압축 후 시도해 보세요.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 푸터 -->
+  <div class="footer">
+    <span class="footer-anchor">⚓</span>
+    <p class="footer-text">바다 위에서도, 꿈은 계속됩니다</p>
+  </div>
+
+</div>
+
+<script>
+  /* 별 생성 */
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 80; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2.5 + 0.5;
+    s.style.cssText = `
+      width:${size}px; height:${size}px;
+      top:${Math.random()*65}%;
+      left:${Math.random()*100}%;
+      --dur:${2+Math.random()*4}s;
+      --delay:${Math.random()*4}s;
+      --min-op:${0.1+Math.random()*0.2};
+      --max-op:${0.5+Math.random()*0.5};
+    `;
+    starsEl.appendChild(s);
+  }
+
+  /* 카드 클릭 → 링크 이동 */
+  document.querySelectorAll('.card[data-href]').forEach(card => {
+    card.addEventListener('click', () => {
+      const url = card.getAttribute('data-href');
+      if (url && url !== '#') window.open(url, '_blank');
+    });
+  });
+
+  /* FAQ 아코디언 */
+  function toggleFaq(el) {
+    const item = el.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+</script>
+
+</body>
+</html>
