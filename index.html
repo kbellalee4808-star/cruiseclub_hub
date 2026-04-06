@@ -310,6 +310,216 @@
   }
   .card:hover .card-arrow { color: var(--gold); transform: translateX(4px); }
 
+  /* ── 여행 모집 카드 ── */
+  .trip-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+  .trip-card {
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    animation: fadeUp 0.9s ease both;
+    transition: all 0.3s ease;
+  }
+  .trip-card:hover {
+    border-color: rgba(201,168,76,0.3);
+    box-shadow: 0 10px 35px rgba(0,0,0,0.35);
+    transform: translateY(-2px);
+  }
+  .trip-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px 0;
+  }
+  .trip-date-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(135deg, var(--mid-blue), var(--ocean));
+    border-radius: 10px;
+    padding: 8px 14px;
+    min-width: 58px;
+  }
+  .trip-month {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--gold-light);
+    letter-spacing: 2px;
+    line-height: 1;
+  }
+  .trip-year {
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+  .trip-status {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 5px 12px;
+    border-radius: 20px;
+  }
+  .trip-status.recruiting  { background: rgba(42,157,143,0.2); color: #4ecdc4; border: 1px solid rgba(42,157,143,0.35); }
+  .trip-status.upcoming    { background: rgba(201,168,76,0.15); color: var(--gold-light); border: 1px solid rgba(201,168,76,0.3); }
+  .trip-status.coming-soon { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.45); border: 1px solid rgba(255,255,255,0.12); }
+
+  .trip-body {
+    padding: 14px 20px 16px;
+  }
+  .trip-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .trip-meta {
+    display: flex;
+    gap: 14px;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+  .trip-route {
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.4);
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+  }
+  .trip-detail-btn, .trip-apply-btn {
+    display: block;
+    text-align: center;
+    padding: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.25s;
+    letter-spacing: 0.3px;
+  }
+  .trip-detail-btn {
+    background: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.6);
+    border-top: 1px solid rgba(255,255,255,0.07);
+  }
+  .trip-detail-btn:hover { background: rgba(255,255,255,0.09); color: var(--white); }
+  .trip-apply-btn {
+    background: linear-gradient(135deg, rgba(42,157,143,0.3), rgba(30,87,153,0.3));
+    color: #7ee8df;
+    border-top: 1px solid rgba(42,157,143,0.2);
+  }
+  .trip-apply-btn:hover {
+    background: linear-gradient(135deg, rgba(42,157,143,0.5), rgba(30,87,153,0.5));
+    color: #fff;
+  }
+
+  /* ── 잠금 게이트 ── */
+  .lock-gate {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 36px;
+    animation: fadeUp 0.9s ease both;
+  }
+  .lock-box {
+    width: 100%;
+    max-width: 400px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 20px;
+    padding: 32px 28px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+  }
+  .step-gate .lock-box {
+    border-color: rgba(201,168,76,0.4);
+    background: rgba(201,168,76,0.05);
+  }
+  .lock-icon { font-size: 36px; margin-bottom: 14px; }
+  .lock-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+  .lock-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+  .lock-input-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+  .lock-input {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    padding: 11px 16px;
+    color: var(--white);
+    font-size: 18px;
+    letter-spacing: 6px;
+    width: 160px;
+    text-align: center;
+    outline: none;
+    font-family: monospace;
+    transition: border-color 0.2s;
+  }
+  .lock-input:focus { border-color: var(--gold); }
+  .lock-btn {
+    background: linear-gradient(135deg, var(--mid-blue), var(--teal));
+    border: none;
+    border-radius: 10px;
+    padding: 11px 20px;
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: opacity 0.2s;
+  }
+  .lock-btn:hover { opacity: 0.85; }
+  .step-btn { background: linear-gradient(135deg, #7a5c1e, var(--gold)); }
+  .lock-error {
+    color: #ff6b6b;
+    font-size: 13px;
+    margin-top: 12px;
+    display: none;
+  }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20%,60%  { transform: translateX(-6px); }
+    40%,80%  { transform: translateX(6px); }
+  }
+  .shake { animation: shake 0.4s ease; }
+
+  .step-card { border-color: rgba(201,168,76,0.15) !important; }
+  .step-card:hover { border-color: rgba(201,168,76,0.4) !important; }
+
+  .logout-btn {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 30px;
+    padding: 9px 22px;
+    color: rgba(255,255,255,0.4);
+    font-size: 12.5px;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: all 0.2s;
+    margin-bottom: 36px;
+  }
+  .logout-btn:hover { color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.25); }
+
   /* ── 파트너 섹션 미니 그리드 ── */
   .partner-grid {
     display: grid;
@@ -516,7 +726,6 @@
       <div class="profile-inner">CC</div>
     </div>
     <h1 class="header-name"><em>Cruise</em> Club</h1>
-    <p class="header-tagline">7급 퇴사 · 크루즈 디지털노마드 · 세계여행</p>
     <div class="header-divider">
       <div class="divider-line"></div>
       <span class="divider-icon">⚓</span>
@@ -526,13 +735,13 @@
 
   <!-- SNS -->
   <div class="sns-bar">
-    <a href="https://instagram.com/bellaleeon" target="_blank" class="sns-btn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>
-      @bellaleeon
+    <a href="https://www.incruises.com" target="_blank" class="sns-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20M12 2a15.3 15.3 0 0 0 0 20"/></svg>
+      inCruises 공식 웹사이트
     </a>
-    <a href="https://youtube.com/@bellaleeon" target="_blank" class="sns-btn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 8s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C15.4 3.8 12 3.8 12 3.8s-3.4 0-5.8.1c-.6.1-1.9.1-3 1.3C2.3 6 2 8 2 8S1.8 10.3 1.8 12.5v2.1c0 2.2.2 4.4.2 4.4s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C8.6 23 12 23 12 23s3.4 0 5.8-.1c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.2-2.3.2-4.5v-2.1C22.2 10.3 22 8 22 8z"/><polygon points="9.5,15.5 15.5,12 9.5,8.5" fill="currentColor" stroke="none"/></svg>
-      7급퇴사 세계여행
+    <a href="https://band.us/n/a0a7AcR3faE54" target="_blank" class="sns-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      크루즈클럽 밴드
     </a>
   </div>
 
@@ -552,25 +761,93 @@
       <span class="card-badge badge-hot">인기</span>
       <span class="card-arrow">›</span>
     </a>
+  </div>
 
-    <a href="https://kbellalee4808-star.github.io/rome261016/" target="_blank" class="card">
-      <div class="card-icon aqua">🌊</div>
-      <div class="card-body">
-        <div class="card-title">MSC 지중해 그룹크루즈 2026</div>
-        <div class="card-desc">10월 지중해 항해 · MSC Seaview · 모집 중</div>
-      </div>
-      <span class="card-badge badge-new">모집중</span>
-      <span class="card-arrow">›</span>
-    </a>
+  <!-- 섹션: 함께 떠나요 -->
+  <div class="section-label" style="animation-delay:0.32s">
+    <span class="section-label-text">✈️ 함께 떠나요</span>
+    <div class="section-label-line"></div>
+  </div>
 
-    <a href="https://kbellalee4808-star.github.io/Join-Cal/" target="_blank" class="card">
-      <div class="card-icon gold">💰</div>
-      <div class="card-body">
-        <div class="card-title">크루즈 수익 시뮬레이터</div>
-        <div class="card-desc">내가 받을 수 있는 보너스 직접 계산해보기</div>
+  <div class="trip-cards">
+
+    <div class="trip-card">
+      <div class="trip-header">
+        <div class="trip-date-badge">
+          <span class="trip-month">OCT</span>
+          <span class="trip-year">2026</span>
+        </div>
+        <div class="trip-status recruiting">모집중</div>
       </div>
-      <span class="card-arrow">›</span>
-    </a>
+      <div class="trip-body">
+        <div class="trip-title">🌊 MSC 지중해 크루즈</div>
+        <div class="trip-meta">
+          <span>🗓 2026년 10월</span>
+          <span>🚢 MSC Seaview</span>
+        </div>
+        <div class="trip-route">로마 → 바르셀로나 → 마르세유 → 제노바</div>
+      </div>
+      <a href="https://kbellalee4808-star.github.io/rome261016/" target="_blank" class="trip-detail-btn">상세보기</a>
+      <a href="https://forms.gle/9k6kVWBpjQp5knB76" target="_blank" class="trip-apply-btn">✉️ 신청하기</a>
+    </div>
+
+    <div class="trip-card">
+      <div class="trip-header">
+        <div class="trip-date-badge">
+          <span class="trip-month">MAY</span>
+          <span class="trip-year">2027</span>
+        </div>
+        <div class="trip-status upcoming">모집예정</div>
+      </div>
+      <div class="trip-body">
+        <div class="trip-title">🏛 그리스 크루즈</div>
+        <div class="trip-meta">
+          <span>🗓 2027년 5월</span>
+          <span>🚢 Virgin Voyages</span>
+        </div>
+        <div class="trip-route">아테네 · 산토리니 · 미코노스 · 크레타</div>
+      </div>
+      <a href="https://open.kakao.com/o/gZkbnMoi" target="_blank" class="trip-apply-btn">💬 관심 등록</a>
+    </div>
+
+    <div class="trip-card">
+      <div class="trip-header">
+        <div class="trip-date-badge">
+          <span class="trip-month">JUN</span>
+          <span class="trip-year">2027</span>
+        </div>
+        <div class="trip-status upcoming">모집예정</div>
+      </div>
+      <div class="trip-body">
+        <div class="trip-title">🧊 알래스카 크루즈</div>
+        <div class="trip-meta">
+          <span>🗓 2027년 6월</span>
+          <span>🚢 Princess Cruises</span>
+        </div>
+        <div class="trip-route">시애틀 · 주노 · 케치칸 · 빙하만</div>
+      </div>
+      <a href="https://forms.gle/9k6kVWBpjQp5knB76" target="_blank" class="trip-apply-btn">✉️ 관심 등록</a>
+    </div>
+
+    <div class="trip-card">
+      <div class="trip-header">
+        <div class="trip-date-badge">
+          <span class="trip-month">DEC</span>
+          <span class="trip-year">2026</span>
+        </div>
+        <div class="trip-status upcoming">모집예정</div>
+      </div>
+      <div class="trip-body">
+        <div class="trip-title">🌸 일본 오키나와 크루즈</div>
+        <div class="trip-meta">
+          <span>🗓 2026년 12월 · 2027년 1월</span>
+          <span>🚢 선사 미정</span>
+        </div>
+        <div class="trip-route">오키나와 · 나하 · 이시가키 · 미야코지마</div>
+      </div>
+      <a href="https://open.kakao.com/o/s7yA5zse" target="_blank" class="trip-apply-btn">💬 관심 등록</a>
+    </div>
+
   </div>
 
   <!-- 섹션: 가이드 & 도구 -->
@@ -580,24 +857,6 @@
   </div>
 
   <div class="cards">
-    <a href="https://kbellalee4808-star.github.io/Nomad-Blue-Map/" target="_blank" class="card">
-      <div class="card-icon teal">🗺️</div>
-      <div class="card-body">
-        <div class="card-title">노마드 로드맵 시뮬레이터</div>
-        <div class="card-desc">팀 구조에 따른 월 수입 예측 시뮬레이션</div>
-      </div>
-      <span class="card-arrow">›</span>
-    </a>
-
-    <a href="https://kbellalee4808-star.github.io/cruiseculb/" target="_blank" class="card">
-      <div class="card-icon rose">💼</div>
-      <div class="card-body">
-        <div class="card-title">전자명함</div>
-        <div class="card-desc">Cruise Club 디지털 명함 — 공유용 프로필 페이지</div>
-      </div>
-      <span class="card-arrow">›</span>
-    </a>
-
     <a href="https://kbellalee4808-star.github.io/Leadership/" target="_blank" class="card">
       <div class="card-icon purple">🎓</div>
       <div class="card-body">
@@ -607,58 +866,54 @@
       <span class="card-arrow">›</span>
     </a>
 
-    <a href="크루즈_생활백서.pdf" target="_blank" class="card" id="ebook-card">
+    <a href="https://drive.google.com/file/d/1Zl5-yv7yJxC2sHM5F34nb2B5jlj3MEf2/view?usp=drive_link" target="_blank" class="card">
       <div class="card-icon" style="background:linear-gradient(135deg,#2d4a7a,#4a7cc7);box-shadow:0 4px 15px rgba(74,124,199,0.4)">📖</div>
       <div class="card-body">
-        <div class="card-title">크루즈 생활백서 e-Book</div>
+        <div class="card-title">크루즈 생활백서 — 전자책 다운로드</div>
         <div class="card-desc">승선부터 절약팁까지 — 입문자 완벽 가이드 PDF</div>
       </div>
       <span class="card-badge badge-new">FREE</span>
       <span class="card-arrow">›</span>
     </a>
+
+    <a href="https://kbellalee4808-star.github.io/cruiseculb/" target="_blank" class="card">
+      <div class="card-icon rose">🔗</div>
+      <div class="card-body">
+        <div class="card-title">나만의 멤버십 홍보 페이지</div>
+        <div class="card-desc">내 추천링크가 담긴 개인 파트너 소개 페이지</div>
+      </div>
+      <span class="card-arrow">›</span>
+    </a>
+
+    <a href="https://linktr.ee/Choooiyuree_Cruises" target="_blank" class="card">
+      <div class="card-icon teal">🎁</div>
+      <div class="card-body">
+        <div class="card-title">굿즈 주문</div>
+        <div class="card-desc">크루즈클럽 굿즈 & 인쇄물 주문하기</div>
+      </div>
+      <span class="card-arrow">›</span>
+    </a>
   </div>
 
-  <!-- 섹션: 파트너 시스템 -->
-  <div class="section-label" style="animation-delay:0.52s">
-    <span class="section-label-text">💼 파트너 시스템</span>
+  <!-- 섹션: 크루즈 비즈니스 수익 시뮬레이터 (별도 강조) -->
+  <div class="section-label">
+    <span class="section-label-text">💰 크루즈 비즈니스 수익 시뮬레이터</span>
     <div class="section-label-line"></div>
   </div>
-
-  <div class="partner-grid">
-    <a href="https://www.notion.so/17358cb970728332900501fa97154a3c" target="_blank" class="partner-card">
-      <div class="partner-card-icon">🔗</div>
-      <div class="partner-card-title">추천링크 만드는법</div>
-      <div class="partner-card-desc">내 링크로 팀원 초대하기</div>
-    </a>
-    <a href="https://www.notion.so/5e258cb970728396b0e90196d9e47aba" target="_blank" class="partner-card">
-      <div class="partner-card-icon">💳</div>
-      <div class="partner-card-title">페이퀴커 신청방법</div>
-      <div class="partner-card-desc">수익금 출금 계좌 등록</div>
-    </a>
-    <a href="https://www.notion.so/2eb58cb970728040ae05ea0bc34da308" target="_blank" class="partner-card">
-      <div class="partner-card-icon">💸</div>
-      <div class="partner-card-title">인페이 신청방법</div>
-      <div class="partner-card-desc">이월렛 → 인페이 출금</div>
-    </a>
-    <a href="https://www.notion.so/19e58cb9707283c4be9101a79771536b" target="_blank" class="partner-card">
-      <div class="partner-card-icon">🏆</div>
-      <div class="partner-card-title">랭크 표</div>
-      <div class="partner-card-desc">등급별 혜택 한눈에 보기</div>
-    </a>
-    <a href="https://www.notion.so/75b58cb97072824290868136f1857e8b" target="_blank" class="partner-card">
-      <div class="partner-card-icon">📋</div>
-      <div class="partner-card-title">미팅 전 준비물</div>
-      <div class="partner-card-desc">파트너 미팅 체크리스트</div>
-    </a>
-    <a href="https://www.notion.so/31c58cb9707280b2a40dc2cbd4648f9b" target="_blank" class="partner-card">
-      <div class="partner-card-icon">🖨️</div>
-      <div class="partner-card-title">인쇄신청</div>
-      <div class="partner-card-desc">명함·홍보물 신청하기</div>
+  <div class="cards">
+    <a href="https://kbellalee4808-star.github.io/Join-Cal/" target="_blank" class="card" style="border-color:rgba(201,168,76,0.35);background:linear-gradient(135deg,rgba(201,168,76,0.08),rgba(30,87,153,0.08));">
+      <div class="card-icon gold">💰</div>
+      <div class="card-body">
+        <div class="card-title">크루즈 비즈니스 수익 시뮬레이터</div>
+        <div class="card-desc">내가 받을 수 있는 수익 & 보너스 직접 계산해보기</div>
+      </div>
+      <span class="card-badge badge-hot">필수</span>
+      <span class="card-arrow">›</span>
     </a>
   </div>
 
-  <!-- 섹션: 자주 묻는 질문 -->
-  <div class="section-label" style="animation-delay:0.6s">
+  <!-- 섹션: 자주 묻는 질문 (오픈) -->
+  <div class="section-label">
     <span class="section-label-text">❓ 자주 묻는 질문</span>
     <div class="section-label-line"></div>
   </div>
@@ -669,26 +924,46 @@
         <span class="faq-q-text">수익금은 어떻게 출금하나요?</span>
         <span class="faq-q-icon">+</span>
       </div>
-      <div class="faq-a">
-        <div class="faq-a-inner">
-          출금 방법은 두 가지예요.<br><br>
-          <strong>① 페이퀴커</strong> — 해외 계좌로 직접 송금. 신청 후 계좌 등록 필요.<br>
-          <strong>② 인페이</strong> — 플랫폼 로그인 → 이월렛 → 인페이 메뉴에서 신청. 본인인증 먼저 완료해 주세요.
+      <div class="faq-a"><div class="faq-a-inner">
+        출금 방법은 두 가지예요.<br><br>
+        <strong>① 페이퀴커</strong> — 해외 계좌로 직접 송금. 신청 후 계좌 등록 필요.<br>
+        <strong>② 인페이</strong> — 플랫폼 로그인 → 이월렛 → 인페이 메뉴에서 신청.<br><br>
+        💡 인페이가 안 열릴 경우 <strong>본인인증</strong>을 먼저 완료해 주세요.<br><br>
+        <strong>📺 인페이 신청 영상 가이드</strong><br>
+        <a href="https://youtu.be/DH6hJlZq8ns?si=q2B9we-7BCi-JWab" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(255,0,0,0.15),rgba(180,0,0,0.2));border:1px solid rgba(255,80,80,0.3);border-radius:10px;padding:9px 16px;color:#ff8080;text-decoration:none;font-size:12.5px;font-weight:500;margin-top:6px;margin-bottom:14px;">
+          ▶ YouTube에서 보기
+        </a><br>
+        <strong>🏦 은행 본사 영문 주소 (인페이 등록 시 참고)</strong>
+        <div style="overflow-x:auto;margin-top:10px;">
+          <table style="width:100%;border-collapse:collapse;font-size:11.5px;color:rgba(255,255,255,0.65);">
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+              <td style="padding:7px 8px;color:var(--gold-light);font-weight:500;white-space:nowrap;">신한은행</td>
+              <td style="padding:7px 8px;">20, Sejong-daero 9-gil, Jung-gu, Seoul</td>
+              <td style="padding:7px 8px;white-space:nowrap;">04513</td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+              <td style="padding:7px 8px;color:var(--gold-light);font-weight:500;white-space:nowrap;">국민은행</td>
+              <td style="padding:7px 8px;">26, Gukjegeumyung-ro 8-gil, Yeongdeungpo-gu, Seoul</td>
+              <td style="padding:7px 8px;white-space:nowrap;">07331</td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+              <td style="padding:7px 8px;color:var(--gold-light);font-weight:500;white-space:nowrap;">기업은행</td>
+              <td style="padding:7px 8px;">79, Eulji-ro, Jung-gu, Seoul</td>
+              <td style="padding:7px 8px;white-space:nowrap;">04541</td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+              <td style="padding:7px 8px;color:var(--gold-light);font-weight:500;white-space:nowrap;">농협은행</td>
+              <td style="padding:7px 8px;">120, Saemunan-ro, Jung-gu, Seoul</td>
+              <td style="padding:7px 8px;white-space:nowrap;">04516</td>
+            </tr>
+            <tr>
+              <td style="padding:7px 8px;color:var(--gold-light);font-weight:500;white-space:nowrap;">한국은행</td>
+              <td style="padding:7px 8px;">67, Sejong-daero, Jung-gu, Seoul</td>
+              <td style="padding:7px 8px;white-space:nowrap;">04514</td>
+            </tr>
+          </table>
         </div>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        <span class="faq-q-text">추천링크는 어떻게 만드나요?</span>
-        <span class="faq-q-icon">+</span>
-      </div>
-      <div class="faq-a">
-        <div class="faq-a-inner">
-          플랫폼 로그인 후 <strong>연락처 → 추천 링크들</strong> 메뉴에서 내 개인 추천 링크를 생성할 수 있어요.<br><br>
-          생성된 링크를 팀원 후보에게 공유하면 가입 시 자동으로 연결됩니다.
-        </div>
-      </div>
+      </div></div>
     </div>
 
     <div class="faq-item">
@@ -696,12 +971,13 @@
         <span class="faq-q-text">자동결제 카드는 어떻게 등록하나요?</span>
         <span class="faq-q-icon">+</span>
       </div>
-      <div class="faq-a">
-        <div class="faq-a-inner">
-          플랫폼 로그인 후 결제 관리 메뉴에서 카드를 등록할 수 있어요.<br><br>
-          <strong>주의:</strong> 카드 등록 전 본인인증이 완료되어 있어야 합니다. 문제가 생기면 지원요청 기능으로 문의해 주세요.
-        </div>
-      </div>
+      <div class="faq-a"><div class="faq-a-inner">
+        <strong>📍 등록 순서</strong><br>
+        로그인 → 지불 → 청구서 → 자동카드 등록<br><br>
+        <strong>⚠️ 주의사항</strong><br>
+        해외결제가 가능한 <strong>VISA 또는 MASTER 카드</strong>만 등록됩니다.<br>
+        국내 전용 카드는 등록이 되지 않으니 해외결제 가능 여부를 먼저 확인해 주세요.
+      </div></div>
     </div>
 
     <div class="faq-item">
@@ -709,14 +985,38 @@
         <span class="faq-q-text">로그인이 안 돼요 / 오류가 나요</span>
         <span class="faq-q-icon">+</span>
       </div>
-      <div class="faq-a">
-        <div class="faq-a-inner">
-          <strong>① 비밀번호 재설정</strong>을 먼저 시도해 보세요.<br>
-          <strong>② 앱 캐시 삭제</strong> 후 재설치해보세요.<br>
-          <strong>③ 본인인증</strong>이 완료되지 않은 경우 일부 기능이 제한될 수 있어요.<br><br>
-          위 방법으로도 해결 안 되면 플랫폼 내 <strong>지원요청</strong>으로 문의해 주세요.
-        </div>
+      <div class="faq-a"><div class="faq-a-inner">
+        아래 주소로 이메일을 보내주세요.<br><br>
+        <strong>📧 메일 보낼 주소</strong><br>
+        <span style="font-family:monospace;color:var(--aqua);font-size:14px;">login-support@in.group</span><br>
+        <button onclick="copyEmail()" style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(72,202,228,0.2),rgba(30,87,153,0.2));border:1px solid rgba(72,202,228,0.35);border-radius:10px;padding:9px 16px;color:var(--aqua);font-size:12.5px;font-weight:500;cursor:pointer;font-family:'Noto Sans KR',sans-serif;margin-top:10px;" id="copy-email-btn">
+          📋 이메일 주소 복사하기
+        </button><br><br>
+        <strong>📝 메일 제목</strong><br>
+        로그인 재설정 요청드립니다 (Login Reset Request)<br><br>
+        <strong>📝 메일 내용</strong><br>
+        안녕하세요, 인크루즈 가입 중 비밀번호를 잘못 입력한 것 같아서 로그인이 되지 않습니다.<br>
+        신분증 사본과 신분증 들고 찍은 셀카를 첨부하오니 계정 확인 후 로그인 재설정이 가능하도록 도와주시기 바랍니다.<br><br>
+        • 이름 :<br>
+        • 링크받을 메일주소 :<br>
+        • 신분증 사본 첨부<br>
+        • 신분증 들고 찍은 셀카 첨부
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">지원요청은 어떻게 보내나요?</span>
+        <span class="faq-q-icon">+</span>
       </div>
+      <div class="faq-a"><div class="faq-a-inner">
+        플랫폼 내에서 직접 지원요청을 보낼 수 있어요.<br><br>
+        <strong>📍 순서</strong><br>
+        플랫폼 로그인 → 우측 하단 <strong>지원요청(Help)</strong> 버튼 클릭 → 내용 입력 후 전송<br><br>
+        <a href="https://www.notion.so/30858cb97072804e8553e249d3f36d13" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(42,157,143,0.2),rgba(30,87,153,0.2));border:1px solid rgba(42,157,143,0.35);border-radius:10px;padding:9px 16px;color:#4ecdc4;text-decoration:none;font-size:12.5px;font-weight:500;">
+          📸 스크린샷 가이드 보기 (노션)
+        </a>
+      </div></div>
     </div>
 
     <div class="faq-item">
@@ -724,12 +1024,14 @@
         <span class="faq-q-text">리워드 보호(Re paid)란 무엇인가요?</span>
         <span class="faq-q-icon">+</span>
       </div>
-      <div class="faq-a">
-        <div class="faq-a-inner">
-          미납 팀원이 발생했을 때 내 수익이 보호되는 시스템이에요.<br><br>
-          자세한 조건과 신청 방법은 파트너 시스템 내 <strong>리워드보호 Re paid</strong> 페이지를 확인해 주세요.
-        </div>
-      </div>
+      <div class="faq-a"><div class="faq-a-inner">
+        미납 팀원이 발생했을 때 내 수익이 보호되는 시스템이에요.<br><br>
+        또한 inCruises는 <strong>Trust My Travel</strong>을 통해 재정적 보호를 제공합니다.<br>
+        소비자는 Incruises Financial Protection Channel 1의 파산으로부터 보호받고 전액 환불을 받을 수 있어요.<br><br>
+        <a href="https://www.trustprotects.me" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(42,157,143,0.25),rgba(30,87,153,0.25));border:1px solid rgba(42,157,143,0.4);border-radius:10px;padding:10px 16px;color:#4ecdc4;text-decoration:none;font-size:13px;font-weight:500;margin-top:4px;">
+          🛡️ 재정 보호 확인하기 — trustprotects.me
+        </a>
+      </div></div>
     </div>
 
     <div class="faq-item">
@@ -737,14 +1039,133 @@
         <span class="faq-q-text">프로필 사진은 어떻게 변경하나요?</span>
         <span class="faq-q-icon">+</span>
       </div>
-      <div class="faq-a">
-        <div class="faq-a-inner">
-          플랫폼 로그인 → 마이페이지 → 프로필 사진 클릭 후 변경 가능해요.<br>
-          사진 용량이 크면 업로드가 안 될 수 있으니 <strong>5MB 이하</strong>로 압축 후 시도해 보세요.
-        </div>
-      </div>
+      <div class="faq-a"><div class="faq-a-inner">
+        플랫폼 로그인 → 마이페이지 → 프로필 사진 클릭 후 변경 가능해요.<br>
+        <strong>5MB 이하</strong>로 압축 후 시도해 보세요.
+      </div></div>
     </div>
   </div>
+
+  <!-- ===== 파트너 전용 잠금 게이트 ===== -->
+  <div class="lock-gate" id="lock-gate">
+    <div class="lock-box">
+      <div class="lock-icon">🔐</div>
+      <div class="lock-title">파트너 & 스텝 전용</div>
+      <div class="lock-desc">비밀번호를 입력해 주세요</div>
+      <div class="lock-input-row">
+        <input type="password" id="pw-input" class="lock-input" inputmode="numeric" pattern="[0-9]*" maxlength="8" placeholder="••••">
+        <button class="lock-btn" onclick="checkPassword()">확인</button>
+      </div>
+      <div class="lock-error" id="lock-error">비밀번호가 틀렸어요 🙅</div>
+    </div>
+  </div>
+
+  <!-- 파트너 콘텐츠 (잠금 해제 후 표시) -->
+  <div id="partner-content" style="display:none">
+
+    <div class="section-label">
+      <span class="section-label-text">💼 파트너 시스템</span>
+      <div class="section-label-line"></div>
+    </div>
+
+    <div class="partner-grid">
+      <a href="https://www.notion.so/17358cb970728332900501fa97154a3c" target="_blank" class="partner-card">
+        <div class="partner-card-icon">🔗</div>
+        <div class="partner-card-title">추천링크 만드는법</div>
+        <div class="partner-card-desc">내 링크로 팀원 초대하기</div>
+      </a>
+      <a href="https://www.notion.so/5e258cb970728396b0e90196d9e47aba" target="_blank" class="partner-card">
+        <div class="partner-card-icon">💳</div>
+        <div class="partner-card-title">페이퀴커 신청방법</div>
+        <div class="partner-card-desc">수익금 출금 계좌 등록</div>
+      </a>
+      <a href="https://www.notion.so/2eb58cb970728040ae05ea0bc34da308" target="_blank" class="partner-card">
+        <div class="partner-card-icon">💸</div>
+        <div class="partner-card-title">인페이 신청방법</div>
+        <div class="partner-card-desc">이월렛 → 인페이 출금</div>
+      </a>
+      <a href="https://www.notion.so/30858cb97072804e8553e249d3f36d13" target="_blank" class="partner-card">
+        <div class="partner-card-icon">🆘</div>
+        <div class="partner-card-title">지원요청 보내는법</div>
+        <div class="partner-card-desc">플랫폼 고객지원 요청</div>
+      </a>
+      <a href="https://kbellalee4808-star.github.io/Nomad-Blue-Map/" target="_blank" class="partner-card">
+        <div class="partner-card-icon">🗺️</div>
+        <div class="partner-card-title">노마드 로드맵 시뮬레이터</div>
+        <div class="partner-card-desc">팀 구조별 월 수입 예측</div>
+      </a>
+      <a href="https://www.notion.so/19e58cb9707283c4be9101a79771536b" target="_blank" class="partner-card">
+        <div class="partner-card-icon">🏆</div>
+        <div class="partner-card-title">랭크 표</div>
+        <div class="partner-card-desc">등급별 혜택 한눈에 보기</div>
+      </a>
+      <a href="https://www.notion.so/75b58cb97072824290868136f1857e8b" target="_blank" class="partner-card">
+        <div class="partner-card-icon">📋</div>
+        <div class="partner-card-title">미팅 전 준비물</div>
+        <div class="partner-card-desc">파트너 미팅 체크리스트</div>
+      </a>
+      <a href="https://www.notion.so/31c58cb9707280b2a40dc2cbd4648f9b" target="_blank" class="partner-card">
+        <div class="partner-card-icon">🖨️</div>
+        <div class="partner-card-title">인쇄신청</div>
+        <div class="partner-card-desc">명함·홍보물 신청하기</div>
+      </a>
+      <a href="https://linktr.ee/Choooiyuree_Cruises" target="_blank" class="partner-card">
+        <div class="partner-card-icon">🎁</div>
+        <div class="partner-card-title">굿즈 주문</div>
+        <div class="partner-card-desc">크루즈클럽 굿즈 주문하기</div>
+      </a>
+    </div>
+
+    <!-- ===== 스텝 전용 잠금 게이트 ===== -->
+    <div class="lock-gate step-gate" id="step-lock-gate">
+      <div class="lock-box">
+        <div class="lock-icon">👑</div>
+        <div class="lock-title">스텝 전용 구역</div>
+        <div class="lock-desc">스텝 비밀번호를 입력해 주세요</div>
+        <div class="lock-input-row">
+          <input type="password" id="step-pw-input" class="lock-input" inputmode="numeric" pattern="[0-9]*" maxlength="8" placeholder="••••">
+          <button class="lock-btn step-btn" onclick="checkStepPassword()">확인</button>
+        </div>
+        <div class="lock-error" id="step-lock-error">비밀번호가 틀렸어요 🙅</div>
+      </div>
+    </div>
+
+    <!-- 스텝 콘텐츠 -->
+    <div id="step-content" style="display:none">
+      <div class="section-label">
+        <span class="section-label-text">👑 스텝 전용</span>
+        <div class="section-label-line"></div>
+      </div>
+      <div class="partner-grid">
+        <a href="https://www.notion.so/30958cb9707280f3803cd8a35f00520e" target="_blank" class="partner-card step-card">
+          <div class="partner-card-icon">📩</div>
+          <div class="partner-card-title">미납자 문자 보내기</div>
+          <div class="partner-card-desc">미납 발생 시 대응 가이드</div>
+        </a>
+        <a href="https://www.notion.so/02b58cb97072828f856b811d98010651" target="_blank" class="partner-card step-card">
+          <div class="partner-card-icon">⚠️</div>
+          <div class="partner-card-title">미납일때 이렇게 하세요</div>
+          <div class="partner-card-desc">미납 처리 단계별 안내</div>
+        </a>
+        <a href="https://www.notion.so/53158cb9707283e091af012bef41b0f5" target="_blank" class="partner-card step-card">
+          <div class="partner-card-icon">🎬</div>
+          <div class="partner-card-title">파트너 관심자 필수영상</div>
+          <div class="partner-card-desc">개인톡 전달용 영상</div>
+        </a>
+        <a href="https://www.notion.so/30858cb9707280a3ad31f08dac021151" target="_blank" class="partner-card step-card">
+          <div class="partner-card-icon">📝</div>
+          <div class="partner-card-title">예약 전 동의사항</div>
+          <div class="partner-card-desc">구글폼 동의 링크</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 로그아웃 버튼 -->
+    <div style="text-align:center; margin-bottom: 20px;">
+      <button class="logout-btn" onclick="logout()">🔒 로그아웃</button>
+    </div>
+
+  </div><!-- /partner-content -->
 
   <!-- 푸터 -->
   <div class="footer">
@@ -773,13 +1194,20 @@
     starsEl.appendChild(s);
   }
 
-  /* 카드 클릭 → 링크 이동 */
-  document.querySelectorAll('.card[data-href]').forEach(card => {
-    card.addEventListener('click', () => {
-      const url = card.getAttribute('data-href');
-      if (url && url !== '#') window.open(url, '_blank');
+  /* 이메일 복사 */
+  function copyEmail() {
+    navigator.clipboard.writeText('login-support@in.group').then(() => {
+      const btn = document.getElementById('copy-email-btn');
+      btn.textContent = '✅ 복사됐어요!';
+      btn.style.borderColor = 'rgba(42,157,143,0.5)';
+      btn.style.color = '#4ecdc4';
+      setTimeout(() => {
+        btn.innerHTML = '📋 이메일 주소 복사하기';
+        btn.style.borderColor = 'rgba(72,202,228,0.35)';
+        btn.style.color = 'var(--aqua)';
+      }, 2000);
     });
-  });
+  }
 
   /* FAQ 아코디언 */
   function toggleFaq(el) {
@@ -787,6 +1215,65 @@
     const isOpen = item.classList.contains('open');
     document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
     if (!isOpen) item.classList.add('open');
+  }
+
+  /* 비밀번호 */
+  const PW_PARTNER = '0070';
+  const PW_STEP    = '1004';
+
+  /* 파트너 비번 확인 */
+  function checkPassword() {
+    const val = document.getElementById('pw-input').value;
+    const err = document.getElementById('lock-error');
+    if (val === PW_PARTNER || val === PW_STEP) {
+      document.getElementById('lock-gate').style.display = 'none';
+      document.getElementById('partner-content').style.display = 'block';
+      if (val === PW_STEP) {
+        document.getElementById('step-lock-gate').style.display = 'none';
+        document.getElementById('step-content').style.display = 'block';
+      }
+      err.style.display = 'none';
+    } else {
+      err.style.display = 'block';
+      document.getElementById('pw-input').value = '';
+      document.getElementById('pw-input').classList.add('shake');
+      setTimeout(() => document.getElementById('pw-input').classList.remove('shake'), 500);
+    }
+  }
+
+  /* 스텝 비번 확인 */
+  function checkStepPassword() {
+    const val = document.getElementById('step-pw-input').value;
+    const err = document.getElementById('step-lock-error');
+    if (val === PW_STEP) {
+      document.getElementById('step-lock-gate').style.display = 'none';
+      document.getElementById('step-content').style.display = 'block';
+      err.style.display = 'none';
+    } else {
+      err.style.display = 'block';
+      document.getElementById('step-pw-input').value = '';
+      document.getElementById('step-pw-input').classList.add('shake');
+      setTimeout(() => document.getElementById('step-pw-input').classList.remove('shake'), 500);
+    }
+  }
+
+  /* 엔터키 지원 */
+  document.addEventListener('keydown', function(e) {
+    if (e.key !== 'Enter') return;
+    const gate = document.getElementById('lock-gate');
+    const stepGate = document.getElementById('step-lock-gate');
+    if (gate && gate.style.display !== 'none') checkPassword();
+    else if (stepGate && stepGate.style.display !== 'none') checkStepPassword();
+  });
+
+  /* 로그아웃 */
+  function logout() {
+    document.getElementById('partner-content').style.display = 'none';
+    document.getElementById('lock-gate').style.display = 'flex';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('step-content').style.display = 'none';
+    document.getElementById('step-lock-gate').style.display = 'flex';
+    document.getElementById('step-pw-input').value = '';
   }
 </script>
 
