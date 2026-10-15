@@ -210,6 +210,16 @@ button[disabled]{opacity:.6;cursor:default}
           if(seen["a"+t])return;seen["a"+t]=1;
           out.push({el:el,kind:el.tagName==="A"?"바로가기":"버튼",t:t,d:d,hay:norm(t+" "+d)});
         });
+        /* 버튼이 아닌 카드·구역 제목도 검색되게 (예: "파트너 & 스텝 전용" 잠금 카드) */
+        document.querySelectorAll("h1,h2,h3,h4,h5,h6,[class*='title'],[class*='Title'],[class*='head']").forEach(function(el){
+          if(el.closest("#cc-search,#cc-cr,#cc-lock,#cc-wm,#cc-photo,.faq-item,a[href],button,[onclick]")||!shown(el))return;
+          var t=el.textContent.replace(/\s+/g," ").trim();
+          if(!t||t.length<2||t.length>60||seen["s"+t]||seen["a"+t])return;seen["s"+t]=1;
+          var box=el.closest(".card,[class*='card'],[class*='box'],[class*='lock'],section,article")||el;
+          var ctx=(box.textContent||"").replace(/\s+/g," ").trim();if(ctx.length>300)ctx=ctx.slice(0,300);
+          var d=box.querySelector&&box.querySelector("input[type=password]")?"🔑 누르면 바로 비밀번호 입력":ctx.replace(t,"").trim();if(d.length>40)d=d.slice(0,40)+"…";
+          out.push({el:box,kind:"안내",t:t,d:d,hay:norm(t+" "+ctx)});
+        });
         return out;
       }
       function go(it){
@@ -221,6 +231,9 @@ button[disabled]{opacity:.6;cursor:default}
         it.el.scrollIntoView({behavior:"smooth",block:"center"});
         it.el.classList.add("cc-hit");setTimeout(function(){it.el.classList.remove("cc-hit")},2200);
         if(it.el.tagName==="A")setTimeout(function(){it.el.click()},350);
+        /* 비밀번호 칸이 있는 카드(파트너 & 스텝 전용 등)는 바로 입력할 수 있게 커서를 넣어 준다 */
+        var pw=it.el.tagName!=="A"&&it.el.querySelector&&it.el.querySelector("input[type=password],input:not([type=hidden]):not([type=checkbox]):not([type=radio])");
+        if(pw)setTimeout(function(){try{pw.focus({preventScroll:true})}catch(e){pw.focus()}},450);
       }
       function esc(t){return t.replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
       var last=[];
