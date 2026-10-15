@@ -84,13 +84,27 @@ button[disabled]{opacity:.6;cursor:default}
       window.addEventListener("load",function(){setTimeout(res,0)});
     });
   }
-  function unlock(k,email){
+/* 검색창 보호: 허브 안의 다른 스크립트가 키보드·마우스 입력을 막아도 검색창에는 글씨가 써지게 */
+  function guardSearch(){
+    if(window.__ccGuard||!window.EventTarget)return;window.__ccGuard=1;
+    var P=EventTarget.prototype,add=P.addEventListener,rem=P.removeEventListener,M=new WeakMap();
+    var EV=/^(key(down|press|up)|beforeinput|input|composition(start|update|end)|(mouse|pointer)(down|up)|click|touchstart|selectstart|focusout|blur)$/;
+    function inSearch(n){return n&&n.closest&&n.closest("#cc-search")}
+    P.addEventListener=function(t,f,o){
+      if(!f||!EV.test(t))return add.call(this,t,f,o);
+      var self=this,w=M.get(f);
+      if(!w){w=function(e){if(inSearch(e.target)&&!(self.nodeType===1&&inSearch(self)))return;return typeof f==="function"?f.call(this,e):f.handleEvent(e)};M.set(f,w)}
+      return add.call(this,t,w,o);
+    };
+    P.removeEventListener=function(t,f,o){return rem.call(this,t,(f&&M.get(f))||f,o)};
+  }
+    function unlock(k,email){
     return crypto.subtle.importKey("raw",bytes(k),"AES-GCM",false,["decrypt"]).then(function(key){
       return crypto.subtle.decrypt({name:"AES-GCM",iv:bytes(IV)},key,bytes(DATA));
     }).then(function(pt){
       var html=new TextDecoder().decode(pt);
       return ready().then(function(){
-        document.open();document.write(html);document.close();
+        guardSearch();document.open();document.write(html);document.close();
         try{window.scrollTo(0,0)}catch(e){}
         protect(email);
       });
@@ -139,7 +153,8 @@ button[disabled]{opacity:.6;cursor:default}
     function addSearch(){
       if(document.getElementById("cc-search")||!document.body)return;
       var st=document.createElement("style");st.id="cc-search-st";st.textContent=
-        "#cc-search{position:relative;z-index:2147483000;max-width:560px;margin:calc(52px + env(safe-area-inset-top,0px)) auto 6px;padding:0 16px;font-family:'Noto Sans KR',sans-serif}"
+        "#cc-search,#cc-search *{pointer-events:auto!important}#cc-search input{-webkit-user-select:text!important;user-select:text!important}"
+       +"#cc-search{position:relative;z-index:2147483000;max-width:560px;margin:calc(52px + env(safe-area-inset-top,0px)) auto 6px;padding:0 16px;font-family:'Noto Sans KR',sans-serif}"
        +"#cc-search.in{max-width:none;margin:14px 0 14px;padding:0;width:100%;flex-basis:100%;grid-column:1/-1}"
        +"#cc-search .b{position:relative}"
        +"#cc-search input{display:block;width:100%;min-height:52px;margin:0;border-radius:14px;border:1.5px solid rgba(201,168,76,.5);background:rgba(10,22,40,.88);color:#fff;font:inherit;font-size:16px;padding:0 48px 0 44px;outline:none;-webkit-user-select:text;user-select:text;box-shadow:0 6px 24px rgba(0,0,0,.25)}"
@@ -162,7 +177,7 @@ button[disabled]{opacity:.6;cursor:default}
       var song=null;
       [].some.call(document.querySelectorAll("a,button,.card,[onclick]"),function(el){
         if(/테마송/.test(el.textContent)&&el.textContent.length<200&&!el.closest("#cc-search")){song=el;return true}});
-      if(song){w.classList.add("in");song.parentNode.insertBefore(w,song.nextSibling)}
+      if(song){var hb=song.parentNode&&song.parentNode.closest&&song.parentNode.closest("a,button,label,summary");if(hb)song=hb;w.classList.add("in");song.parentNode.insertBefore(w,song.nextSibling)}
       /* 📸 여행사진 버튼 (밴드 사진첩) — 테마송 카드 모양을 그대로 본떠서 검색창 아래에 */
       if(song&&!document.getElementById("cc-photo")){
         var ph=song.cloneNode(true);ph.id="cc-photo";
@@ -222,6 +237,8 @@ button[disabled]{opacity:.6;cursor:default}
       inp.addEventListener("input",run);inp.addEventListener("focus",run);
       inp.addEventListener("keydown",function(e){if(e.key==="Enter"&&last[0]){e.preventDefault();go(last[0])}});
       x.onclick=function(){inp.value="";run();inp.focus()};
+      /* 검색창 안에서 일어난 입력이 바깥(카드 클릭·단축키 처리)으로 새어 나가지 않게 */
+      ["keydown","keypress","keyup","mousedown","pointerdown","click","touchstart"].forEach(function(ev){w.addEventListener(ev,function(e){e.stopPropagation()})});
       document.addEventListener("click",function(e){if(!w.contains(e.target))box.hidden=true},true);
     }
     ensure();addSearch();setInterval(function(){ensure();addSearch()},1500);
