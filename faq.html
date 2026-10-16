@@ -418,6 +418,42 @@
       </div></div>
     </div>
 
+    <div class="faq-item">
+      <button type="button" class="faq-q" onclick="toggleFaq(this)" style="touch-action:manipulation;">
+        <span class="faq-q-text">이름(영문)이 여권과 달라요 · 이름 변경신청</span>
+        <span class="faq-q-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">
+        멤버십 이름은 <strong>여권 영문 이름과 똑같아야</strong> 크루즈를 탈 수 있어요. 다르면 <strong>탑승 전에 꼭</strong> 변경신청을 해주세요.<br><br>
+        <div style="background:rgba(201,168,76,0.08);border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:11px 14px;font-size:13px;color:rgba(255,255,255,0.75);line-height:1.7;margin-bottom:14px;">
+          이런 경우 신청해요<br>
+          • 이름과 성을 <b>바꿔서</b> 적었어요 (First name = 이름, Last name = 성)<br>
+          • <b>닉네임</b>이나 한글 이름으로 가입했어요<br>
+          • 영문 철자가 여권과 <b>한 글자라도</b> 달라요
+        </div>
+        <strong>📝 신청 방법</strong><br>
+        <span style="color:rgba(255,255,255,0.75);">플랫폼 <b>지원요청</b>으로 <b>여권 사진을 첨부</b>해서 보내요.</span><br>
+        1️⃣ 앱 로그인 → 우측 상단 <b>&lt;?&gt; 물음표</b><br>
+        2️⃣ 내용에 맞는 <b>담당부서</b> 선택<br>
+        3️⃣ 아래 문구를 붙여넣고 <b>여권 사진 첨부</b> → <b>티켓 제출</b><br>
+        <span style="font-size:12.5px;color:rgba(255,255,255,0.55);">(자세한 순서는 <b>지원요청은 어떻게 보내나요?</b> 참고)</span><br><br>
+        <strong>📋 지원요청에 붙여넣을 문구</strong>
+        <div id="namechg-text" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px;margin-top:8px;font-size:13px;color:rgba(255,255,255,0.75);line-height:1.8;white-space:pre-line;">안녕하세요. 회원 이름이 여권과 다르게 등록되어 있어 변경을 요청드립니다.
+여권 사진을 첨부하오니 여권과 동일하게 수정 부탁드립니다.
+
+• 가입 이메일 :
+• 현재 등록된 이름 :
+• 여권상 이름 (First name / 이름) :
+• 여권상 성 (Last name / 성) :
+
+감사합니다.</div>
+        <button type="button" style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(72,202,228,0.2),rgba(30,87,153,0.2));border:1px solid rgba(72,202,228,0.35);border-radius:12px;min-height:46px;padding:11px 18px;color:var(--aqua);font-size:14px;font-weight:500;cursor:pointer;font-family:'Noto Sans KR',sans-serif;margin-top:10px;" onclick="(function(b){var t=document.getElementById('namechg-text').innerText.trim();function ok(){b.textContent='✅ 복사됨!';setTimeout(function(){b.textContent='📋 문구 복사하기'},2000)}if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(ok,function(){fb2()});else fb2();function fb2(){var a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){}document.body.removeChild(a)}})(this)">📋 문구 복사하기</button><br><br>
+        <div style="background:rgba(72,202,228,0.07);border:1px solid rgba(72,202,228,0.2);border-radius:10px;padding:11px 14px;font-size:12.5px;color:rgba(255,255,255,0.7);line-height:1.7;">
+          💡 여권 사진은 <b>사진 면 전체</b>가 보이게, 빛 반사 없이 찍어주세요. 답변은 이메일과 지원요청 두 곳으로 와요.
+        </div>
+      </div></div>
+    </div>
+
     <div class="faq-item" style="width:100%;box-sizing:border-box;">
       <button type="button" class="faq-q" onclick="toggleFaq(this)" style="touch-action:manipulation;">
         <span class="faq-q-text">2단계 인증은 어떻게 설정하나요?</span>
@@ -702,11 +738,11 @@
 </div>
 <script>
 (function(){
-  var SLUG={'선물상자 50리워드는 어떻게 받나요?':'gift','KYC(본인 확인)는 어떻게 하나요?':'kyc','멤버십 코드는 어떻게 생성하나요?':'code','구독 변경 · 보안 · 언어 설정은 어디서 하나요?':'settings','2단계 인증은 어떻게 설정하나요?':'2fa','휴대폰을 바꿨어요 (인증 앱이 안 돼요)':'newphone','수익금은 어떻게 출금하나요?':'withdraw','페이퀴커(PayQuicker)는 어떻게 등록하나요?':'payquicker','자동결제 카드는 어떻게 등록하나요?':'card','로그인이 안 돼요 / 오류가 나요':'login','지원요청은 어떻게 보내나요?':'support','리워드 보호(Re paid)란 무엇인가요?':'repaid','프로필 사진은 어떻게 변경하나요?':'photo','인쇄물 인쇄시 어떻게 하나요?':'print','미납이 발생했을 때 어떻게 하나요?':'unpaid','가입 시 필요서류가 뭔가요?':'join'};
+  var SLUG={'선물상자 50리워드는 어떻게 받나요?':'gift','KYC(본인 확인)는 어떻게 하나요?':'kyc','멤버십 코드는 어떻게 생성하나요?':'code','구독 변경 · 보안 · 언어 설정은 어디서 하나요?':'settings','2단계 인증은 어떻게 설정하나요?':'2fa','휴대폰을 바꿨어요 (인증 앱이 안 돼요)':'newphone','수익금은 어떻게 출금하나요?':'withdraw','페이퀴커(PayQuicker)는 어떻게 등록하나요?':'payquicker','자동결제 카드는 어떻게 등록하나요?':'card','로그인이 안 돼요 / 오류가 나요':'login','지원요청은 어떻게 보내나요?':'support','리워드 보호(Re paid)란 무엇인가요?':'repaid','프로필 사진은 어떻게 변경하나요?':'photo','인쇄물 인쇄시 어떻게 하나요?':'print','미납이 발생했을 때 어떻게 하나요?':'unpaid','가입 시 필요서류가 뭔가요?':'join','이름(영문)이 여권과 달라요 · 이름 변경신청':'name'};
   /* 검색 보조어: 질문에 없는 말로 찾아도 나오게 */
   var EXTRA={join:'서류 신청 가입방법 준비물',gift:'선물 리워드 보너스 50',kyc:'본인인증 신분증 여권 인증',code:'코드 추천 링크',settings:'설정 언어 보안 구독 변경 해지 다운그레이드',
     '2fa':'2단계 OTP 구글 인증앱 otp',newphone:'폰 교체 기기 변경 인증앱 휴대폰',withdraw:'출금 수익 돈 정산 인출',payquicker:'페이퀴커 출금 카드 등록',card:'카드 결제 자동결제 등록 청구서',
-    login:'로그인 비밀번호 오류 접속 안됨 안돼요',support:'문의 지원 티켓 고객센터',repaid:'리페이드 리워드 보호 미납',photo:'사진 프로필',print:'인쇄 명함 금박이네',unpaid:'미납 연체 결제 실패'};
+    login:'로그인 비밀번호 오류 접속 안됨 안돼요',support:'문의 지원 티켓 고객센터',repaid:'리페이드 리워드 보호 미납',photo:'사진 프로필',print:'인쇄 명함 금박이네',unpaid:'미납 연체 결제 실패',name:'이름 변경 개명 수정 정정 여권 영문 철자 성 바꿈 닉네임'};
   var items=[].slice.call(document.querySelectorAll('.faq-item'));
   var cats=[].slice.call(document.querySelectorAll('.faq-list > div:not(.faq-item)'));
   function norm(s){return (s||'').toLowerCase().replace(/\s+/g,'')}
