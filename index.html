@@ -202,13 +202,23 @@ button[disabled]{opacity:.6;cursor:default}
           var q=txt(f,".faq-q-text");if(!q||seen["q"+q])return;seen["q"+q]=1;
           out.push({el:f,kind:"질문",t:q,d:"",hay:norm(q+" "+txt(f,".faq-a-inner"))});
         });
+        /* 비밀번호로 잠긴 구역(파트너·스텝 전용) 안의 버튼도 검색되게 */
+        var LOCKED="#partner-content,#step-content,[id*='partner-content'],[id*='step-content'],.locked-content";
+        function modalText(el){var oc=el.getAttribute("onclick")||"",m=oc.match(/([A-Za-z_$][\w$]*)\s*\(/),f=m&&window[m[1]],out="";
+          if(typeof f!=="function")return "";
+          var src=String(f),re=/getElementById\(\s*['"]([^'"]+)['"]\s*\)/g,r;
+          while(r=re.exec(src)){var mo=/modal|popup|sheet/i.test(r[1])&&document.getElementById(r[1]);if(mo&&!mo.contains(el)&&!el.contains(mo))out+=" "+mo.textContent}
+          return out.replace(/\s+/g," ").slice(0,3000)}
         document.querySelectorAll("a[href],button,[onclick]").forEach(function(el){
-          if(el.closest("#cc-search,#cc-cr,#cc-lock,#cc-wm,.faq-q,.faq-a")||!shown(el))return;
+          if(el.closest("#cc-search,#cc-cr,#cc-lock,#cc-wm,.faq-q,.faq-a"))return;
+          var locked=!shown(el)&&!!el.closest(LOCKED)&&!el.closest("[id$='-modal'],[class*='modal']");
+          if(!shown(el)&&!locked)return;
           var t=txt(el,".card-title")||txt(el,".trip-title")||el.textContent.replace(/\s+/g," ").trim();
           if(!t||t.length<2||t.length>80)return;
           var d=txt(el,".card-desc");if(d&&t.indexOf(d)>=0)t=t.replace(d,"").trim();
           if(seen["a"+t])return;seen["a"+t]=1;
-          out.push({el:el,kind:el.tagName==="A"?"바로가기":"버튼",t:t,d:d,hay:norm(t+" "+d)});
+          var mt=el.hasAttribute("onclick")?modalText(el):"";
+          out.push({el:el,kind:locked?"🔒 파트너":(el.tagName==="A"?"바로가기":"버튼"),t:t,d:locked?"🔑 누르면 비밀번호 넣고 바로 열려요":d,hay:norm(t+" "+d+" "+mt),locked:locked});
         });
         /* 버튼이 아닌 카드·구역 제목도 검색되게 (예: "파트너 & 스텝 전용" 잠금 카드) */
         document.querySelectorAll("h1,h2,h3,h4,h5,h6,[class*='title'],[class*='Title'],[class*='head']").forEach(function(el){
@@ -217,13 +227,29 @@ button[disabled]{opacity:.6;cursor:default}
           if(!t||t.length<2||t.length>60||seen["s"+t]||seen["a"+t])return;seen["s"+t]=1;
           var box=el.closest(".card,[class*='card'],[class*='box'],[class*='lock'],section,article")||el;
           var ctx=(box.textContent||"").replace(/\s+/g," ").trim();if(ctx.length>300)ctx=ctx.slice(0,300);
-          var d=box.querySelector&&box.querySelector("input[type=password]")?"🔑 누르면 바로 비밀번호 입력":ctx.replace(t,"").trim();if(d.length>40)d=d.slice(0,40)+"…";
+          var d=box.querySelector&&box.querySelector("input[type=password],[class*='lock'] input,input[class*='lock'],input[id*='pw']")?"🔑 누르면 바로 비밀번호 입력":ctx.replace(t,"").trim();if(d.length>40)d=d.slice(0,40)+"…";
           out.push({el:box,kind:"안내",t:t,d:d,hay:norm(t+" "+ctx)});
         });
         return out;
       }
+      var waitT=null;
+      function gate(el){var ps=[].filter.call(document.querySelectorAll("input[type=password],[id*='lock'] input,[class*='lock'] input,input[class*='lock'],input[id*='pw']"),function(i){return shown(i)&&!i.closest("#cc-search,#cc-cr")&&!/^(hidden|checkbox|radio)$/.test(i.type)});
+        var before=ps.filter(function(i){return i.compareDocumentPosition(el)&Node.DOCUMENT_POSITION_FOLLOWING});return before.length?before[before.length-1]:ps[0]}
+      function toast(t){var n=document.getElementById("cc-toast");if(!n){n=document.createElement("div");n.id="cc-toast";
+          n.setAttribute("style","position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:2147483646;max-width:calc(100% - 32px);padding:12px 16px;border-radius:14px;background:#0d2045;border:1px solid rgba(201,168,76,.6);color:#fff;font:600 14px/1.5 'Noto Sans KR',sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.4);text-align:center");
+          document.body.appendChild(n)}n.textContent=t;n.hidden=false;clearTimeout(n._t);n._t=setTimeout(function(){n.hidden=true},6000)}
       function go(it){
         inp.blur();box.hidden=true;
+        if(it.locked&&!shown(it.el)){
+          var g=gate(it.el);
+          if(g){g.scrollIntoView({behavior:"smooth",block:"center"});setTimeout(function(){try{g.focus({preventScroll:true})}catch(e){g.focus()}},450)}
+          toast("🔒 비밀번호를 넣으면 「"+it.t+"」로 바로 가요");
+          clearInterval(waitT);var n=0;
+          waitT=setInterval(function(){if(++n>600){clearInterval(waitT);return}
+            if(shown(it.el)){clearInterval(waitT);var tn=document.getElementById("cc-toast");if(tn)tn.hidden=true;
+              setTimeout(function(){it.el.scrollIntoView({behavior:"smooth",block:"center"});it.el.classList.add("cc-hit");setTimeout(function(){it.el.classList.remove("cc-hit")},2200)},250)}},300);
+          return;
+        }
         if(it.kind==="질문"){
           if(!it.el.classList.contains("open")){var q=it.el.querySelector(".faq-q");if(q)q.click()}
           setTimeout(function(){it.el.scrollIntoView({behavior:"smooth",block:"start"})},80);return;
