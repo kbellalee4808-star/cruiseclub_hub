@@ -61,10 +61,10 @@
   .faq-a-inner img{max-width:100%;height:auto}
   .foot{text-align:center;font-size:11.5px;color:rgba(255,255,255,.45);line-height:1.7;padding-top:22px;border-top:1px solid rgba(255,255,255,.07)}
   /* 공유 링크(#faq-…)로 들어오면 그 질문 하나만 */
-  body.one h1,body.one .lead,body.one .search,body.one .count,body.one .empty,body.one .faq-list>div:not(.faq-item),body.one .faq-item:not(.one-on){display:none!important}
+  body.one .top,body.one .one-more,body.one .one-share,body.one h1,body.one .lead,body.one .search,body.one .count,body.one .empty,body.one .faq-list>div:not(.faq-item),body.one .faq-item:not(.one-on){display:none!important}
   body.one .faq-list{margin-top:14px;margin-bottom:14px}
+  body.one .faq-q-icon{display:none}body.one .faq-q{pointer-events:none;cursor:default}
   .one-more{display:none;width:100%;min-height:52px;margin:0 0 30px;border-radius:12px;border:1px solid rgba(201,168,76,.45);background:rgba(201,168,76,.1);color:var(--gold-light,#e3c887);font:inherit;font-size:14.5px;font-weight:700;cursor:pointer}
-  body.one .one-more{display:block}
   @media (max-width:360px){h1{font-size:21px}.faq-q{padding:16px}}
 </style>
 </head>
@@ -722,7 +722,7 @@
   window.toggleFaq=function(el){var it=el.closest('.faq-item');if(it.classList.contains('open')){setOpen(it,false)}else{openItem(it,false)}};
   window.toggleJoinStep=function(btn){var b=btn.nextElementSibling,ar=btn.querySelector('span:last-child'),o=b.style.display!=='none';b.style.display=o?'none':'block';if(ar)ar.style.transform=o?'':'rotate(180deg)'};
   /* 이 안내만 링크로 보내기 */
-  items.forEach(function(it){var w=document.createElement('div');w.style.cssText='margin-top:14px;padding-top:13px;border-top:1px solid rgba(255,255,255,0.08)';
+  items.forEach(function(it){var w=document.createElement('div');w.className='one-share';w.style.cssText='margin-top:14px;padding-top:13px;border-top:1px solid rgba(255,255,255,0.08)';
     var b=document.createElement('button');b.type='button';b.style.cssText='width:100%;min-height:50px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.14);color:rgba(255,255,255,0.85);font:700 14px inherit;font-family:inherit;cursor:pointer';
     b.textContent='🔗 이 안내만 링크로 보내기';
     b.onclick=function(e){e.stopPropagation();var u=location.origin+location.pathname+'#'+it.id;
