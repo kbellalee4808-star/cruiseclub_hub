@@ -408,6 +408,65 @@
       </div></div>
     </div>
 
+    <div style="font-size:10px;font-weight:700;color:var(--aqua);letter-spacing:1.6px;margin:20px 0 10px;padding:0 2px;">예약 · 리워드</div>
+    <div class="faq-item">
+      <button type="button" class="faq-q" onclick="toggleFaq(this)" style="touch-action:manipulation;">
+        <span class="faq-q-text">언제부터 예약할 수 있나요?</span>
+        <span class="faq-q-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <strong>🗓️ 출발일이 얼마나 남았는지에 따라 달라요</strong><br><br>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
+          <div style="display:flex;align-items:center;gap:12px;background:rgba(42,157,143,0.1);border:1px solid rgba(42,157,143,0.28);border-radius:12px;padding:12px 14px;">
+            <div style="flex:0 0 78px;text-align:center;"><div style="font-size:10.5px;color:rgba(255,255,255,0.45);">출발까지</div><div style="font-size:15px;font-weight:800;color:#6ddb8a;line-height:1.3;">90일 이상</div></div>
+            <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#fff;">기본 · 선결제 없음</div><div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.6;margin-top:2px;">바로 예약할 수 있어요. 리워드는 객실가의 <b style="color:#fff;">50%까지</b> 사용</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);border-radius:12px;padding:12px 14px;">
+            <div style="flex:0 0 78px;text-align:center;"><div style="font-size:10.5px;color:rgba(255,255,255,0.45);">출발까지</div><div style="font-size:15px;font-weight:800;color:var(--gold-light);line-height:1.3;">60~89일</div></div>
+            <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#fff;">1회차 선결제</div><div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.6;margin-top:2px;">한 달 치를 먼저 결제하고 예약</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;background:rgba(255,140,90,0.08);border:1px solid rgba(255,140,90,0.25);border-radius:12px;padding:12px 14px;">
+            <div style="flex:0 0 78px;text-align:center;"><div style="font-size:10.5px;color:rgba(255,255,255,0.45);">출발까지</div><div style="font-size:15px;font-weight:800;color:#ffae80;line-height:1.3;">30~59일</div></div>
+            <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#fff;">2회차 선결제</div><div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.6;margin-top:2px;">두 달 치를 먼저 결제하고 예약</div></div>
+          </div>
+        </div>
+        <div style="background:rgba(72,202,228,0.08);border-left:3px solid var(--aqua);border-radius:0 10px 10px 0;padding:11px 14px;font-size:12.5px;color:rgba(255,255,255,0.7);line-height:1.7;margin-bottom:10px;">
+          🚢 크루즈를 <b style="color:#fff;">타고 돌아와서 또 예약</b>할 수 있어요. 한 번 예약할 때마다 객실가의 50%까지 리워드를 쓰는 방식이에요.
+        </div>
+        <div style="background:rgba(72,202,228,0.08);border-left:3px solid var(--aqua);border-radius:0 10px 10px 0;padding:11px 14px;font-size:12.5px;color:rgba(255,255,255,0.7);line-height:1.7;">
+          💡 선결제가 무엇인지는 바로 아래 <b style="color:var(--aqua);">선결제는 무엇인가요?</b>에 정리해 뒀어요.
+        </div>
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button type="button" class="faq-q" onclick="toggleFaq(this)" style="touch-action:manipulation;">
+        <span class="faq-q-text">선결제는 무엇인가요?</span>
+        <span class="faq-q-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <strong>💳 출발이 가까운 상품을 잡을 때만, 다음 회차를 미리 내는 것</strong><br><br>
+        <div style="background:rgba(42,157,143,0.1);border:1px solid rgba(42,157,143,0.28);border-radius:12px;padding:12px 14px;margin-bottom:10px;">
+          <div style="font-size:12.5px;font-weight:700;color:#6ddb8a;margin-bottom:4px;">✅ 원칙은 선결제 없음</div>
+          <div style="font-size:12.5px;color:rgba(255,255,255,0.7);line-height:1.7;">출발 <b style="color:#fff;">90일 이상</b> 남은 상품은 선결제 없이 예약해요.</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:12px 14px;margin-bottom:10px;">
+          <div style="font-size:12.5px;font-weight:700;color:#fff;margin-bottom:8px;">📌 선결제가 붙는 경우</div>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:rgba(255,255,255,0.7);">
+            <div style="display:flex;justify-content:space-between;gap:10px;"><span>출발 60~89일 전 예약</span><b style="color:var(--gold-light);">1회차</b></div>
+            <div style="display:flex;justify-content:space-between;gap:10px;"><span>출발 30~59일 전 예약</span><b style="color:#ffae80;">2회차</b></div>
+          </div>
+        </div>
+        <div style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);border-radius:12px;padding:12px 14px;margin-bottom:10px;">
+          <div style="font-size:12.5px;font-weight:700;color:var(--gold-light);margin-bottom:4px;">✨ 손해 보는 돈이 아니에요</div>
+          <div style="font-size:12.5px;color:rgba(255,255,255,0.7);line-height:1.7;">결제만 <b style="color:#fff;">먼저</b> 되고, 리워드 적립은 <b style="color:#fff;">원래 날짜에 그대로</b> 들어와요. 매달 내던 구독료를 앞당겨 내는 것뿐이에요.</div>
+        </div>
+        <div style="background:rgba(72,202,228,0.08);border-left:3px solid var(--aqua);border-radius:0 10px 10px 0;padding:11px 14px;font-size:12.5px;color:rgba(255,255,255,0.7);line-height:1.7;">
+          🤔 왜 미리 받을까요? 예약한 크루즈는 <b style="color:#fff;">탑승일까지 멤버십을 유지</b>하는 게 조건이라, 출발이 가까운 예약은 그 기간 몫을 먼저 받아두는 거예요.
+        </div>
+      </div></div>
+    </div>
+
     <div style="font-size:10px;font-weight:700;color:var(--aqua);letter-spacing:1.6px;margin:20px 0 10px;padding:0 2px;">계정 · 로그인</div>
     <div class="faq-item" style="width:100%;box-sizing:border-box;">
       <button type="button" class="faq-q" onclick="toggleFaq(this)" style="touch-action:manipulation;">
@@ -815,11 +874,11 @@
 </div>
 <script>
 (function(){
-  var SLUG={'선물상자 50리워드는 어떻게 받나요?':'gift','KYC(본인 확인)는 어떻게 하나요?':'kyc','멤버십 코드는 어떻게 생성하나요?':'code','구독 변경 · 보안 · 언어 설정은 어디서 하나요?':'settings','2단계 인증은 어떻게 설정하나요?':'2fa','휴대폰을 바꿨어요 (인증 앱이 안 돼요)':'newphone','수익금은 어떻게 출금하나요?':'withdraw','페이퀴커(PayQuicker)는 어떻게 등록하나요?':'payquicker','자동결제 카드는 어떻게 등록하나요?':'card','로그인이 안 돼요 / 오류가 나요':'login','지원요청은 어떻게 보내나요?':'support','리워드 보호(Re paid)란 무엇인가요?':'repaid','프로필 사진은 어떻게 변경하나요?':'photo','인쇄물 인쇄시 어떻게 하나요?':'print','미납이 발생했을 때 어떻게 하나요?':'unpaid','가입 시 필요서류가 뭔가요?':'join','이름(영문)이 여권과 달라요 · 이름 변경신청':'name','멤버십 환불은 어떻게 하나요?':'refund'};
+  var SLUG={'선물상자 50리워드는 어떻게 받나요?':'gift','KYC(본인 확인)는 어떻게 하나요?':'kyc','멤버십 코드는 어떻게 생성하나요?':'code','구독 변경 · 보안 · 언어 설정은 어디서 하나요?':'settings','2단계 인증은 어떻게 설정하나요?':'2fa','휴대폰을 바꿨어요 (인증 앱이 안 돼요)':'newphone','수익금은 어떻게 출금하나요?':'withdraw','페이퀴커(PayQuicker)는 어떻게 등록하나요?':'payquicker','자동결제 카드는 어떻게 등록하나요?':'card','로그인이 안 돼요 / 오류가 나요':'login','지원요청은 어떻게 보내나요?':'support','리워드 보호(Re paid)란 무엇인가요?':'repaid','프로필 사진은 어떻게 변경하나요?':'photo','인쇄물 인쇄시 어떻게 하나요?':'print','미납이 발생했을 때 어떻게 하나요?':'unpaid','가입 시 필요서류가 뭔가요?':'join','이름(영문)이 여권과 달라요 · 이름 변경신청':'name','멤버십 환불은 어떻게 하나요?':'refund','언제부터 예약할 수 있나요?':'when','선결제는 무엇인가요?':'prepay'};
   /* 검색 보조어: 질문에 없는 말로 찾아도 나오게 */
   var EXTRA={join:'서류 신청 가입방법 준비물',gift:'선물 리워드 보너스 50',kyc:'본인인증 신분증 여권 인증',code:'코드 추천 링크',settings:'설정 언어 보안 구독 변경 해지 다운그레이드',
     '2fa':'2단계 OTP 구글 인증앱 otp',newphone:'폰 교체 기기 변경 인증앱 휴대폰',withdraw:'출금 수익 돈 정산 인출',payquicker:'페이퀴커 출금 카드 등록',card:'카드 결제 자동결제 등록 청구서',
-    login:'로그인 비밀번호 오류 접속 안됨 안돼요',support:'문의 지원 티켓 고객센터',repaid:'리페이드 리워드 보호 미납',photo:'사진 프로필',print:'인쇄 명함 금박이네',unpaid:'미납 연체 결제 실패',refund:'환불 취소 해지 탈퇴 14일 돈 돌려받기 환급 요청생성 보내기',name:'이름 변경 개명 수정 정정 여권 영문 철자 성 바꿈 닉네임 운전면허증 신분증 셀카 요청생성'};
+    login:'로그인 비밀번호 오류 접속 안됨 안돼요',support:'문의 지원 티켓 고객센터',repaid:'리페이드 리워드 보호 미납',photo:'사진 프로필',print:'인쇄 명함 금박이네',unpaid:'미납 연체 결제 실패',when:'예약 언제 출발 90일 60일 30일 날짜 기간 리워드 50% 객실',prepay:'선결제 미리 결제 회차 1회차 2회차 예약 돈 먼저 적립',refund:'환불 취소 해지 탈퇴 14일 돈 돌려받기 환급 요청생성 보내기',name:'이름 변경 개명 수정 정정 여권 영문 철자 성 바꿈 닉네임 운전면허증 신분증 셀카 요청생성'};
   var items=[].slice.call(document.querySelectorAll('.faq-item'));
   var cats=[].slice.call(document.querySelectorAll('.faq-list > div:not(.faq-item)'));
   function norm(s){return (s||'').toLowerCase().replace(/\s+/g,'')}
