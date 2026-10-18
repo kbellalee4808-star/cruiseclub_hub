@@ -286,7 +286,11 @@ button[disabled]{opacity:.6;cursor:default}
       function ok(){b.textContent="✅ 복사됐어요";setTimeout(function(){b.textContent=o},1800)}
       if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(ok,function(){b.textContent="길게 눌러 복사해 주세요"});else b.textContent="길게 눌러 복사해 주세요"};
     function addRefund(){
-      if(document.getElementById("cc-refund"))return;
+      var mine=document.getElementById("cc-refund");
+      /* 허브 자체에 환불 질문이 이미 있으면(공개 FAQ에서 불러온 것 포함) 내 것은 빼서 두 번 안 보이게 */
+      var other=[].some.call(document.querySelectorAll(".faq-item"),function(f){if(f===mine)return false;var q=f.querySelector(".faq-q-text");return q&&/멤버십 환불/.test(q.textContent)});
+      if(other){if(mine)mine.parentNode.removeChild(mine);return}
+      if(mine)return;
       var at=null;[].some.call(document.querySelectorAll(".faq-item"),function(f){var q=f.querySelector(".faq-q-text");if(q&&/리워드 보호/.test(q.textContent)){at=f;return true}});
       if(!at)return;
       var t=document.createElement("div");t.innerHTML=REFUND;var el=t.firstElementChild;
