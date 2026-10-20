@@ -64,6 +64,8 @@
   body.one .top,body.one .one-more,body.one .one-share,body.one h1,body.one .lead,body.one .search,body.one .count,body.one .empty,body.one .faq-list>div:not(.faq-item),body.one .faq-item:not(.one-on){display:none!important}
   body.one .faq-list{margin-top:14px;margin-bottom:14px}
   body.one .faq-q-icon{display:none}body.one .faq-q{pointer-events:none;cursor:default}
+  .one-back{display:none;width:100%;min-height:54px;margin:4px 0 30px;border-radius:12px;border:1px solid rgba(201,168,76,.6);background:rgba(201,168,76,.14);color:#e3c887;font:inherit;font-size:15px;font-weight:700;cursor:pointer}
+  body.one .one-back:not([hidden]){display:block}
   .one-more{display:none;width:100%;min-height:52px;margin:0 0 30px;border-radius:12px;border:1px solid rgba(201,168,76,.45);background:rgba(201,168,76,.1);color:var(--gold-light,#e3c887);font:inherit;font-size:14.5px;font-weight:700;cursor:pointer}
   @media (max-width:360px){h1{font-size:21px}.faq-q{padding:16px}}
 </style>
@@ -869,6 +871,7 @@
   
   </div>
   <button type="button" class="one-more" id="onemore">📚 다른 질문도 보기</button>
+  <button type="button" class="one-back" id="oneback" hidden>← 돌아가기</button>
   <div class="empty" id="empty">찾는 내용이 없어요 🙏<br>다른 단어로 검색하거나, 리더에게 물어봐 주세요.</div>
   <p class="foot">&copy; Bella · Cruise Club</p>
 </div>
@@ -922,6 +925,12 @@
   document.getElementById('onemore').onclick=function(){var it=document.querySelector('.faq-item.one-on');document.body.classList.remove('one');
     items.forEach(function(o){o.classList.remove('one-on')});if(it)setTimeout(function(){it.scrollIntoView({block:'start'})},30)};
   window.addEventListener('hashchange',fromHash);fromHash(true);
+  /* 다른 페이지(예약 가이드 등)에서 눌러 들어왔으면 "돌아가기" 버튼을 보여 준다 */
+  (function(){var ob=document.getElementById('oneback'),ref='';try{ref=document.referrer||''}catch(e){}
+    var fromHub=/\/cruiseclub_hub\/(index\.html)?(#.*)?$/.test(ref.replace(/\?.*$/,''))||/faq\.html/.test(ref);
+    var canBack=!!ref&&history.length>1,extRef=ref&&!fromHub;
+    if(!(canBack||extRef))return;ob.hidden=false;
+    ob.onclick=function(){if(history.length>1){history.back();setTimeout(function(){if(extRef)location.href=ref},600)}else if(extRef)location.href=ref};})();
 })();
 </script>
 <script>
