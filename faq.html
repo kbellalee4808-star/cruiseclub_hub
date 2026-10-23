@@ -1048,5 +1048,44 @@ function ok(){b.textContent='✅ 복사됐어요';setTimeout(function(){b.textCo
 function fb(){var r=document.createRange();r.selectNodeContents(box);var s=window.getSelection();s.removeAllRanges();s.addRange(r);try{document.execCommand('copy');ok();}catch(e){}s.removeAllRanges();}
 if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fb);}else{fb();}}
 </script>
+<script>
+/* 영상이 있는 안내는 "글로 보기 / 영상으로 보기"를 고를 수 있게 */
+function ccVideoTabs(root){
+  root=root||document;
+  function yid(u){var m=String(u).match(/(?:youtu\.be\/|[?&]v=|\/shorts\/|\/embed\/)([\w-]{11})/);return m?m[1]:null}
+  if(!document.getElementById('cc-vt-st')){var st=document.createElement('style');st.id='cc-vt-st';st.textContent=
+    '.cc-vt{display:flex;gap:6px;margin:0 0 14px;padding:4px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}'
+   +'.cc-vt button{flex:1;min-height:44px;border:0;border-radius:9px;background:none;color:rgba(255,255,255,.7);font:inherit;font-size:14px;font-weight:700;cursor:pointer;touch-action:manipulation}'
+   +'.cc-vt button.on{background:#c9a84c;color:#0a1628}'
+   +'.cc-vp{position:relative;width:100%;padding-top:56.25%;border-radius:12px;overflow:hidden;background:#000}'
+   +'.cc-vp iframe{position:absolute;inset:0;width:100%;height:100%;border:0}'
+   +'.cc-vl{display:inline-block;margin-top:10px;font-size:13px;color:#e3c887;text-decoration:underline}';
+   (document.head||document.documentElement).appendChild(st)}
+  [].forEach.call(root.querySelectorAll('.faq-a-inner'),function(box){
+    if(box.getAttribute('data-vt'))return;
+    var links=[].filter.call(box.querySelectorAll('a[href*="youtu"]'),function(a){return yid(a.href)});
+    box.setAttribute('data-vt','1');
+    if(!links.length)return;
+    var url=links[0].href,id=yid(url);
+    var keep=[].filter.call(box.children,function(c){return c.classList.contains('one-share')});
+    var txt=document.createElement('div');txt.className='cc-vtext';
+    while(box.firstChild)txt.appendChild(box.firstChild);
+    keep.forEach(function(k){if(k.parentNode===txt)txt.removeChild(k)});
+    var vid=document.createElement('div');vid.className='cc-vvid';vid.hidden=true;
+    var bar=document.createElement('div');bar.className='cc-vt';
+    bar.innerHTML='<button type="button" class="on">📖 글로 보기</button><button type="button">▶ 영상으로 보기</button>';
+    box.appendChild(bar);box.appendChild(txt);box.appendChild(vid);keep.forEach(function(k){box.appendChild(k)});
+    var b=bar.querySelectorAll('button');
+    function fit(){var a=box.closest('.faq-a');if(a&&a.style.maxHeight&&a.style.maxHeight!=='none')a.style.maxHeight=a.scrollHeight+'px'}
+    function show(v){b[0].classList.toggle('on',!v);b[1].classList.toggle('on',v);txt.hidden=v;vid.hidden=!v;
+      if(v&&!vid.firstChild){vid.innerHTML='<div class="cc-vp"><iframe src="https://www.youtube-nocookie.com/embed/'+id+'?rel=0&playsinline=1" title="영상 안내" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div><a class="cc-vl" href="'+url+'" target="_blank" rel="noopener">유튜브 앱에서 크게 보기 ›</a>'}
+      if(!v){var f=vid.querySelector('iframe');if(f){var s=f.src;f.src='about:blank';f.src=s}}
+      fit();setTimeout(fit,300)}
+    b[0].onclick=function(e){e.stopPropagation();show(false)};
+    b[1].onclick=function(e){e.stopPropagation();show(true)};
+  });
+}
+ccVideoTabs(document);
+</script>
 </body>
 </html>
