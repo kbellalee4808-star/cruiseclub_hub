@@ -103,6 +103,17 @@ button[disabled]{opacity:.6;cursor:default}
       return crypto.subtle.decrypt({name:"AES-GCM",iv:bytes(IV)},key,bytes(DATA));
     }).then(function(pt){
       var html=new TextDecoder().decode(pt);
+      /* 관리자용: 주소 끝에 #cc-export 를 붙여 들어오면 잠금 전 원본 파일을 저장할 수 있게 */
+      if(/cc-export/.test(location.hash)){
+        return ready().then(function(){
+          document.body.innerHTML='<main class="gate"><h1>허브 원본 저장</h1><p class="lead">잠금 전 원본 허브 파일이에요. 아래 버튼을 눌러 저장한 다음 Claude에게 첨부해 주세요.</p><button id="ccx" type="button">📥 원본 파일 저장</button><p class="msg" id="ccxm"></p><p class="fine"><a href="./" style="color:#D4A94A" onclick="location.hash=\'\';location.reload();return false">허브로 돌아가기</a></p></main>';
+          document.getElementById("ccx").onclick=function(){
+            var name="cruiseclub_hub_원본_"+new Date().toISOString().slice(0,10)+".html",blob=new Blob([html],{type:"text/html"}),m=document.getElementById("ccxm");
+            try{var f=new File([blob],name,{type:"text/html"});if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:name}).then(function(){m.textContent="저장했어요 ✅"},function(){});return}}catch(e){}
+            var u=URL.createObjectURL(blob),l=document.createElement("a");l.href=u;l.download=name;document.body.appendChild(l);l.click();l.remove();setTimeout(function(){URL.revokeObjectURL(u)},2000);m.textContent="다운로드 폴더에 저장했어요 ✅";
+          };
+        });
+      }
       return ready().then(function(){
         guardSearch();document.open();document.write(html);document.close();
         try{window.scrollTo(0,0)}catch(e){}
