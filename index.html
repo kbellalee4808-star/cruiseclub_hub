@@ -188,7 +188,7 @@ button[disabled]{opacity:.6;cursor:default}
       var song=null;
       [].some.call(document.querySelectorAll("a,button,.card,[onclick]"),function(el){
         if(/테마송/.test(el.textContent)&&el.textContent.length<200&&!el.closest("#cc-search")){song=el;return true}});
-      if(song){var hb=song.parentNode&&song.parentNode.closest&&song.parentNode.closest("a,button,label,summary");if(hb)song=hb;w.classList.add("in");song.parentNode.insertBefore(w,song.nextSibling)}
+      if(song){var hb=song.parentNode&&song.parentNode.closest&&song.parentNode.closest("a,button,label,summary");if(hb)song=hb}var slot0=document.getElementById("cc-search-slot");if(slot0){w.classList.add("in");slot0.appendChild(w)}else if(song){w.classList.add("in");song.parentNode.insertBefore(w,song.nextSibling)}
       /* 📸 여행사진 버튼 (밴드 사진첩) — 테마송 카드 모양을 그대로 본떠서 검색창 아래에 */
       if(song&&!document.getElementById("cc-photo")){
         var ph=song.cloneNode(true);ph.id="cc-photo";
@@ -200,14 +200,16 @@ button[disabled]{opacity:.6;cursor:default}
           else if(/[\u{1F3B5}\u{1F3B6}\u266A\u266B]/u.test(v))t.nodeValue="📸"});
         if(ph.tagName==="A"){ph.href="https://band.us/band/94172465/album/78160351";ph.target="_blank";ph.rel="noopener noreferrer"}
         else{ph.style.cursor="pointer";ph.onclick=function(){window.open("https://band.us/band/94172465/album/78160351","_blank","noopener")}}
-        w.parentNode.insertBefore(ph,w.nextSibling);
+        song.parentNode.insertBefore(ph,song.nextSibling);
       }
-      else document.body.insertBefore(w,document.body.firstChild);
+      else if(!slot0)document.body.insertBefore(w,document.body.firstChild);
       var inp=w.querySelector("input"),x=w.querySelector(".x"),box=w.querySelector(".r");
       function norm(t){return (t||"").toLowerCase().replace(/\s+/g,"")}
       function txt(el,sel){var e=el.querySelector(sel);return e?e.textContent.replace(/\s+/g," ").trim():""}
       function shown(el){return el.getClientRects().length>0}
       function index(){
+        if(window.ccAllOn)ccAllOn(1);try{return index0()}finally{if(window.ccAllOn)ccAllOn(0)}}
+      function index0(){
         var out=[],seen={};
         document.querySelectorAll(".faq-item").forEach(function(f){
           var q=txt(f,".faq-q-text");if(!q||seen["q"+q])return;seen["q"+q]=1;
@@ -251,6 +253,7 @@ button[disabled]{opacity:.6;cursor:default}
           document.body.appendChild(n)}n.textContent=t;n.hidden=false;clearTimeout(n._t);n._t=setTimeout(function(){n.hidden=true},6000)}
       function go(it){
         inp.blur();box.hidden=true;
+        if(window.ccShowFor)ccShowFor(it.el);
         if(it.locked&&!shown(it.el)){
           var g=gate(it.el);
           if(g){g.scrollIntoView({behavior:"smooth",block:"center"});setTimeout(function(){try{g.focus({preventScroll:true})}catch(e){g.focus()}},450)}
@@ -348,7 +351,156 @@ button[disabled]{opacity:.6;cursor:default}
       });
     }
     
-    function extras(){try{fixTitles();ccVideoTabs(document)}catch(e){}}
+    /* ===== 첫 화면 버튼 메뉴 (처음 방문 / 이미 멤버 / 파트너 / 자주 묻는 질문) ===== */
+    function ccRouter(){
+      if(window.__ccr)return;
+      var C=document.querySelector(".container");if(!C)return;
+      var kids=[].slice.call(C.children);
+      var labels=kids.filter(function(e){return e.classList.contains("section-label")});
+      if(labels.length<3)return;
+      window.__ccr=1;
+      function key(t){if(/멤버십 안내/.test(t))return"first";if(/멤버 가이드|프리미엄/.test(t))return"member";if(/파트너/.test(t))return"partner";if(/자주 묻는/.test(t))return"qa";return null}
+      function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+      function ttl(e){var t=e.querySelector&&e.querySelector(".card-title");return t?t.textContent.replace(/\s+/g," ").trim():""}
+    
+      var st=el("style");st.id="cc-router-st";st.textContent=
+        ".ccv{display:none}.ccv.on{display:block}"
+       +"body.ccv-home .cc-top{display:block}body:not(.ccv-home) .cc-top{display:none!important}"
+       +"body.ccv-all .ccv{display:block!important}body.ccv-all .cca-p{display:block!important}"
+       +".cc-menu{margin:4px 0 16px;padding:22px 18px 18px;border-radius:22px;background:rgba(18,40,72,.72);border:1px solid rgba(255,255,255,.08)}"
+       +".cc-menu .k{font-size:12.5px;font-weight:800;letter-spacing:.06em;color:#e3c887}"
+       +".cc-menu h2{margin:8px 0 6px;font-size:22px;line-height:1.35;color:#fff;font-weight:800}"
+       +".cc-menu p{margin:0 0 14px;font-size:13.5px;color:rgba(255,255,255,.7)}"
+       +".cc-mb{display:flex;align-items:center;gap:12px;width:100%;min-height:76px;margin-top:10px;padding:14px 16px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(44,78,120,.55);color:#fff;font:inherit;text-align:left;cursor:pointer;touch-action:manipulation}"
+       +".cc-mb.gold{background:linear-gradient(135deg,#d4b06a,#c09a4e);color:#14233a;border-color:transparent}"
+       +".cc-mb .i{font-size:24px;flex:0 0 auto}.cc-mb .t{flex:1;min-width:0}.cc-mb b{display:block;font-size:17px;font-weight:800}"
+       +".cc-mb small{display:block;margin-top:3px;font-size:12.5px;opacity:.8}.cc-mb .a{font-size:20px;opacity:.7}"
+       +".cc-mb.qa{min-height:56px;background:rgba(255,255,255,.04)}.cc-mb.qa b{font-size:15px}"
+       +".cc-back{display:flex;align-items:center;gap:10px;margin:2px 0 16px}"
+       +".cc-back button{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid rgba(201,168,76,.55);background:rgba(201,168,76,.12);color:#e3c887;font:inherit;font-size:14px;font-weight:700;cursor:pointer}"
+       +".cc-back .vt{font-size:17px;font-weight:800;color:#fff}"
+       +".cca{margin:0 0 10px;border-radius:16px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.035);overflow:hidden}"
+       +".cca-h{display:flex;align-items:center;gap:10px;width:100%;min-height:58px;padding:14px 16px;border:0;background:none;color:#fff;font:inherit;font-size:16px;font-weight:800;text-align:left;cursor:pointer}"
+       +".cca-h .n{margin-left:auto;font-size:12px;font-weight:600;color:rgba(255,255,255,.5)}.cca-h .ar{transition:transform .2s;color:#e3c887}"
+       +".cca.open .cca-h .ar{transform:rotate(180deg)}.cca-p{display:none;padding:0 12px 12px}.cca.open .cca-p{display:block}"
+       +".cc-more{display:block;width:100%;min-height:50px;margin:18px 0 6px;border-radius:14px;border:1px dashed rgba(255,255,255,.25);background:none;color:rgba(255,255,255,.8);font:inherit;font-size:14.5px;font-weight:700;cursor:pointer}"
+       +".cc-chk{margin:0 0 14px;padding:16px;border-radius:16px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.35)}"
+       +".cc-chk .h{display:flex;align-items:center;justify-content:space-between;font-size:15.5px;font-weight:800;color:#e3c887}"
+       +".cc-chk .bar{height:6px;margin:10px 0 6px;border-radius:3px;background:rgba(255,255,255,.12);overflow:hidden}.cc-chk .bar i{display:block;height:100%;background:#c9a84c;transition:width .3s}"
+       +".cc-ci{display:flex;align-items:center;gap:10px;min-height:48px;border-top:1px solid rgba(255,255,255,.07)}"
+       +".cc-ci label{display:flex;align-items:center;gap:10px;flex:1;min-height:44px;font-size:14.5px;color:#fff;cursor:pointer}"
+       +".cc-ci input{width:22px;height:22px;accent-color:#c9a84c;flex:0 0 auto}.cc-ci.done label span{opacity:.55;text-decoration:line-through}"
+       +".cc-ci button{min-height:36px;padding:0 12px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:none;color:rgba(255,255,255,.75);font:inherit;font-size:12.5px;cursor:pointer;white-space:nowrap}"
+       +".cc-chips{display:flex;gap:7px;overflow-x:auto;padding:2px 0 14px;scrollbar-width:none}.cc-chips::-webkit-scrollbar{display:none}"
+       +".cc-chips button{flex:0 0 auto;min-height:36px;padding:0 13px;border-radius:999px;border:1px solid rgba(72,202,228,.3);background:rgba(72,202,228,.08);color:#48cae4;font:inherit;font-size:13px;font-weight:600;cursor:pointer}";
+      document.head.appendChild(st);
+    
+      /* 1) 섹션을 보기(view)별로 묶기 */
+      var views={};
+      ["first","member","partner","qa"].forEach(function(k){views[k]=el("div","ccv");views[k].setAttribute("data-ccv",k)});
+      var firstLabel=labels[0],cur=null,top=[],secs={first:[],member:[],partner:[],qa:[]},memberParts={guide:[],premium:[]};
+      kids.forEach(function(n){
+        if(n.classList.contains("footer"))return;
+        if(n.classList.contains("section-label")){cur=key(n.textContent);if(cur==="member")cur=/프리미엄/.test(n.textContent)?"member:premium":"member:guide";return}
+        if(!cur){top.push(n);return}
+        if(cur.indexOf("member:")===0)memberParts[cur.split(":")[1]].push(n);else secs[cur].push(n);
+      });
+      var anchor=el("div");C.insertBefore(anchor,firstLabel);
+      labels.forEach(function(l){if(key(l.textContent)!=="partner")l.remove()});
+      /* 위쪽 공통 영역: 헤더는 항상, 나머지는 첫 화면에서만 */
+      top.forEach(function(n){if(!n.classList.contains("header"))n.classList.add("cc-top")});
+      var slot=el("div");slot.id="cc-search-slot";
+      var hdr=C.querySelector(".header");(hdr&&hdr.nextSibling?C.insertBefore(slot,hdr.nextSibling):C.insertBefore(slot,C.firstChild));
+      var sw=document.getElementById("cc-search");if(sw){sw.classList.remove("cc-top");sw.classList.add("in");slot.appendChild(sw)}
+      var chips=el("div","cc-chips cc-top");
+      ["예약","출금","리워드","자동결제","미납","환불","본인인증","추천링크"].forEach(function(w){var b=el("button",null,w);b.type="button";
+        b.onclick=function(){var i=document.querySelector("#cc-search input");if(!i)return;i.value=w;i.dispatchEvent(new Event("input",{bubbles:true}));i.focus()};chips.appendChild(b)});
+      slot.after(chips);
+    
+      /* 첫 화면 메뉴 */
+      var menu=el("div","cc-menu cc-top",
+        '<div class="k">WELCOME TO CRUISE CLUB</div><h2>크루즈 여행, 어디서부터 시작할까요?</h2><p>나에게 맞는 메뉴를 선택하세요.</p>'
+       +'<button type="button" class="cc-mb gold" data-go="first"><span class="i">🧭</span><span class="t"><b>처음 방문했어요</b><small>멤버십 소개 · 혜택 · 가입 안내</small></span><span class="a">›</span></button>'
+       +'<button type="button" class="cc-mb" data-go="member"><span class="i">🛳️</span><span class="t"><b>이미 멤버예요</b><small>가입 후 설정 · 예약 · 여행 준비</small></span><span class="a">›</span></button>'
+       +'<button type="button" class="cc-mb" data-go="partner"><span class="i">🤝</span><span class="t"><b>파트너로 활동 중이에요</b><small>추천 · 교육 · 활동 가이드</small></span><span class="a">›</span></button>'
+       +'<button type="button" class="cc-mb qa" data-go="qa"><span class="i">❓</span><span class="t"><b>자주 묻는 질문</b></span><span class="a">›</span></button>');
+      chips.after(menu);
+      /* 필수시청 영상은 메뉴 바로 아래로 */
+      var must=C.querySelector(".must-card");if(must){var mc=must.closest(".cards");if(mc&&mc.parentNode===C)menu.after(mc)}
+    
+      var TITLES={first:"🧭 처음 방문했어요",member:"🛳️ 이미 멤버예요",partner:"🤝 파트너 활동",qa:"❓ 자주 묻는 질문"};
+      Object.keys(views).forEach(function(k){
+        var v=views[k];v.appendChild(el("div","cc-back",'<button type="button" data-go="home">← 처음으로</button><span class="vt">'+TITLES[k]+'</span>'));
+        anchor.parentNode.insertBefore(v,anchor);
+      });
+      anchor.remove();
+      secs.first.forEach(function(n){views.first.appendChild(n)});
+      secs.partner.forEach(function(n){views.partner.appendChild(n)});
+      /* 파트너 가이드 제목 라벨은 다시 넣기 */
+      labels.forEach(function(l){if(key(l.textContent)==="partner"&&l.parentNode===C)views.partner.insertBefore(l,views.partner.children[1]||null)});
+      secs.qa.forEach(function(n){views.qa.appendChild(n)});
+      /* 원본에서 다른 칸 안에 끼어 있는 "자주 묻는 질문"도 꺼내 오기 */
+      [].forEach.call(document.querySelectorAll(".section-label"),function(l){if(l.parentNode===C||key(l.textContent)!=="qa")return;
+        var n=l.nextSibling;while(n){var nx=n.nextSibling;views.qa.appendChild(n);n=nx}l.remove()});
+    
+      /* 2) 이미 멤버예요: 접었다 펴는 묶음 */
+      function acc(t,open){var a=el("div","cca"+(open?" open":""),'<button type="button" class="cca-h"><span>'+t+'</span><span class="n"></span><span class="ar">▾</span></button><div class="cca-p"></div>');
+        a.firstChild.onclick=function(){a.classList.toggle("open")};return a}
+      var G={start:acc("✅ 가입 후 가장 먼저 할 일",true),book:acc("📅 크루즈 예약과 리워드"),trip:acc("🧳 여행 준비하기"),manage:acc("⚙️ 멤버십 관리 · 기타"),premium:acc("⭐ 프리미엄 가이드")};
+      var RULE=[["book",/예약 영수증|포함 내역/],["trip",/영상 하나로|준비물|크루즈 영어|입국서류|탑승 가이드|층별/],["manage",/그만두면|굿즈/]];
+      var holder=el("div");memberParts.guide.forEach(function(n){holder.appendChild(n)});
+      var moved=[];
+      [].forEach.call(holder.querySelectorAll("a.card"),function(a){var t=ttl(a);for(var i=0;i<RULE.length;i++)if(RULE[i][1].test(t)){moved.push([RULE[i][0],a]);break}});
+      moved.forEach(function(m){G[m[0]].lastChild.appendChild(m[1])});
+      [].forEach.call(views.first.querySelectorAll("a.card"),function(a){if(/예약 가이드|리워드 계산기|언제부터 예약/.test(ttl(a))){var c=a.cloneNode(true);G.book.lastChild.insertBefore(c,G.book.lastChild.firstChild)}});
+      [].forEach.call(holder.querySelectorAll(".cards"),function(c){if(!c.children.length)c.remove()});
+      while(holder.firstChild)G.start.lastChild.appendChild(holder.firstChild);
+      memberParts.premium.forEach(function(n){G.premium.lastChild.appendChild(n)});
+      ["book","trip","manage"].forEach(function(k){var p=G[k].lastChild,w=el("div","cards");while(p.firstChild)w.appendChild(p.firstChild);p.appendChild(w)});
+    
+      /* 신규 멤버 체크리스트 (이 기기에 저장) */
+      var CK="cc_newbie_v1",done={};try{done=JSON.parse(localStorage.getItem(CK))||{}}catch(e){}
+      var ITEMS=[["join","가입 완료 · 아이디/비밀번호 저장",null],["kyc","본인인증(KYC) 하기","KYC"],["card","자동결제 카드 등록","자동결제 카드"],["welcome","웰컴 키트 따라하기","@welcome"],["band","크루즈클럽 밴드 입장","@band"]];
+      var ck=el("div","cc-chk",'<div class="h"><span>📋 신규 멤버 체크리스트</span><span class="c"></span></div><div class="bar"><i></i></div>');
+      ITEMS.forEach(function(it){var r=el("div","cc-ci",'<label><input type="checkbox"><span>'+it[1]+'</span></label>'+(it[2]?'<button type="button">방법 ›</button>':''));
+        var cb=r.querySelector("input");cb.checked=!!done[it[0]];
+        cb.onchange=function(){done[it[0]]=cb.checked;try{localStorage.setItem(CK,JSON.stringify(done))}catch(e){}upd()};
+        var b=r.querySelector("button");if(b)b.onclick=function(){
+          if(it[2]==="@welcome"){var w=[].filter.call(document.querySelectorAll("a.card"),function(a){return/웰컴 키트/.test(ttl(a))})[0];if(w)w.click();return}
+          if(it[2]==="@band"){var bd=[].filter.call(document.querySelectorAll(".card"),function(a){return/밴드 입장/.test(ttl(a))})[0];if(bd){bd.scrollIntoView({behavior:"smooth",block:"center"})}return}
+          openFaq(it[2])};
+        ck.appendChild(r)});
+      function upd(){var n=ITEMS.filter(function(i){return done[i[0]]}).length;ck.querySelector(".c").textContent=n+" / "+ITEMS.length;ck.querySelector(".bar i").style.width=(n/ITEMS.length*100)+"%";
+        [].forEach.call(ck.querySelectorAll(".cc-ci"),function(r,i){r.classList.toggle("done",!!done[ITEMS[i][0]])})}
+      upd();
+      views.member.appendChild(ck);
+      ["start","book","trip","manage","premium"].forEach(function(k){var p=G[k].lastChild,n=p.querySelectorAll(".card").length;if(n)G[k].querySelector(".n").textContent=n+"개";if(p.children.length)views.member.appendChild(G[k])});
+    
+      /* 각 화면 아래 "자주 묻는 질문" 바로가기 */
+      ["first","member","partner"].forEach(function(k){var b=el("button","cc-more","❓ 자주 묻는 질문 보기");b.type="button";b.setAttribute("data-go","qa");views[k].appendChild(b)});
+    
+      function openFaq(word){var it=[].filter.call(document.querySelectorAll(".faq-item"),function(f){return f.textContent.indexOf(word)>=0&&(f.querySelector(".faq-q-text")||{}).textContent.indexOf(word)>=0})[0];
+        if(!it)return;show("qa");setTimeout(function(){if(!it.classList.contains("open")){var q=it.querySelector(".faq-q");if(q)q.click()}setTimeout(function(){it.scrollIntoView({behavior:"smooth",block:"start"})},120)},60)}
+    
+      /* 3) 화면 전환 (#m-first 같은 주소로 뒤로가기도 됨) */
+      var cur="home";
+      function show(v,push){cur=v;document.body.classList.toggle("ccv-home",v==="home");
+        Object.keys(views).forEach(function(k){views[k].classList.toggle("on",k===v)});
+        var h=v==="home"?"":"#m-"+v;
+        if(push!==false&&location.hash!==h){try{if(v==="home")history.pushState(null,"",location.pathname+location.search);else history.pushState(null,"",h)}catch(e){}}
+        window.scrollTo(0,0)}
+      function fromHash(){var m=location.hash.match(/^#m-(first|member|partner|qa)$/);show(m?m[1]:"home",false)}
+      window.addEventListener("popstate",fromHash);window.addEventListener("hashchange",fromHash);
+      document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-go]");if(!b)return;e.preventDefault();show(b.getAttribute("data-go"))});
+      fromHash();
+    
+      /* 검색 등에서 쓰는 도우미: 이 요소가 있는 화면으로 바꿔 주기 */
+      window.ccShowFor=function(n){var v=n&&n.closest&&n.closest("[data-ccv]");if(!v)return;
+        var k=v.getAttribute("data-ccv");if(k!==cur)show(k);var a=n.closest(".cca");if(a)a.classList.add("open")};
+      window.ccAllOn=function(on){document.body.classList.toggle("ccv-all",!!on)};
+    }
+    
+    function extras(){try{ccRouter()}catch(e){console.error(e)}try{fixTitles();ccVideoTabs(document)}catch(e){}}
     ensure();addRefund();addSearch();extras();setInterval(function(){ensure();addRefund();addSearch();extras()},1500);
     function editable(t){return t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA"||t.isContentEditable)}
     ["contextmenu","dragstart","copy","cut"].forEach(function(ev){
