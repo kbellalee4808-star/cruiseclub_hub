@@ -456,6 +456,9 @@ button[disabled]{opacity:.6;cursor:default}
       [].forEach.call(holder.querySelectorAll(".cards"),function(c){if(!c.children.length)c.remove()});
       while(holder.firstChild)G.start.lastChild.appendChild(holder.firstChild);
       memberParts.premium.forEach(function(n){G.premium.lastChild.appendChild(n)});
+      /* 🛡️ 여행자보험 가입 방법 카드 (여행 준비하기 두 번째) */
+      (function(){var c=el("a","card",'<div class="card-icon blue">🛡️</div><div class="card-body"><div class="card-title">여행자보험 가입 방법</div><div class="card-desc">카카오톡에서 바로 가입 · 꼭 출발 전에</div></div><span class="card-badge badge-new">NEW</span><span class="card-arrow">›</span>');
+        c.href="insurance/";c.style.touchAction="manipulation";var tp=G.trip.lastChild;tp.insertBefore(c,tp.children[1]||null)})();
       ["book","trip","manage"].forEach(function(k){var p=G[k].lastChild,w=el("div","cards");while(p.firstChild)w.appendChild(p.firstChild);p.appendChild(w)});
     
       /* 신규 멤버 체크리스트 (이 기기에 저장) */
