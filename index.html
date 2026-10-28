@@ -391,6 +391,19 @@ button[disabled]{opacity:.6;cursor:default}
        +".cc-ci label{display:flex;align-items:center;gap:10px;flex:1;min-height:44px;font-size:14.5px;color:#fff;cursor:pointer}"
        +".cc-ci input{width:22px;height:22px;accent-color:#c9a84c;flex:0 0 auto}.cc-ci.done label span{opacity:.55;text-decoration:line-through}"
        +".cc-ci button{min-height:36px;padding:0 12px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:none;color:rgba(255,255,255,.75);font:inherit;font-size:12.5px;cursor:pointer;white-space:nowrap}"
+       +".mb-tg{position:relative;display:block;width:100%;padding:0 34px 0 0;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}"
+       +".mb-tg .mb-ar{position:absolute;right:4px;top:50%;transform:translateY(-50%);color:#e3c887;font-size:18px;transition:transform .2s}"
+       +".mb-tg[aria-expanded=true] .mb-ar{transform:translateY(-50%) rotate(180deg)}.money-box.mb-closed .money-sub{margin-bottom:0}.mb-body{margin-top:12px}"
+       +".cc-sheet{position:fixed;inset:0;z-index:2147483600;background:rgba(5,12,24,.72);display:flex;align-items:flex-end;justify-content:center}.cc-sheet[hidden]{display:none}"
+       +".cc-sb{width:100%;max-width:560px;max-height:88vh;display:flex;flex-direction:column;background:#0f2240;border:1px solid rgba(201,168,76,.35);border-radius:20px 20px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));box-shadow:0 -12px 40px rgba(0,0,0,.5)}"
+       +"@media (min-width:700px){.cc-sheet{align-items:center}.cc-sb{border-radius:20px}}"
+       +".cc-sh{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.cc-sh b{font-size:17px;color:#fff}.cc-sh .x{width:44px;height:44px;border:0;border-radius:50%;background:rgba(255,255,255,.08);color:#fff;font-size:18px;cursor:pointer}"
+       +".cc-vt2{display:flex;gap:8px;margin-bottom:12px}.cc-vt2 button{flex:1;min-height:54px;border-radius:14px;border:1px solid rgba(201,168,76,.45);background:rgba(201,168,76,.08);color:#e3c887;font:inherit;font-size:15.5px;font-weight:800;cursor:pointer}.cc-vt2 button.on{background:#c9a84c;color:#0a1628;border-color:#c9a84c}"
+       +".cc-sc{overflow-y:auto;-webkit-overflow-scrolling:touch;min-height:80px}.cc-sc .pick{text-align:center;color:rgba(255,255,255,.65);font-size:14px;padding:18px 0}"
+       +".cc-txt{color:rgba(255,255,255,.85);font-size:14.5px;line-height:1.75}.cc-txt h3{font-size:18px;color:#fff;margin:2px 0 8px}.cc-txt h4{font-size:15px;color:#e3c887;margin:16px 0 6px}.cc-txt .lead{margin:0 0 4px}.cc-txt ul{margin:0;padding-left:18px}.cc-txt li{margin:3px 0}.cc-txt b{color:#fff}.cc-txt .note{margin-top:14px;font-size:12px;color:rgba(255,255,255,.5)}"
+       +".cc-sb .more{display:block;margin-top:14px;min-height:48px;line-height:48px;text-align:center;border-radius:12px;background:rgba(255,255,255,.06);color:#e3c887;font-weight:700;text-decoration:none}"
+       +".cc-sb .cc-vp{position:relative;width:100%;padding-top:56.25%;border-radius:12px;overflow:hidden;background:#000}.cc-sb .cc-vp iframe{position:absolute;inset:0;width:100%;height:100%;border:0}"
+       +".card.cc-star{border:1.5px solid #c9a84c!important;background:rgba(201,168,76,.1)!important;box-shadow:0 0 0 3px rgba(201,168,76,.15),0 10px 26px rgba(201,168,76,.18)}"
        +".cc-chips{display:flex;gap:7px;overflow-x:auto;padding:2px 0 14px;scrollbar-width:none}.cc-chips::-webkit-scrollbar{display:none}"
        +".cc-chips button{flex:0 0 auto;min-height:36px;padding:0 13px;border-radius:999px;border:1px solid rgba(72,202,228,.3);background:rgba(72,202,228,.08);color:#48cae4;font:inherit;font-size:13px;font-weight:600;cursor:pointer}";
       document.head.appendChild(st);
@@ -476,6 +489,59 @@ button[disabled]{opacity:.6;cursor:default}
       views.member.appendChild(ck);
       ["start","book","trip","manage","premium"].forEach(function(k){var p=G[k].lastChild,n=p.querySelectorAll(".card").length;if(n)G[k].querySelector(".n").textContent=n+"개";if(p.children.length)views.member.appendChild(G[k])});
     
+      /* 💸 수익금 받기 준비: 버튼으로 접어 두기 (누르면 3가지 펼침) */
+      [].forEach.call(document.querySelectorAll(".money-box"),function(mb){
+        if(mb.getAttribute("data-fold"))return;mb.setAttribute("data-fold","1");
+        var head=mb.querySelector(".money-head"),sub=mb.querySelector(".money-sub");if(!head)return;
+        var body=el("div","mb-body");body.hidden=true;
+        [].slice.call(mb.childNodes).forEach(function(n){if(n!==head&&n!==sub)body.appendChild(n)});
+        var tg=el("button","mb-tg");tg.type="button";tg.setAttribute("aria-expanded","false");
+        tg.appendChild(head);if(sub){sub.textContent="수익금을 찾으려면 꼭 해둬야 해요. 누르면 3가지가 펼쳐져요.";tg.appendChild(sub)}
+        tg.appendChild(el("span","mb-ar","▾"));
+        mb.appendChild(tg);mb.appendChild(body);mb.classList.add("mb-closed");
+        tg.onclick=function(){var open=body.hidden;body.hidden=!open;tg.setAttribute("aria-expanded",open?"true":"false");mb.classList.toggle("mb-closed",!open)};
+      });
+      /* 🎬 영상 카드: 누르면 "글로 보기 / 영상으로 보기" 선택 */
+      var TXT={
+        membership:'<h3>🚢 크루즈 멤버십이란?</h3>'
+          +'<p class="lead">크루즈 여행비를 <b>미리 조금씩 준비</b>하고, 쌓인 <b>리워드로 예약</b>하는 적립형 멤버십이에요.</p>'
+          +'<h4>💳 이렇게 쌓여요</h4><ul><li>매달 멤버십을 유지하면 <b>구독료의 2배</b>가 리워드로 쌓여요.</li><li><b>클래식</b> 구독료 $100 → $200 리워드</li><li><b>프리미엄</b> 구독료 $250 → $500 리워드</li><li>처음 시작할 때만 <b>활성화비</b>를 한 번 내요. (프리미엄은 첫 달 $500 → 리워드 $800)</li></ul>'
+          +'<h4>🛳️ 이렇게 써요</h4><ul><li>리워드는 <b>현금이 아니라 크루즈 예약용</b>이에요.</li><li>예약할 때 객실가의 <b>최대 50%까지</b> 리워드로 차감돼요. (1 RP = $1)</li><li>나머지는 카드로 내거나, 리워드로 전부 낼 수도 있어요. (올 리워드: 2 RP = $1)</li></ul>'
+          +'<h4>📌 알아두세요</h4><ul><li>구독료를 30일 넘게 안 내면 <b>기본 접근</b>으로 바뀌어요. 쌓인 리워드로 예약은 계속 되고, 호텔 17% 할인도 유지돼요.</li><li>적립된 리워드는 탈퇴 전까지 사라지지 않아요.</li><li>여행 다녀온 뒤 자유롭게 종료할 수 있어요.</li></ul>'
+          +'<p class="note">이해를 돕기 위한 안내예요. 실제 적립·예약 조건은 플랫폼 정책에 따라 달라질 수 있어요.</p>'
+          +'<a class="more" href="https://kbellalee4808-star.github.io/-3.X/" target="_blank" rel="noopener">더 자세히 보기 (멤버십 안내 페이지) ›</a>',
+        partnership:'<h3>🤝 파트너십이란?</h3>'
+          +'<p class="lead">사람들이 여행을 <b>더 빨리, 더 저렴하게</b> 다니도록 돕고, 내 속도대로 일하는 <b>세컨드 비즈니스</b>예요. 직원도, 사무실도, 재고도 필요 없어요.</p>'
+          +'<h4>🚀 시작은 이게 전부예요</h4><ul><li><b>$95 / 6개월</b> (하루 약 $0.5)</li><li>개인 추천 링크 발급</li><li>홈페이지의 모든 자료 사용</li><li>트레이닝 교육 제공</li></ul>'
+          +'<h4>💰 수익 구조 4가지</h4><ul><li><b>신규 회원 커미션</b> — 내 링크로 가입한 분 매출의 10% (3명 이상부터 비율이 올라가요)</li><li><b>매달 반복되는 구독 수익</b> — 회원 구독료의 5%를 계속 받아요</li><li><b>랭크 보너스</b> — 랭크가 오를 때마다 총 매출의 10% 추가</li><li><b>팀 보너스</b> — 한 달 팀 신규 매출 $30,000 달성 시 30%까지</li></ul>'
+          +'<p class="note">수입을 보장하지 않으며, 실제 보상은 정책에 따라 달라질 수 있어요.</p>'
+          +'<a class="more" href="https://kbellalee4808-star.github.io/2nd/" target="_blank" rel="noopener">더 자세히 보기 (파트너 안내 페이지) ›</a>'
+      };
+      var VID={xOodUATanks:["membership","크루즈 멤버십 안내"],jBTDko0oHo8:["membership","멤버십 알아보기"],"1DuMiQ7ff8g":["partnership","파트너십 알아보기"]};
+      function yid2(u){var m=String(u).match(/(?:youtu\.be\/|[?&]v=|\/shorts\/|\/embed\/)([\w-]{11})/);return m?m[1]:null}
+      var sh=el("div","cc-sheet",'<div class="cc-sb" role="dialog" aria-modal="true"><div class="cc-sh"><b></b><button type="button" class="x" aria-label="닫기">✕</button></div><div class="cc-vt2"><button type="button" data-m="t">📖 글로 보기</button><button type="button" data-m="v">▶ 영상으로 보기</button></div><div class="cc-sc"></div></div>');
+      sh.hidden=true;document.body.appendChild(sh);
+      var shCur=null;
+      function shMode(m){[].forEach.call(sh.querySelectorAll(".cc-vt2 button"),function(b){b.classList.toggle("on",b.getAttribute("data-m")===m)});
+        var c=sh.querySelector(".cc-sc");
+        if(m==="t")c.innerHTML='<div class="cc-txt">'+TXT[shCur.k]+'</div>';
+        else c.innerHTML='<div class="cc-vp"><iframe src="https://www.youtube-nocookie.com/embed/'+shCur.id+'?rel=0&playsinline=1&autoplay=1" title="'+shCur.t+'" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div><a class="more" href="'+shCur.u+'" target="_blank" rel="noopener">유튜브 앱에서 크게 보기 ›</a>';
+        c.scrollTop=0}
+      function shOpen(a){var id=yid2(a.href),v=VID[id];shCur={id:id,k:v[0],t:v[1],u:a.href};sh.querySelector(".cc-sh b").textContent=v[1];
+        sh.querySelector(".cc-sc").innerHTML='<p class="pick">어떻게 볼까요? 위에서 골라 주세요 🙂</p>';
+        [].forEach.call(sh.querySelectorAll(".cc-vt2 button"),function(b){b.classList.remove("on")});
+        sh.hidden=false;document.documentElement.style.overflow="hidden"}
+      function shClose(){sh.hidden=true;sh.querySelector(".cc-sc").innerHTML="";document.documentElement.style.overflow=""}
+      sh.querySelector(".x").onclick=shClose;sh.addEventListener("click",function(e){if(e.target===sh)shClose()});
+      [].forEach.call(sh.querySelectorAll(".cc-vt2 button"),function(b){b.onclick=function(){shMode(b.getAttribute("data-m"))}});
+      document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!sh.hidden)shClose()});
+      [].forEach.call(document.querySelectorAll("a.must-card,a.official-btn"),function(a){var id=yid2(a.href);if(!id||!VID[id])return;
+        a.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();shOpen(a)},true)});
+      /* ⭐ 노마드 로드맵 시뮬레이터: 금색 테두리 + 파트너 시스템 맨 위로 */
+      var pc=document.getElementById("partner-content");
+      if(pc){var nm=[].filter.call(pc.querySelectorAll(".card"),function(c){return/노마드 로드맵/.test(ttl(c))})[0];
+        var firstCards=pc.querySelector(".cards");
+        if(nm&&firstCards){nm.classList.add("cc-star");firstCards.insertBefore(nm,firstCards.firstChild)}}
       /* 각 화면 아래 "자주 묻는 질문" 바로가기 */
       ["first","member","partner"].forEach(function(k){var b=el("button","cc-more","❓ 자주 묻는 질문 보기");b.type="button";b.setAttribute("data-go","qa");views[k].appendChild(b)});
     
