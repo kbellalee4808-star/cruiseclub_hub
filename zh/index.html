@@ -60,6 +60,9 @@ tr.sum td{border-top:2px solid var(--ink)}
 .steps{padding-left:22px;font-size:15px}.steps li{margin:8px 0}
 .big{font-size:34px;font-weight:900;color:var(--gold)}.big small{font-size:14px;color:var(--muted);font-weight:600}
 .foot{text-align:center;font-size:12.5px;color:var(--muted);margin-top:22px}
+.perks{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}.perks span{font-size:12.5px;font-weight:700;padding:6px 10px;border-radius:999px;background:rgba(212,169,74,.16);border:1px solid rgba(212,169,74,.45);color:#f3dfae}
+.award{background:var(--tint);border:1px solid var(--gold);border-radius:12px;padding:12px 14px;font-size:14.5px;margin-bottom:12px}
+.closing{text-align:center;font-size:16px;font-weight:700;margin:26px 8px 0;line-height:1.7}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -67,8 +70,11 @@ tr.sum td{border-top:2px solid var(--ink)}
 <div class="lang"><button type="button" data-l="tw" class="on">繁體</button><button type="button" data-l="cn">简体</button></div>
 <main id="tw"><header class="hero">
   <div class="k">CRUISE MEMBERSHIP · 台灣 · 香港</div>
-  <h1>郵輪會員訂閱平台<br><span class="gold">會員與事業完整指南</span></h1>
-  <p>每月一點一點準備旅費，用累積的點數預訂全世界的郵輪。<br>這份指南從「會員怎麼用」到「怎麼在網路上經營」，一次說清楚。</p>
+  <h1>郵輪旅行，<br><span class="gold">也能用訂閱的。</span></h1>
+  <p>一般人一次付全額，會員用訂閱享禮遇。<br>這份指南從「會員怎麼用」到「怎麼在網路上經營」，一次說清楚。</p>
+  <div class="perks">
+    <span>✅ 14 天內可退費</span><span>🛡️ 月費不會白繳</span><span>🎁 月費雙倍點數回饋</span><span>🏷️ 會員專屬 17% 折扣</span><span>🌍 全球郵輪一站比價</span><span>🚢 直購會員價，省去中間商</span><span>💎 越久越划算的忠誠會員制度</span>
+  </div>
   <nav class="chips">
     <a href="#m1">🛳️ 會員篇</a>
     <a href="#b1">💼 事業篇</a>
@@ -81,7 +87,7 @@ tr.sum td{border-top:2px solid var(--ink)}
 
 <section class="card">
   <h2>💳 什麼是郵輪會員？</h2>
-  <p class="lead">每月預先存旅費、再用累積的點數訂郵輪的<b>會員制度</b>。</p>
+  <p class="lead">像訂閱影音平台一樣<b>訂閱旅行</b>：每月月費換來<b>加倍點數</b>與<b>會員專屬價</b>，郵輪不再是遙不可及的奢侈。</p>
   <ul class="dots">
     <li>每月維持會員訂閱，就會累積<b>點數（RP, Reward Points）</b>。</li>
     <li>累積的點數用來<b>預訂郵輪</b>。</li>
@@ -99,6 +105,10 @@ tr.sum td{border-top:2px solid var(--ink)}
     <div><small>一般旅行社</small>郵輪公司 → 旅行社（層層加價）→ 旅客</div>
     <div class="good"><small>郵輪直購平台</small>郵輪公司 → 直購平台 → 會員<br><b>省下的利潤以點數回饋</b></div>
   </div>
+  <div class="sub">🤔 為什麼能給到「雙倍點數」？</div>
+  <div class="tip">一般旅遊公司要花大筆<b>廣告費</b>找客人。<br>這個平台把廣告費省下來，改成<b>回饋給會員</b>，以及<b>主動分享、推薦的會員</b>。<br>省下的中間成本回到會員身上，所以月費能換到雙倍點數。</div>
+  <div class="sub">🔍 就像機票比價、訂房平台一樣</div>
+  <p>大家訂機票、訂飯店會先上比價網站找划算的價格。這個平台就是<b>郵輪版的比價＋會員價平台</b>：全球郵輪一站搜尋、比較，再用會員價或點數預訂，是<b>更划算搭郵輪的方法</b>。</p>
 </section>
 
 <section class="card">
@@ -178,24 +188,26 @@ tr.sum td{border-top:2px solid var(--ink)}
 
 <section class="card">
   <h2>🏆 為什麼值得信賴？</h2>
+  <div class="award">🏆 <b>多次榮獲美國旅遊業權威媒體 Travel Weekly「麥哲倫獎」（Magellan Awards）</b></div>
   <div class="grid3 trust">
     <div><b>2015</b><span>成立 · 營運超過 10 年</span></div>
     <div><b>193</b><span>個國家提供服務</span></div>
     <div><b>71萬+</b><span>累計出遊旅客</span></div>
   </div>
-  <p>總部位於美國波多黎各，為正式登記的法人。全球 200 多個國家、20 萬個以上目的地，可預訂全球多家郵輪公司的行程。</p>
+  <p>總部位於美國波多黎各，是在美國<b>正式登記的法人</b>。全球 200 多個國家、20 萬個以上目的地，可預訂全球多家郵輪公司的行程。</p>
 </section>
 
 <div class="part" id="b1"><span>PART 2</span>事業篇</div>
 
 <section class="card">
   <h2>🌏 為什麼適合線上經營？</h2>
-  <p class="lead">不需要員工、辦公室、庫存。<br>在<b>已經建好的系統</b>上，按照自己的節奏工作。</p>
+  <p class="lead">一支手機，就是你的辦公室；<br>全世界，都是你的市場。</p>
+  <p>不需要員工、辦公室、庫存，在<b>已經建好的系統</b>上，按照自己的節奏工作。</p>
   <ul class="dots">
     <li>報名、付款、預訂全部在線上完成，<b>住在日本也能經營台灣、香港市場</b>。</li>
     <li>會員自己在 App 上預訂郵輪，你不需要處理訂單或收款。</li>
     <li>用中文分享旅行內容與會員資訊，<b>重點是分享，不是推銷</b>。</li>
-    <li>你要做的只有一件事：<b>幫助別人更聰明、更划算地去旅行。</b></li>
+    <li>你不是在賣東西，而是在<b>分享一種更好的旅行方式</b>。</li>
   </ul>
 </section>
 
@@ -243,14 +255,18 @@ tr.sum td{border-top:2px solid var(--ink)}
   <div class="tip">🙌 建議：台灣、香港的朋友請用<b>繁體</b>版本，中國大陸的朋友可以用<b>简体</b>版本（最上方切換）。</div>
 </section>
 
-<p class="foot">本指南為幫助理解的一般說明，實際點數累積、預訂條件與獎金，依平台當時政策為準。<br>有任何問題，請直接問 Bella 😊</p>
+<p class="closing">下一趟郵輪，也許就是你人生新篇章的起點。<br>有問題隨時問我 😊 — Bella</p>
+<p class="foot">本指南為幫助理解的一般說明，實際點數累積、預訂條件與獎金，依平台當時政策為準。</p>
 
 </div>
 </main>
 <main id="cn" hidden><header class="hero">
   <div class="k">CRUISE MEMBERSHIP · 台湾 · 香港</div>
-  <h1>邮轮会员订阅平台<br><span class="gold">会员与事业完整指南</span></h1>
-  <p>每月一点一点准备旅费，用累积的积分预订全世界的邮轮。<br>这份指南从“会员怎么用”到“怎么在网络上经营”，一次说清楚。</p>
+  <h1>邮轮旅行，<br><span class="gold">也能用订阅的。</span></h1>
+  <p>一般人一次付全额，会员用订阅享礼遇。<br>这份指南从“会员怎么用”到“怎么在网络上经营”，一次说清楚。</p>
+  <div class="perks">
+    <span>✅ 14 天内可退费</span><span>🛡️ 月费不会白缴</span><span>🎁 月费双倍积分回馈</span><span>🏷️ 会员专属 17% 折扣</span><span>🌍 全球邮轮一站比价</span><span>🚢 直购会员价，省去中间商</span><span>💎 越久越划算的忠诚会员制度</span>
+  </div>
   <nav class="chips">
     <a href="#m1s">🛳️ 会员篇</a>
     <a href="#b1s">💼 事业篇</a>
@@ -263,7 +279,7 @@ tr.sum td{border-top:2px solid var(--ink)}
 
 <section class="card">
   <h2>💳 什么是邮轮会员？</h2>
-  <p class="lead">每月预先存旅费、再用累积的积分订邮轮的<b>会员制度</b>。</p>
+  <p class="lead">像订阅影音平台一样<b>订阅旅行</b>：每月月费换来<b>加倍积分</b>与<b>会员专属价</b>，邮轮不再是遥不可及的奢侈。</p>
   <ul class="dots">
     <li>每月维持会员订阅，就会累积<b>积分（RP, Reward Points）</b>。</li>
     <li>累积的积分用来<b>预订邮轮</b>。</li>
@@ -281,6 +297,10 @@ tr.sum td{border-top:2px solid var(--ink)}
     <div><small>一般旅行社</small>邮轮公司 → 旅行社（层层加价）→ 旅客</div>
     <div class="good"><small>邮轮直购平台</small>邮轮公司 → 直购平台 → 会员<br><b>省下的利润以积分回馈</b></div>
   </div>
+  <div class="sub">🤔 为什么能给到“双倍积分”？</div>
+  <div class="tip">一般旅游公司要花大笔<b>广告费</b>找客人。<br>这个平台把广告费省下来，改成<b>回馈给会员</b>，以及<b>主动分享、推荐的会员</b>。<br>省下的中间成本回到会员身上，所以月费能换到双倍积分。</div>
+  <div class="sub">🔍 就像机票比价、订房平台一样</div>
+  <p>大家订机票、订酒店会先上比价网站找划算的价格。这个平台就是<b>邮轮版的比价＋会员价平台</b>：全球邮轮一站搜索、比较，再用会员价或积分预订，是<b>更划算搭邮轮的方法</b>。</p>
 </section>
 
 <section class="card">
@@ -360,24 +380,26 @@ tr.sum td{border-top:2px solid var(--ink)}
 
 <section class="card">
   <h2>🏆 为什么值得信赖？</h2>
+  <div class="award">🏆 <b>多次荣获美国旅游业权威媒体 Travel Weekly“麦哲伦奖”（Magellan Awards）</b></div>
   <div class="grid3 trust">
     <div><b>2015</b><span>成立 · 营运超过 10 年</span></div>
     <div><b>193</b><span>个国家提供服务</span></div>
     <div><b>71万+</b><span>累计出游旅客</span></div>
   </div>
-  <p>总部位于美国波多黎各，为正式登记的法人。全球 200 多个国家、20 万个以上目的地，可预订全球多家邮轮公司的行程。</p>
+  <p>总部位于美国波多黎各，是在美国<b>正式登记的法人</b>。全球 200 多个国家、20 万个以上目的地，可预订全球多家邮轮公司的行程。</p>
 </section>
 
 <div class="part" id="b1s"><span>PART 2</span>事业篇</div>
 
 <section class="card">
   <h2>🌏 为什么适合在线经营？</h2>
-  <p class="lead">不需要员工、办公室、库存。<br>在<b>已经建好的系统</b>上，按照自己的节奏工作。</p>
+  <p class="lead">一支手机，就是你的办公室；<br>全世界，都是你的市场。</p>
+  <p>不需要员工、办公室、库存，在<b>已经建好的系统</b>上，按照自己的节奏工作。</p>
   <ul class="dots">
     <li>报名、付款、预订全部在在线完成，<b>住在日本也能经营台湾、香港市场</b>。</li>
     <li>会员自己在 App 上预订邮轮，你不需要处理订单或收款。</li>
     <li>用中文分享旅行内容与会员信息，<b>重点是分享，不是推销</b>。</li>
-    <li>你要做的只有一件事：<b>帮助别人更聪明、更划算地去旅行。</b></li>
+    <li>你不是在卖东西，而是在<b>分享一种更好的旅行方式</b>。</li>
   </ul>
 </section>
 
@@ -425,7 +447,8 @@ tr.sum td{border-top:2px solid var(--ink)}
   <div class="tip">🙌 建议：台湾、香港的朋友请用<b>繁体</b>版本，中国大陆的朋友可以用<b>简体</b>版本（最上方切换）。</div>
 </section>
 
-<p class="foot">本指南为帮助理解的一般说明，实际积分累积、预订条件与奖金，依平台当时政策为准。<br>有任何问题，请直接问 Bella 😊</p>
+<p class="closing">下一趟邮轮，也许就是你人生新篇章的起点。<br>有问题随时问我 😊 — Bella</p>
+<p class="foot">本指南为帮助理解的一般说明，实际积分累积、预订条件与奖金，依平台当时政策为准。</p>
 
 </div>
 </main>
