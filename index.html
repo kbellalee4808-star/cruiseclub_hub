@@ -70,6 +70,7 @@ button[disabled]{opacity:.6;cursor:default}
   function forget(){try{sessionStorage.removeItem(SK);localStorage.removeItem(LK)}catch(e){}}
   window.ccLogout=function(){forget();location.reload()};
   var SK="cc_gate_v1", $=function(i){return document.getElementById(i)};
+  var CC_TOK="",CC_EMAIL="";
   var DATA=$("d").textContent.trim();
   if(LOGO){$("lg").src=LOGO;$("lg").hidden=false}
   try{var last=localStorage.getItem("cc_gate_email");if(last)$("em").value=last}catch(e){}
@@ -115,6 +116,7 @@ button[disabled]{opacity:.6;cursor:default}
         });
       }
       return ready().then(function(){
+        CC_TOK=k;CC_EMAIL=String(email||"").toLowerCase();
         guardSearch();document.open();document.write(html);document.close();
         try{window.scrollTo(0,0)}catch(e){}
         protect(email);
@@ -570,6 +572,161 @@ button[disabled]{opacity:.6;cursor:default}
     }
     
 
+
+    /* ═══ 🎉 예약 자랑 + 🙋 질문함 (서버: 시트 「예약자랑」·「반응」·「질문함」) ═══ */
+    function ccApi(body){
+      body.tok=CC_TOK;body.email=CC_EMAIL;
+      return fetch(URL_,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body)}).then(function(r){return r.json()});
+    }
+    function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+    function pic(id,w){return"https://drive.google.com/thumbnail?id="+encodeURIComponent(id)+"&sz=w"+(w||800)}
+    var BR={posts:null,reacts:[],busy:false,shown:4};
+    function bragCss(){
+      if(document.getElementById("cc-brag-st"))return;var st=document.createElement("style");st.id="cc-brag-st";st.textContent=
+       ".cc-brag{margin:18px 0 6px;padding:18px 16px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:#fff;text-align:left}"
+      +".cc-brag .bh{display:flex;align-items:center;gap:10px;margin-bottom:6px}.cc-brag .bh h3{flex:1;margin:0;font-size:17px;color:#e3c887}"
+      +".cc-brag .bsub{font-size:12.5px;color:rgba(255,255,255,.65);margin:0 0 12px;line-height:1.5}"
+      +".cc-gbtn{min-height:44px;padding:0 16px;border-radius:999px;border:0;background:#c9a84c;color:#0a1628;font:800 14px/1 inherit;cursor:pointer;touch-action:manipulation}"
+      +".cc-obtn{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.06);color:#fff;font:700 14px/1 inherit;cursor:pointer;touch-action:manipulation}"
+      +".cc-post{padding:14px 0;border-top:1px solid rgba(255,255,255,.1)}.cc-post:first-of-type{border-top:0}"
+      +".cc-post .pt{display:flex;align-items:flex-start;gap:8px}.cc-post .pt b{font-size:15px;color:#fff}.cc-post .pm{font-size:12.5px;color:rgba(255,255,255,.6);margin-top:2px}"
+      +".cc-post .ptx{font-size:14px;line-height:1.65;margin:8px 0 0;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}"
+      +".cc-post .more{margin-left:auto;min-width:36px;min-height:36px;border:0;background:none;color:rgba(255,255,255,.5);font-size:18px;cursor:pointer}"
+      +".cc-ph{display:flex;gap:8px;overflow-x:auto;margin-top:10px;padding-bottom:4px;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory}"
+      +".cc-ph img{flex:0 0 auto;width:150px;height:150px;object-fit:cover;border-radius:12px;background:rgba(255,255,255,.08);cursor:zoom-in;scroll-snap-align:start}"
+      +".cc-ph img:only-child{width:100%;height:auto;max-height:320px}"
+      +".cc-rx{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}"
+      +".cc-rx button{min-height:36px;padding:0 11px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);color:#fff;font:600 12.5px/1 inherit;cursor:pointer;touch-action:manipulation}"
+      +".cc-rx button.on{background:rgba(201,168,76,.28);border-color:#c9a84c;color:#f3d58c}.cc-rx i{font-style:normal;margin-left:4px;opacity:.8}"
+      +".cc-bempty{font-size:14px;color:rgba(255,255,255,.7);padding:10px 0}"
+      +".cc-modal{position:fixed;inset:0;z-index:2147483646;background:rgba(5,12,24,.72);display:flex;align-items:flex-end;justify-content:center}"
+      +".cc-modal[hidden]{display:none}.cc-mb2{width:100%;max-width:520px;max-height:92vh;overflow:auto;background:#0f2238;color:#fff;border-radius:20px 20px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom,0px))}"
+      +"@media(min-width:600px){.cc-modal{align-items:center}.cc-mb2{border-radius:20px}}"
+      +".cc-mb2 h3{margin:0 0 4px;font-size:18px;color:#e3c887}.cc-mb2 .x{float:right;min-width:40px;min-height:40px;border:0;background:none;color:#fff;font-size:20px;cursor:pointer}"
+      +".cc-mb2 label{display:block;font-size:13px;font-weight:700;margin:14px 0 6px;color:rgba(255,255,255,.85)}"
+      +".cc-mb2 input[type=text],.cc-mb2 input[type=month],.cc-mb2 textarea{width:100%;box-sizing:border-box;min-height:46px;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#fff;font:16px/1.5 inherit}"
+      +".cc-mb2 textarea{min-height:96px;resize:vertical}.cc-mb2 .rule{font-size:12.5px;line-height:1.6;color:rgba(255,255,255,.7);background:rgba(255,255,255,.05);border-radius:12px;padding:10px 12px;margin-top:10px}"
+      +".cc-thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.cc-thumbs div{position:relative;width:72px;height:72px}.cc-thumbs img{width:100%;height:100%;object-fit:cover;border-radius:10px}"
+      +".cc-thumbs button{position:absolute;top:-6px;right:-6px;width:24px;height:24px;border-radius:50%;border:0;background:#c0392b;color:#fff;font-size:13px;cursor:pointer}"
+      +".cc-mb2 .act{display:flex;gap:8px;margin-top:16px}.cc-mb2 .act button{flex:1}.cc-mb2 .msg{min-height:20px;font-size:13px;color:#f3d58c;margin-top:10px}"
+      +".cc-zoom{position:fixed;inset:0;z-index:2147483647;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;padding:16px}.cc-zoom img{max-width:100%;max-height:100%;border-radius:8px}"
+      +".cc-askbtn{display:inline-flex;margin-top:10px}";
+      (document.head||document.documentElement).appendChild(st);
+    }
+    function modal(html){
+      var m=document.createElement("div");m.className="cc-modal";m.innerHTML='<div class="cc-mb2" role="dialog" aria-modal="true"><button type="button" class="x" aria-label="닫기">✕</button>'+html+"</div>";
+      document.body.appendChild(m);function close(){m.remove()}
+      m.querySelector(".x").onclick=close;m.addEventListener("click",function(e){if(e.target===m)close()});return{el:m,close:close};
+    }
+    function renderBrag(box){
+      var list=box.querySelector(".blist");if(!list)return;
+      if(BR.posts===null){list.innerHTML='<div class="cc-bempty">불러오는 중…</div>';return}
+      if(!BR.posts.length){list.innerHTML='<div class="cc-bempty">아직 자랑이 없어요. 첫 번째로 올려 주세요 🛳️</div>';return}
+      var h=BR.posts.slice(0,BR.shown).map(function(p){
+        var ph=p.photos.length?'<div class="cc-ph">'+p.photos.filter(function(i){return/^[\w-]+$/.test(i)}).map(function(i){return'<img loading="lazy" src="'+pic(i,600)+'" data-big="'+esc(i)+'" alt="'+esc(p.ship)+' 사진">'}).join("")+"</div>":"";
+        var rx='<div class="cc-rx">'+BR.reacts.map(function(r){var n=(p.react||{})[r]||0,on=p.mine.indexOf(r)>=0;
+          return'<button type="button" data-id="'+esc(p.id)+'" data-r="'+esc(r)+'" class="'+(on?"on":"")+'">'+esc(r)+(n?"<i>"+n+"</i>":"")+"</button>"}).join("")+"</div>";
+        return'<div class="cc-post"><div class="pt"><div><b>🛳️ '+esc(p.ship)+'</b><div class="pm">'+esc(p.nick)+(p.month?" · "+esc(p.month)+" 출발":"")+" · "+esc(p.route)+'</div></div><button type="button" class="more" data-id="'+esc(p.id)+'" aria-label="관리">⋯</button></div>'
+          +(p.text?'<p class="ptx">'+esc(p.text)+"</p>":"")+ph+rx+"</div>"}).join("");
+      if(BR.posts.length>BR.shown)h+='<div style="text-align:center;margin-top:10px"><button type="button" class="cc-obtn bmore">더 보기 ('+(BR.posts.length-BR.shown)+')</button></div>';
+      list.innerHTML=h;
+    }
+    function loadBrag(box){
+      if(BR.busy)return;BR.busy=true;
+      ccApi({action:"feed"}).then(function(r){BR.busy=false;if(!r.ok)throw 0;BR.posts=r.posts||[];BR.reacts=r.reacts||[];renderBrag(box)})
+        .catch(function(){BR.busy=false;BR.posts=BR.posts||[];var l=box.querySelector(".blist");if(l)l.innerHTML='<div class="cc-bempty">지금은 불러오지 못했어요. 잠시 후 다시 열어 주세요.</div>'});
+    }
+    function shrink(file){
+      return new Promise(function(res,rej){
+        var u=URL.createObjectURL(file),im=new Image();
+        im.onload=function(){var s=Math.min(1,1400/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);
+          c.getContext("2d").drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL("image/jpeg",0.82))};
+        im.onerror=function(){URL.revokeObjectURL(u);rej()};im.src=u;
+      });
+    }
+    function openPostForm(box){
+      var files=[];
+      var md=modal('<h3>🎉 나도 자랑하기</h3><div style="font-size:13px;color:rgba(255,255,255,.7)">예약한 크루즈를 자랑해 주세요. 올리면 바로 보여요.</div>'
+        +'<label>닉네임 *</label><input type="text" name="nick" maxlength="20" placeholder="예: 김○○, 바다사랑">'
+        +'<label>배 이름 *</label><input type="text" name="ship" maxlength="60" placeholder="예: MSC 월드 유로파">'
+        +'<label>코스 *</label><input type="text" name="route" maxlength="80" placeholder="예: 서부 지중해 7박">'
+        +'<label>출발 (월)</label><input type="month" name="month">'
+        +'<label>한마디</label><textarea name="text" maxlength="400" placeholder="예: 리워드 모아서 드디어 예약했어요!"></textarea>'
+        +'<label>사진 (선택 · 10장까지)</label><input type="file" accept="image/*" multiple name="ph"><div class="cc-thumbs"></div>'
+        +'<div class="rule">🙏 함께 지켜 주세요<br>• 예약번호, 영수증 전체, 연락처는 올리지 말아 주세요.<br>• "같이 가실 분 모집" 글은 올릴 수 없어요.<br>• 규칙에 맞지 않는 글은 관리자가 삭제할 수 있어요.</div>'
+        +'<div class="msg"></div><div class="act"><button type="button" class="cc-obtn cancel">취소</button><button type="button" class="cc-gbtn send">올리기</button></div>');
+      var el=md.el,th=el.querySelector(".cc-thumbs"),msg=el.querySelector(".msg");
+      function drawThumbs(){th.innerHTML="";files.forEach(function(d,i){var w=document.createElement("div");w.innerHTML='<img src="'+d+'" alt=""><button type="button" aria-label="사진 빼기">✕</button>';
+        w.querySelector("button").onclick=function(){files.splice(i,1);drawThumbs()};th.appendChild(w)})}
+      el.querySelector("input[name=ph]").onchange=function(e){
+        var list=[].slice.call(e.target.files||[]);e.target.value="";
+        if(files.length+list.length>10){msg.textContent="사진은 10장까지 올릴 수 있어요.";list=list.slice(0,10-files.length)}
+        msg.textContent=list.length?"사진 준비 중…":msg.textContent;
+        list.reduce(function(p,f){return p.then(function(){return shrink(f).then(function(d){files.push(d)},function(){msg.textContent="읽을 수 없는 사진은 뺐어요."})})},Promise.resolve())
+          .then(function(){drawThumbs();if(msg.textContent==="사진 준비 중…")msg.textContent=""});
+      };
+      el.querySelector(".cancel").onclick=md.close;
+      el.querySelector(".send").onclick=function(){
+        var b=this,f=function(n){return el.querySelector("[name="+n+"]").value.trim()};
+        if(!f("nick")||!f("ship")||!f("route")){msg.textContent="닉네임 · 배 이름 · 코스는 꼭 적어 주세요.";return}
+        var m=f("month"),mm=m?m.replace(/^(\d{4})-(\d{2})$/,function(_,y,mo){return y+"년 "+Number(mo)+"월"}):"";
+        b.disabled=true;b.textContent="올리는 중…";msg.textContent=files.length?"사진 "+files.length+"장 올리는 중이에요. 잠시만 기다려 주세요.":"";
+        ccApi({action:"post",nick:f("nick"),ship:f("ship"),route:f("route"),month:mm,text:f("text"),photos:files}).then(function(r){
+          if(!r.ok){msg.textContent=r.msg||"올리지 못했어요.";b.disabled=false;b.textContent="올리기";return}
+          md.close();BR.shown=Math.max(BR.shown,4);loadBrag(box);toastMsg("자랑이 올라갔어요 🎉");
+        }).catch(function(){msg.textContent="올리지 못했어요. 인터넷 연결을 확인해 주세요.";b.disabled=false;b.textContent="올리기"});
+      };
+    }
+    function toastMsg(t){var d=document.createElement("div");d.textContent=t;d.style.cssText="position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:2147483647;background:#c9a84c;color:#0a1628;font:800 14px/1.4 sans-serif;padding:12px 18px;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.3)";document.body.appendChild(d);setTimeout(function(){d.remove()},2400)}
+    function adminDelete(id,box){
+      var code="";try{code=sessionStorage.getItem("cc_admin")||""}catch(e){}
+      if(!code){code=(window.prompt("관리자 코드를 입력하면 이 글을 삭제해요.")||"").trim();if(!code)return}
+      ccApi({action:"del",id:id,admin:code}).then(function(r){
+        if(!r.ok){try{sessionStorage.removeItem("cc_admin")}catch(e){}toastMsg(r.msg||"삭제하지 못했어요.");return}
+        try{sessionStorage.setItem("cc_admin",code)}catch(e){}
+        BR.posts=BR.posts.filter(function(p){return p.id!==id});renderBrag(box);toastMsg("삭제했어요");
+      });
+    }
+    function ccBrag(){
+      bragCss();
+      var menu=document.querySelector(".cc-menu");if(!menu||document.querySelector(".cc-brag"))return;
+      var box=document.createElement("div");box.className="cc-brag cc-top";
+      box.innerHTML='<div class="bh"><h3>🎉 저 예약했어요!</h3><button type="button" class="cc-gbtn bpost">✍️ 자랑하기</button></div>'
+        +'<p class="bsub">리워드로 예약한 크루즈를 자랑하고 축하해 주세요. 예약번호·연락처는 올리지 말아 주세요.</p><div class="blist"></div>';
+      menu.parentNode.insertBefore(box,menu.nextSibling);
+      box.addEventListener("click",function(e){
+        var t=e.target;
+        if(t.closest(".bpost"))return openPostForm(box);
+        if(t.closest(".bmore")){BR.shown+=6;return renderBrag(box)}
+        var rb=t.closest(".cc-rx button");
+        if(rb){var id=rb.getAttribute("data-id"),r=rb.getAttribute("data-r"),p=BR.posts.filter(function(x){return x.id===id})[0];if(!p)return;
+          var on=p.mine.indexOf(r)<0;p.react[r]=(p.react[r]||0)+(on?1:-1);if(on)p.mine.push(r);else p.mine=p.mine.filter(function(x){return x!==r});renderBrag(box);
+          ccApi({action:"react",id:id,r:r}).catch(function(){});return}
+        var mo=t.closest(".more");if(mo)return adminDelete(mo.getAttribute("data-id"),box);
+        var im=t.closest(".cc-ph img");if(im){var z=document.createElement("div");z.className="cc-zoom";z.innerHTML='<img src="'+pic(im.getAttribute("data-big"),1600)+'" alt="">';z.onclick=function(){z.remove()};document.body.appendChild(z)}
+      });
+      renderBrag(box);loadBrag(box);
+    }
+    function openAsk(){
+      var md=modal('<h3>🙋 질문 남기기</h3><div style="font-size:13px;color:rgba(255,255,255,.7)">찾는 내용이 없으면 남겨 주세요. 리더가 확인하고 안내해 드려요.</div>'
+        +'<label>질문</label><textarea name="q" maxlength="1000" placeholder="궁금한 점을 적어 주세요"></textarea>'
+        +'<div class="msg"></div><div class="act"><button type="button" class="cc-obtn cancel">취소</button><button type="button" class="cc-gbtn send">보내기</button></div>');
+      var el=md.el,msg=el.querySelector(".msg");el.querySelector(".cancel").onclick=md.close;
+      el.querySelector(".send").onclick=function(){var b=this,q=el.querySelector("textarea").value.trim();if(q.length<2){msg.textContent="질문을 적어 주세요.";return}
+        b.disabled=true;b.textContent="보내는 중…";
+        ccApi({action:"ask",q:q}).then(function(r){if(!r.ok)throw r;md.close();toastMsg("질문이 전달됐어요 🙏")}).catch(function(r){msg.textContent=(r&&r.msg)||"보내지 못했어요. 다시 시도해 주세요.";b.disabled=false;b.textContent="보내기"})};
+    }
+    function ccAsk(){
+      var s=document.getElementById("cc-search");
+      if(s&&!s.__ccAsk){s.__ccAsk=1;new MutationObserver(function(){
+        [].forEach.call(s.querySelectorAll("*"),function(n){if(n.children.length===0&&/찾는 게 없어요/.test(n.textContent)&&!(n.nextSibling&&n.nextSibling.className==="cc-askwrap")){
+          var w=document.createElement("div");w.className="cc-askwrap";w.innerHTML='<button type="button" class="cc-obtn cc-askbtn">🙋 질문 남기기</button>';w.querySelector("button").onclick=openAsk;n.parentNode.insertBefore(w,n.nextSibling)}})
+      }).observe(s,{childList:true,subtree:true})}
+      var qa=[].filter.call(document.querySelectorAll("[data-ccv=qa]"),function(x){return!x.querySelector(".cc-askq")})[0];
+      if(qa){var w=document.createElement("div");w.className="cc-askq";w.style.cssText="text-align:center;margin:18px 0";w.innerHTML='<div style="font-size:13px;color:rgba(255,255,255,.7);margin-bottom:8px">찾는 질문이 없나요?</div><button type="button" class="cc-gbtn">🙋 질문 남기기</button>';
+        w.querySelector("button").onclick=openAsk;qa.appendChild(w)}
+    }
+
     /* ═══ 📢 이번 달 공지 (매달 여기 글만 바꾸면 돼요) ═══ */
     var CC_NOTICE={
       title:"📢 11월 공지",
@@ -612,6 +769,8 @@ button[disabled]{opacity:.6;cursor:default}
         var on=false;try{on=localStorage.getItem("cc_big")==="1"}catch(e){}
         apply(on);b.onclick=function(){on=!on;apply(on);try{localStorage.setItem("cc_big",on?"1":"0")}catch(e){}};
         document.body.appendChild(b)}
+      try{ccBrag()}catch(e){console.error(e)}
+      try{ccAsk()}catch(e){console.error(e)}
     }
     function extras(){try{ccRouter()}catch(e){console.error(e)}try{fixTitles();ccVideoTabs(document)}catch(e){}try{ccAddons()}catch(e){console.error(e)}}
     ensure();addRefund();addSearch();extras();setInterval(function(){ensure();addRefund();addSearch();extras()},1500);
