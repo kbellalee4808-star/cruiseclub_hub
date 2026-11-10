@@ -615,7 +615,9 @@ button[disabled]{opacity:.6;cursor:default}
       +".cc-pick button small{display:block;font-size:11px;font-weight:500;opacity:.7}.cc-pick button.on{background:#c9a84c;border-color:#c9a84c;color:#0a1628}"
       +".cc-mb2 .etc{margin-top:8px}.cc-mb2 .hint{font-weight:500;font-size:11.5px;color:rgba(255,255,255,.5);margin-left:4px}"
       +".cc-post .bedit{min-height:32px;padding:0 12px;border-radius:999px;border:1px solid rgba(201,168,76,.6);background:none;color:#e3c887;font:700 12px/1 inherit;cursor:pointer;margin-left:auto;white-space:nowrap}"
-      +".cc-post .bedit+.more{margin-left:0}";
+      +".cc-post .bedit+.more{margin-left:0}"
+      +".cc-post .kb{display:inline-block;font-size:11px;font-weight:800;padding:3px 8px;border-radius:999px;background:rgba(201,168,76,.2);color:#f3d58c;margin-bottom:5px}.cc-post .kb.done{background:rgba(120,190,255,.18);color:#a8d4ff}.cc-post .pt b{display:block}"
+      +".cc-kind button{flex:1;min-height:46px;font-size:15px}";
       (document.head||document.documentElement).appendChild(st);
     }
     function modal(html){
@@ -631,7 +633,7 @@ button[disabled]{opacity:.6;cursor:default}
         var ph=p.photos.length?'<div class="cc-ph">'+p.photos.filter(function(i){return/^[\w-]+$/.test(i)}).map(function(i){return'<img loading="lazy" src="'+pic(i,600)+'" data-big="'+esc(i)+'" alt="'+esc(p.ship)+' 사진">'}).join("")+"</div>":"";
         var rx='<div class="cc-rx">'+BR.reacts.map(function(r){var n=(p.react||{})[r]||0,on=p.mine.indexOf(r)>=0;
           return'<button type="button" data-id="'+esc(p.id)+'" data-r="'+esc(r)+'" class="'+(on?"on":"")+'">'+esc(r)+(n?"<i>"+n+"</i>":"")+"</button>"}).join("")+"</div>";
-        return'<div class="cc-post"><div class="pt"><div><b>🛳️ '+esc(p.ship)+'</b><div class="pm">'+esc(p.nick)+" · 🌍 "+esc(p.route)+(p.month?" · "+esc(p.month)+" 출발":"")+'</div></div>'+(p.me?'<button type="button" class="bedit" data-id="'+esc(p.id)+'">✏️ 수정</button>':"")+'<button type="button" class="more" data-id="'+esc(p.id)+'" aria-label="관리">⋯</button></div>'
+        return'<div class="cc-post"><div class="pt"><div><span class="kb'+(p.kind==="done"?" done":"")+'">'+(p.kind==="done"?"🌅 다녀왔어요":"📅 예약했어요")+'</span><b>🛳️ '+esc(p.ship)+'</b><div class="pm">'+esc(p.nick)+" · 🌍 "+esc(p.route)+(p.month?" · "+esc(p.month)+(p.kind==="done"?" 다녀옴":" 출발"):"")+'</div></div>'+(p.me?'<button type="button" class="bedit" data-id="'+esc(p.id)+'">✏️ 수정</button>':"")+'<button type="button" class="more" data-id="'+esc(p.id)+'" aria-label="관리">⋯</button></div>'
           +(p.text?'<p class="ptx">'+esc(p.text)+"</p>":"")+ph+rx+"</div>"}).join("");
       if(BR.posts.length>BR.shown)h+='<div style="text-align:center;margin-top:10px"><button type="button" class="cc-obtn bmore">더 보기 ('+(BR.posts.length-BR.shown)+')</button></div>';
       list.innerHTML=h;
@@ -659,22 +661,28 @@ button[disabled]{opacity:.6;cursor:default}
     function openPostForm(box,post){
       var edit=!!post,items=edit?post.photos.filter(function(i){return/^[\w-]+$/.test(i)}).map(function(i){return{id:i}}):[];
       var SEL="width:100%;box-sizing:border-box;min-height:46px;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#fff;font-size:16px";
-      var y0=new Date().getFullYear(),pm=edit&&String(post.month||"").match(/(\d{4})\D+(\d{1,2})/),yrs=[];for(var i=0;i<4;i++)yrs.push(y0+i);if(pm&&yrs.indexOf(+pm[1])<0)yrs.unshift(+pm[1]);
-      var md=modal('<h3>'+(edit?"✏️ 내 자랑 수정하기":"🎉 나도 자랑하기")+'</h3><div style="font-size:13px;color:rgba(255,255,255,.7)">'+(edit?"고친 내용은 바로 반영돼요.":"예약한 크루즈를 자랑해 주세요. 올리면 바로 보여요.")+'</div>'
+      var y0=new Date().getFullYear(),pm=edit&&String(post.month||"").match(/(\d{4})\D+(\d{1,2})/),yrs=[];for(var i=-5;i<4;i++)yrs.push(y0+i);if(pm&&yrs.indexOf(+pm[1])<0)yrs.unshift(+pm[1]);
+      var md=modal('<h3>'+(edit?"✏️ 내 자랑 수정하기":"🎉 나도 자랑하기")+'</h3><div style="font-size:13px;color:rgba(255,255,255,.7)">'+(edit?"고친 내용은 바로 반영돼요.":"예약한 크루즈도, 다녀온 크루즈도 좋아요. 올리면 바로 보여요.")+'</div>'
+        +'<label>어떤 자랑인가요? *</label><div class="cc-pick cc-kind" data-name="kind"><button type="button" data-v="booked" class="on">📅 예약했어요</button><button type="button" data-v="done">🌅 다녀왔어요</button></div>'
         +'<label>닉네임 *</label><input type="text" name="nick" maxlength="20" placeholder="예: 김○○, 바다사랑">'
         +'<label>크루즈 선사 * <span class="hint">하나 골라 주세요</span></label>'+chipRow("ship",SHIPS)
         +'<label>여행 지역 * <span class="hint">하나 골라 주세요</span></label>'+chipRow("route",ROUTES)
-        +'<label>출발월 (몇 년 몇 월)</label><div style="display:flex;gap:8px"><select name="yy" style="'+SEL+'"><option value="">년</option>'+yrs.map(function(y){return'<option style="color:#000">'+y+"</option>"}).join("")+'</select><select name="mo" style="'+SEL+'"><option value="">월</option>'+(function(){var o="";for(var i=1;i<=12;i++)o+='<option style="color:#000" value="'+i+'">'+i+"월</option>";return o})()+"</select></div>"
+        +'<label class="mlab">출발월 (몇 년 몇 월)</label><div style="display:flex;gap:8px"><select name="yy" style="'+SEL+'"><option value="">년</option>'+yrs.map(function(y){return'<option style="color:#000">'+y+"</option>"}).join("")+'</select><select name="mo" style="'+SEL+'"><option value="">월</option>'+(function(){var o="";for(var i=1;i<=12;i++)o+='<option style="color:#000" value="'+i+'">'+i+"월</option>";return o})()+"</select></div>"
         +'<label>한마디</label><textarea name="text" maxlength="400" placeholder="예: 리워드 모아서 드디어 예약했어요!"></textarea>'
         +'<label>사진 (선택 · '+MAXPH+'장까지)</label><input type="file" accept="image/*" multiple name="ph"><div class="cc-thumbs"></div>'
-        +'<div class="rule">🎉 이곳은 내 예약을 자랑하고 축하받는 공간이에요<br>🔒 소중한 개인정보(예약번호·연락처)는 나만 간직해 주세요<br>• 규칙에 맞지 않는 글은 관리자가 삭제할 수 있어요.</div>'
+        +'<div class="rule">🎉 이곳은 내 크루즈를 자랑하고 축하받는 공간이에요<br>🔒 소중한 개인정보(예약번호·연락처)는 나만 간직해 주세요<br>• 규칙에 맞지 않는 글은 관리자가 삭제할 수 있어요.</div>'
         +'<div class="msg"></div><div class="act"><button type="button" class="cc-obtn cancel">취소</button><button type="button" class="cc-gbtn send">'+(edit?"수정 완료":"올리기")+"</button></div>");
       var el=md.el,th=el.querySelector(".cc-thumbs"),msg=el.querySelector(".msg"),fin=el.querySelector("input[name=ph]");
       function pickSet(name,val){var row=el.querySelector('.cc-pick[data-name="'+name+'"]'),etc=el.querySelector('.etc[data-for="'+name+'"]'),hit=false;
         [].forEach.call(row.children,function(b){var on=b.getAttribute("data-v")===val;if(on)hit=true;b.classList.toggle("on",on)});
         if(val&&!hit){row.lastChild.classList.add("on");etc.hidden=false;etc.value=val}else etc.hidden=!(val==="__etc");}
       function pickGet(name){var on=el.querySelector('.cc-pick[data-name="'+name+'"] .on');if(!on)return"";var v=on.getAttribute("data-v");return v==="__etc"?el.querySelector('.etc[data-for="'+name+'"]').value.trim():v}
-      [].forEach.call(el.querySelectorAll(".cc-pick"),function(row){row.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var name=row.getAttribute("data-name");
+      var kind=edit&&post.kind==="done"?"done":"booked",krow=el.querySelector(".cc-kind");
+      function setKind(k){kind=k;[].forEach.call(krow.children,function(b){b.classList.toggle("on",b.getAttribute("data-v")===k)});
+        el.querySelector(".mlab").textContent=k==="done"?"다녀온 달 (몇 년 몇 월)":"출발월 (몇 년 몇 월)";
+        el.querySelector("[name=text]").placeholder=k==="done"?"예: 바다 위 일출이 아직도 생각나요!":"예: 리워드 모아서 드디어 예약했어요!"}
+      krow.addEventListener("click",function(e){var b=e.target.closest("button");if(b)setKind(b.getAttribute("data-v"))});setKind(kind);
+      [].forEach.call(el.querySelectorAll(".cc-pick:not(.cc-kind)"),function(row){row.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var name=row.getAttribute("data-name");
         pickSet(name,b.getAttribute("data-v"));if(b.getAttribute("data-v")==="__etc"){var et=el.querySelector('.etc[data-for="'+name+'"]');et.value="";et.focus()}})});
       function drawThumbs(){th.innerHTML="";items.forEach(function(it,i){var w=document.createElement("div");w.innerHTML='<img src="'+(it.d||pic(it.id,300))+'" alt=""><button type="button" aria-label="사진 빼기">✕</button>';
         w.querySelector("button").onclick=function(){items.splice(i,1);drawThumbs()};th.appendChild(w)});
@@ -698,7 +706,7 @@ button[disabled]{opacity:.6;cursor:default}
         var yy=f("yy"),mo=f("mo");if(!!yy!==!!mo){msg.textContent="출발월은 년과 월을 둘 다 골라 주세요.";return}
         var mm=yy?yy+"년 "+mo+"월":"",news=items.filter(function(x){return x.d}).map(function(x){return x.d}),keep=items.filter(function(x){return x.id}).map(function(x){return x.id});
         b.disabled=true;b.textContent=edit?"고치는 중…":"올리는 중…";msg.textContent=news.length?"사진 "+news.length+"장 올리는 중이에요. 잠시만 기다려 주세요.":"";
-        var body={action:edit?"edit":"post",nick:f("nick"),ship:ship,route:route,month:mm,text:f("text"),photos:news};if(edit){body.id=post.id;body.keep=keep}
+        var body={action:edit?"edit":"post",kind:kind,nick:f("nick"),ship:ship,route:route,month:mm,text:f("text"),photos:news};if(edit){body.id=post.id;body.keep=keep}
         ccApi(body).then(function(r){
           if(!r.ok){msg.textContent=r.msg||(edit?"고치지 못했어요.":"올리지 못했어요.");b.disabled=false;b.textContent=lbl;return}
           md.close();BR.shown=Math.max(BR.shown,4);loadBrag(box);toastMsg(edit?"수정했어요 ✏️":"자랑이 올라갔어요 🎉");
@@ -719,8 +727,8 @@ button[disabled]{opacity:.6;cursor:default}
       bragCss();
       var menu=document.querySelector(".cc-menu");if(!menu||document.querySelector(".cc-brag"))return;
       var box=document.createElement("div");box.className="cc-brag cc-top";
-      box.innerHTML='<div class="bh"><h3>🎉 저 예약했어요!</h3><button type="button" class="cc-gbtn bpost">✍️ 자랑하기</button></div>'
-        +'<p class="bsub">리워드로 예약한 크루즈를 자랑하고 서로 축하해 주세요 🎉</p><div class="blist"></div>';
+      box.innerHTML='<div class="bh"><h3>🎉 크루즈 자랑방</h3><button type="button" class="cc-gbtn bpost">✍️ 자랑하기</button></div>'
+        +'<p class="bsub">예약한 크루즈도, 다녀온 크루즈도 자랑하고 서로 축하해 주세요 🎉</p><div class="blist"></div>';
       menu.parentNode.insertBefore(box,menu.nextSibling);
       box.addEventListener("click",function(e){
         var t=e.target;
