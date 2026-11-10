@@ -754,14 +754,9 @@ button[disabled]{opacity:.6;cursor:default}
         ccApi({action:"ask",q:q}).then(function(r){if(!r.ok)throw r;md.close();toastMsg("질문이 전달됐어요 🙏")}).catch(function(r){msg.textContent=(r&&r.msg)||"보내지 못했어요. 다시 시도해 주세요.";b.disabled=false;b.textContent="보내기"})};
     }
     function ccAsk(){
-      var s=document.getElementById("cc-search");
-      if(s&&!s.__ccAsk){s.__ccAsk=1;new MutationObserver(function(){
-        [].forEach.call(s.querySelectorAll("*"),function(n){if(n.children.length===0&&/찾는 게 없어요/.test(n.textContent)&&!(n.nextSibling&&n.nextSibling.className==="cc-askwrap")){
-          var w=document.createElement("div");w.className="cc-askwrap";w.innerHTML='<button type="button" class="cc-obtn cc-askbtn">🙋 질문 남기기</button>';w.querySelector("button").onclick=openAsk;n.parentNode.insertBefore(w,n.nextSibling)}})
-      }).observe(s,{childList:true,subtree:true})}
       var qa=[].filter.call(document.querySelectorAll("[data-ccv=qa]"),function(x){return!x.querySelector(".cc-askq")})[0];
-      if(qa){var w=document.createElement("div");w.className="cc-askq";w.style.cssText="text-align:center;margin:22px 0;padding:22px 18px;border-radius:18px;background:rgba(201,168,76,.12);border:1.5px solid rgba(201,168,76,.55)";w.innerHTML='<div style="font-size:19px;font-weight:800;color:#f3d58c;margin-bottom:6px">🙋 찾는 질문이 없나요?</div><div style="font-size:15px;line-height:1.6;color:rgba(255,255,255,.85);margin-bottom:14px">궁금한 점을 남겨 주시면<br>리더가 확인하고 답해 드려요</div><button type="button" class="cc-gbtn" style="width:100%;max-width:340px;min-height:56px;font-size:18px">✍️ 질문 남기기</button>';
-        w.querySelector("button").onclick=openAsk;qa.appendChild(w)}
+      if(qa){var w=document.createElement("div");w.className="cc-askq";w.style.cssText="text-align:center;margin:22px 0;padding:18px 16px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);font-size:16px;line-height:1.6;color:rgba(255,255,255,.88)";
+        w.innerHTML='찾는 내용이 없으면<br><b style="color:#f3d58c">나를 안내해 준 리더</b>에게 편하게 물어보세요 😊';qa.appendChild(w)}
     }
 
     /* ═══ 📢 이번 달 공지 (매달 여기 글만 바꾸면 돼요) ═══ */
