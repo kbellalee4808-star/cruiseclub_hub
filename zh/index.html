@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#0a1b30">
 <title>郵輪訂閱會員</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Noto+Sans+SC:wght@400;700;900&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
 :root{--navy:#0f2a47;--deep:#0a1b30;--gold:#d4a94a;--ivory:#faf7f2;--line:#e7e0d4;--muted:#5f6b78;--ink:#1f2a36;--tint:#fff8e6;--blue:#eaf2fb}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--ivory:#0d1724;--line:#22344a;--muted:#a3b0bf;--ink:#e9eef4;--tint:#2a2414;--blue:#13243a}}
@@ -64,11 +64,12 @@ tr.sum td{border-top:2px solid var(--ink)}
 .award{background:var(--tint);border:1px solid var(--gold);border-radius:12px;padding:12px 14px;font-size:14.5px;margin-bottom:12px}
 .closing{text-align:center;font-size:16px;font-weight:700;margin:26px 8px 0;line-height:1.7}
 .cta{text-align:center;font-size:15px;margin:14px 8px 0;padding:16px;border-radius:14px;background:var(--tint);border:1px solid var(--gold)}
+#ko{font-family:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;word-break:keep-all}
 [hidden]{display:none!important}
 </style>
 </head>
 <body>
-<div class="lang"><button type="button" data-l="tw" class="on">繁體</button><button type="button" data-l="cn">简体</button></div>
+<div class="lang"><button type="button" data-l="tw" class="on">繁體</button><button type="button" data-l="cn">简体</button><button type="button" data-l="ko">한국어</button></div>
 <main id="tw"><header class="hero">
   <div class="k">CRUISE MEMBERSHIP</div>
   <h1>郵輪旅行，<br><span class="gold">也能用訂閱的。</span></h1>
@@ -295,20 +296,134 @@ tr.sum td{border-top:2px solid var(--ink)}
 
 </div>
 </main>
+<main id="ko" hidden><header class="hero">
+  <div class="k">CRUISE MEMBERSHIP</div>
+  <h1>크루즈 여행,<br><span class="gold">이제 구독으로.</span></h1>
+  <p>보통은 한 번에 전액을 내지만, 멤버는 구독으로 혜택을 누려요.</p>
+  <div class="perks">
+    <span>✅ 14일 이내 환불 가능</span><span>🛡️ 구독료 보호</span><span>🎁 구독료 더블 리워드 적립</span><span>🏷️ 멤버 전용 17% 할인</span><span>🌍 전 세계 크루즈 한곳에서 비교</span><span>🚢 중간 업체 없는 직구 멤버가</span><span>💎 오래 할수록 이득인 로열티 멤버십</span>
+  </div>
+  <nav class="chips">
+    <a href="#m1k">🛳️ 멤버 편</a>
+    <a href="#b1k">💼 비즈니스 편</a>
+  </nav>
+</header>
+
+<div class="wrap">
+
+<div class="part" id="m1k"><span>PART 1</span>멤버 편</div>
+
+<section class="card">
+  <h2>💳 영상 플랫폼 구독하듯, 여행을 구독해요</h2>
+  <p class="lead">매달 구독료로 <b>2배 리워드</b>와 <b>멤버 전용 가격</b>을 받아요. 크루즈가 더 이상 먼 사치가 아니에요.</p>
+  <div class="grid3">
+    <div><b>영상 플랫폼</b><span>월 구독료 → 언제든 시청</span></div>
+    <div><b>쇼핑 멤버십</b><span>월 구독료 → 무료 배송</span></div>
+    <div class="hl"><b>크루즈 구독</b><span>월 구독료 → 2배 리워드</span></div>
+  </div>
+  <div class="sub">🔍 항공권 비교, 숙소 예약 플랫폼처럼</div>
+  <p>전 세계 크루즈를 <b>한곳에서 검색하고 비교</b>한 뒤, 멤버 가격이나 리워드로 예약해요. <b>크루즈를 더 알뜰하게 타는 방법</b>이에요.</p>
+</section>
+
+<section class="card">
+  <h2>🤔 어떻게 "2배 리워드"를 줄 수 있나요?</h2>
+  <div class="vs">
+    <div><small>일반 여행사</small>선사 → 여행사 (중간 마진, 큰 광고비) → 여행객</div>
+    <div class="good"><small>크루즈 직구 플랫폼</small>선사 → 직구 플랫폼 → 멤버<br><b>아낀 광고비와 중간 비용을 멤버에게 돌려드려요</b></div>
+  </div>
+  <p class="note" style="margin-top:10px">큰돈을 들여 광고하는 대신, 그 돈을 멤버와 직접 알리고 추천하는 멤버에게 돌려주는 구조예요.</p>
+</section>
+
+<section class="card">
+  <h2>🎁 플랜과 리워드</h2>
+  <table>
+    <tr><th></th><th>클래식 Classic</th><th>프리미엄 Premium</th></tr>
+    <tr><td>월 구독료</td><td>$100</td><td>$250</td></tr>
+    <tr><td>매월 리워드</td><td><b>200 RP</b></td><td><b>500 RP</b></td></tr>
+    <tr><td>첫 달</td><td>$200 → <b>350 RP</b></td><td>$500 → <b>800 RP</b></td></tr>
+  </table>
+  <p class="note">※ 첫 달에는 한 번만 내는 활성화비와 신규 멤버 보너스 50 RP가 포함돼요. 청구서 발행 후 5일 안에 결제해야 리워드가 2배로 쌓여요. 금액은 모두 미국 달러예요.</p>
+  <div class="tip">📊 프리미엄 5개월: <b>$1,500</b> 결제 → <b>2,800 RP</b> 적립</div>
+</section>
+
+<section class="card">
+  <h2>🛳️ 리워드로 크루즈 예약하기</h2>
+  <div class="way"><i>1</i><div><b>멤버 전용 17% 할인</b><span>리워드를 쓰지 않고 바로 할인받아요.</span></div></div>
+  <div class="way"><i>2</i><div><b>리워드 + 카드</b><span>객실(2인 1실) 가격의 절반까지 리워드로 내요. 내 몫은 리워드로, 동행자 몫은 카드로 내는 셈이에요.</span></div></div>
+  <div class="way"><i>3</i><div><b>올 리워드</b><span>현금 없이 전액 리워드로 결제해요. 출발까지 270일(약 9개월) 이상 남은 일정에 쓸 수 있어요.</span></div></div>
+  <div class="real">
+    <div class="sub">🧾 실제 예약 사례</div>
+    <p>하와이 7박 · NCL Pride of America<br>총액 <b>$7,034.42</b> → 전액 리워드 결제, 현금 지출 <b>$0</b> (선상 팁 별도)</p>
+  </div>
+</section>
+
+<section class="card">
+  <h2>🛡️ 안심하고 시작하세요</h2>
+  <div class="chk">✅ <b>14일 이내 환불 가능</b><span>가입 후 14일 안에는 결제한 금액을 환불 신청할 수 있어요.</span></div>
+  <div class="chk">✅ <b>구독료는 사라지지 않아요</b><span>멤버십을 그만둬도 실제로 낸 금액은 계정에 기한 없이 남아요. 이후 전 세계 크루즈, 호텔, 리조트를 예약할 때 17% 할인으로 쓸 수 있어요.</span></div>
+  <div class="chk">✅ <b>여행이 끝나면 자유롭게 중단</b><span>멤버십은 탑승할 때까지만 유지하면 돼요.</span></div>
+</section>
+
+<section class="card">
+  <h2>🏆 믿을 수 있는 이유</h2>
+  <div class="award">🏆 <b>미국 여행업계 권위지 Travel Weekly의 「마젤란 어워드」(Magellan Awards) 여러 차례 수상</b></div>
+  <div class="grid3 trust">
+    <div><b>2015</b><span>설립 · 10년 넘게 운영</span></div>
+    <div><b>193</b><span>개국에서 서비스</span></div>
+    <div><b>71만+</b><span>누적 여행객</span></div>
+  </div>
+  <p style="margin-top:12px">미국 정식 등록 법인이고, 본사는 푸에르토리코에 있어요.</p>
+</section>
+
+<div class="part" id="b1k"><span>PART 2</span>비즈니스 편</div>
+
+<section class="card">
+  <h2>🌏 휴대폰 하나가 곧 사무실</h2>
+  <p class="lead">전 세계가 내 시장이에요.</p>
+  <ul class="dots">
+    <li>직원, 사무실, 재고가 필요 없어요.</li>
+    <li>가입, 결제, 예약이 모두 온라인이라 어디에 살아도 할 수 있어요.</li>
+    <li>멤버가 앱에서 직접 크루즈를 예약하니, 주문이나 수금을 챙길 필요가 없어요.</li>
+    <li>물건을 파는 게 아니라 <b>더 좋은 여행 방법을 나누는 일</b>이에요.</li>
+  </ul>
+</section>
+
+<section class="card">
+  <h2>🚀 시작 비용은</h2>
+  <div class="big">$95 <small>／ 6개월마다 (하루 약 $0.5)</small></div>
+  <p>개인 전용 추천 링크, 모든 자료, 교육이 전부 포함돼요.</p>
+</section>
+
+<section class="card">
+  <h2>💼 4가지 수입 방식</h2>
+  <div class="way"><i>1</i><div><b>신규 멤버 커미션</b><span>내 링크로 가입한 멤버 판매액의 <b>10%</b>를 받아요.</span></div></div>
+  <div class="way"><i>2</i><div><b>매월 지속 수입</b><span>멤버가 매달 구독료를 낼 때마다 <b>5%</b>를 계속 받아요.</span></div></div>
+  <div class="way"><i>3</i><div><b>등급 보너스</b><span>등급이 높을수록 총 판매액의 <b>10%</b>를 추가로 받아요.</span></div></div>
+  <div class="way"><i>4</i><div><b>팀 보너스</b><span>팀의 월 신규 판매가 <b>$30,000</b>에 이르면 <b>30%</b>를 더 받아요.</span></div></div>
+  <p class="note">※ 실제 금액은 공식 보상플랜과 개인 활동에 따라 달라지며, 수입을 보장하지 않아요.</p>
+</section>
+
+<p class="closing">다음 크루즈가,<br>인생 새 장의 시작일지도 몰라요.</p>
+<p class="cta">더 알고 싶으신가요?<br><b>이 페이지를 보내준 분</b>에게 편하게 물어보세요 😊</p>
+<p class="foot">이 페이지는 일반적인 안내이며, 실제 리워드, 예약 조건, 보너스는 플랫폼의 당시 정책을 따라요.</p>
+
+</div>
+</main>
 <script>
 (function(){
-  var b=document.querySelectorAll('.lang button');
-  function set(l){
-    document.getElementById('tw').hidden=(l!=='tw');document.getElementById('cn').hidden=(l!=='cn');
-    document.documentElement.lang=(l==='tw'?'zh-Hant':'zh-Hans');
-    document.title=(l==='tw'?'郵輪訂閱會員':'邮轮订阅会员');
+  var b=document.querySelectorAll('.lang button'),T={tw:['zh-Hant','郵輪訂閱會員'],cn:['zh-Hans','邮轮订阅会员'],ko:['ko','크루즈 구독 멤버십']};
+  function set(l,save){
+    if(!T[l])l='tw';
+    ['tw','cn','ko'].forEach(function(k){document.getElementById(k).hidden=(k!==l)});
+    document.documentElement.lang=T[l][0];document.title=T[l][1];
     b.forEach(function(x){x.classList.toggle('on',x.dataset.l===l)});
-    try{localStorage.setItem('cc_zh',l)}catch(e){}
+    if(save){try{localStorage.setItem('cc_zh',l)}catch(e){}}
   }
-  b.forEach(function(x){x.onclick=function(){set(x.dataset.l)}});
-  var l='tw';try{l=localStorage.getItem('cc_zh')||l}catch(e){}
-  try{if(!localStorage.getItem('cc_zh')&&/zh-(cn|sg)|hans/i.test(navigator.language))l='cn'}catch(e){}
-  set(l);
+  b.forEach(function(x){x.onclick=function(){set(x.dataset.l,true)}});
+  var q=(location.search.match(/[?&]lang=(tw|cn|ko)/)||[])[1],l=q||'tw';
+  if(!q){try{l=localStorage.getItem('cc_zh')||l}catch(e){}
+    try{if(!localStorage.getItem('cc_zh')&&/zh-(cn|sg)|hans/i.test(navigator.language))l='cn'}catch(e){}}
+  set(l,false);
 })();
 </script>
 </body>
