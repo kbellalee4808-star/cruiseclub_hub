@@ -580,7 +580,7 @@ button[disabled]{opacity:.6;cursor:default}
     }
     function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
     function pic(id,w){return"https://drive.google.com/thumbnail?id="+encodeURIComponent(id)+"&sz=w"+(w||800)}
-    var BR={posts:null,reacts:[],busy:false,shown:4};
+    var BR={posts:null,reacts:[],busy:false,shown:2};
     function bragCss(){
       if(document.getElementById("cc-brag-st"))return;var st=document.createElement("style");st.id="cc-brag-st";st.textContent=
        ".cc-brag{margin:18px 0 6px;padding:18px 16px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:#fff;text-align:left}"
@@ -709,7 +709,7 @@ button[disabled]{opacity:.6;cursor:default}
         var body={action:edit?"edit":"post",kind:kind,nick:f("nick"),ship:ship,route:route,month:mm,text:f("text"),photos:news};if(edit){body.id=post.id;body.keep=keep}
         ccApi(body).then(function(r){
           if(!r.ok){msg.textContent=r.msg||(edit?"고치지 못했어요.":"올리지 못했어요.");b.disabled=false;b.textContent=lbl;return}
-          md.close();BR.shown=Math.max(BR.shown,4);loadBrag(box);toastMsg(edit?"수정했어요 ✏️":"자랑이 올라갔어요 🎉");
+          md.close();BR.shown=Math.max(BR.shown,2);loadBrag(box);toastMsg(edit?"수정했어요 ✏️":"자랑이 올라갔어요 🎉");
         }).catch(function(){msg.textContent="보내지 못했어요. 인터넷 연결을 확인해 주세요.";b.disabled=false;b.textContent=lbl});
       };
     }
@@ -733,7 +733,7 @@ button[disabled]{opacity:.6;cursor:default}
       box.addEventListener("click",function(e){
         var t=e.target;
         if(t.closest(".bpost"))return openPostForm(box);
-        if(t.closest(".bmore")){BR.shown+=6;return renderBrag(box)}
+        if(t.closest(".bmore")){BR.shown+=4;return renderBrag(box)}
         var rb=t.closest(".cc-rx button");
         if(rb){var id=rb.getAttribute("data-id"),r=rb.getAttribute("data-r"),p=BR.posts.filter(function(x){return x.id===id})[0];if(!p)return;
           var on=p.mine.indexOf(r)<0;p.react[r]=(p.react[r]||0)+(on?1:-1);if(on)p.mine.push(r);else p.mine=p.mine.filter(function(x){return x!==r});renderBrag(box);
