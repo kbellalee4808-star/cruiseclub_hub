@@ -569,7 +569,51 @@ button[disabled]{opacity:.6;cursor:default}
       window.ccAllOn=function(on){document.body.classList.toggle("ccv-all",!!on)};
     }
     
-    function extras(){try{ccRouter()}catch(e){console.error(e)}try{fixTitles();ccVideoTabs(document)}catch(e){}}
+
+    /* ═══ 📢 이번 달 공지 (매달 여기 글만 바꾸면 돼요) ═══ */
+    var CC_NOTICE={
+      title:"📢 11월 공지",
+      lines:[
+        "🎥 멤버십 줌 강의 · 매주 <b>화요일 9시</b>",
+        "🎓 파트너 줌 강의 · 매주 <b>목요일 9시</b> <small>(신청자만 참여 가능)</small>",
+        "🎁 이번 달 프로모션 · 인모션 <b>150점</b> 달성 시 <b>무료 크루즈 여행 (2인)</b>"
+      ]
+    };
+    /* 🌏 다른 언어 안내 */
+    var CC_LANGS=[
+      ["中文 (繁體)","https://kbellalee4808-star.github.io/cruise-zh/"],
+      ["中文 (简体)","https://kbellalee4808-star.github.io/cruise-zh/cn.html"]
+    ];
+    function ccAddons(){
+      if(!document.getElementById("cc-addon-st")){var st=document.createElement("style");st.id="cc-addon-st";st.textContent=
+        ".cc-notice{margin:0 0 14px;padding:16px 16px 14px;border-radius:16px;border:1.5px solid rgba(212,169,74,.55);background:linear-gradient(135deg,rgba(212,169,74,.16),rgba(255,255,255,.04));color:#fff;text-align:left}"
+       +".cc-notice .nt{font-size:15px;font-weight:800;color:#e3c887;margin-bottom:8px}"
+       +".cc-notice ul{list-style:none;margin:0;padding:0}.cc-notice li{font-size:14px;line-height:1.6;padding:5px 0;border-top:1px dashed rgba(255,255,255,.14)}"
+       +".cc-notice li:first-child{border-top:0}.cc-notice b{color:#f3d58c}.cc-notice small{color:rgba(255,255,255,.65);font-size:12px}"
+       +".cc-lang{margin:14px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px;justify-content:center}"
+       +".cc-lang span{font-size:12px;color:rgba(255,255,255,.6);width:100%;text-align:center}"
+       +".cc-lang a{display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.06);color:#fff;font-size:13px;font-weight:700;text-decoration:none}"
+       +"#cc-big{position:fixed;left:10px;top:calc(4px + env(safe-area-inset-top,0px));z-index:2147483647;min-height:36px;padding:0 12px;border-radius:999px;border:1px solid rgba(255,255,255,.22);background:rgba(15,36,56,.6);color:rgba(255,255,255,.9);font:700 12px/1 sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent}"
+       +"#cc-big.on{background:#c9a84c;color:#0a1628;border-color:#c9a84c}"
+       +"html.cc-bigtext body{zoom:1.15}";
+        (document.head||document.documentElement).appendChild(st)}
+      var menu=document.querySelector(".cc-menu");
+      if(menu&&CC_NOTICE&&CC_NOTICE.lines.length&&!document.querySelector(".cc-notice")){
+        var n=document.createElement("div");n.className="cc-notice cc-top";
+        n.innerHTML='<div class="nt">'+CC_NOTICE.title+'</div><ul>'+CC_NOTICE.lines.map(function(l){return"<li>"+l+"</li>"}).join("")+"</ul>";
+        menu.parentNode.insertBefore(n,menu)}
+      if(menu&&CC_LANGS.length&&!document.querySelector(".cc-lang")){
+        var g=document.createElement("div");g.className="cc-lang";
+        g.innerHTML="<span>🌏 Other languages</span>"+CC_LANGS.map(function(x){return'<a href="'+x[1]+'" target="_blank" rel="noopener">'+x[0]+"</a>"}).join("");
+        menu.appendChild(g)}
+      if(!document.getElementById("cc-big")){
+        var b=document.createElement("button");b.id="cc-big";b.type="button";b.setAttribute("aria-label","글씨 크게 보기");
+        function apply(on){document.documentElement.classList.toggle("cc-bigtext",on);b.classList.toggle("on",on);b.textContent=on?"가 글씨 보통":"가 글씨 크게"}
+        var on=false;try{on=localStorage.getItem("cc_big")==="1"}catch(e){}
+        apply(on);b.onclick=function(){on=!on;apply(on);try{localStorage.setItem("cc_big",on?"1":"0")}catch(e){}};
+        document.body.appendChild(b)}
+    }
+    function extras(){try{ccRouter()}catch(e){console.error(e)}try{fixTitles();ccVideoTabs(document)}catch(e){}try{ccAddons()}catch(e){console.error(e)}}
     ensure();addRefund();addSearch();extras();setInterval(function(){ensure();addRefund();addSearch();extras()},1500);
     function editable(t){return t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA"||t.isContentEditable)}
     ["contextmenu","dragstart","copy","cut"].forEach(function(ev){
