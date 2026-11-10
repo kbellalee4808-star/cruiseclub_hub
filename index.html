@@ -651,7 +651,7 @@ button[disabled]{opacity:.6;cursor:default}
     }
     var SHIPS=["MSC","코스타","버진 보야지","노르웨지안","셀레스티얼","카니발","큐나드"];
     var ROUTES=[["서부 지중해","스페인 · 프랑스 · 이탈리아"],["동부 지중해","그리스 · 터키"],["하와이"],["알래스카"],["캐리비안"],["피지"],["호주"],["북유럽"],["디즈니 크루즈"],["아시아 크루즈"]];
-    var MAXPH=3;
+    var MAXPH=5;
     function chipRow(name,items){
       return'<div class="cc-pick" data-name="'+name+'">'+items.map(function(x){x=[].concat(x);return'<button type="button" data-v="'+esc(x[0])+'">'+esc(x[0])+(x[1]?'<small>'+esc(x[1])+'</small>':"")+"</button>"}).join("")
         +'<button type="button" data-v="__etc">기타</button></div><input type="text" class="etc" data-for="'+name+'" maxlength="60" placeholder="직접 적어 주세요" hidden>';
