@@ -626,7 +626,7 @@ button[disabled]{opacity:.6;cursor:default}
         var ph=p.photos.length?'<div class="cc-ph">'+p.photos.filter(function(i){return/^[\w-]+$/.test(i)}).map(function(i){return'<img loading="lazy" src="'+pic(i,600)+'" data-big="'+esc(i)+'" alt="'+esc(p.ship)+' 사진">'}).join("")+"</div>":"";
         var rx='<div class="cc-rx">'+BR.reacts.map(function(r){var n=(p.react||{})[r]||0,on=p.mine.indexOf(r)>=0;
           return'<button type="button" data-id="'+esc(p.id)+'" data-r="'+esc(r)+'" class="'+(on?"on":"")+'">'+esc(r)+(n?"<i>"+n+"</i>":"")+"</button>"}).join("")+"</div>";
-        return'<div class="cc-post"><div class="pt"><div><b>🛳️ '+esc(p.ship)+'</b><div class="pm">'+esc(p.nick)+(p.month?" · "+esc(p.month)+" 출발":"")+" · "+esc(p.route)+'</div></div><button type="button" class="more" data-id="'+esc(p.id)+'" aria-label="관리">⋯</button></div>'
+        return'<div class="cc-post"><div class="pt"><div><b>🛳️ '+esc(p.ship)+'</b><div class="pm">'+esc(p.nick)+" · 🌍 "+esc(p.route)+(p.month?" · "+esc(p.month)+" 출발":"")+'</div></div><button type="button" class="more" data-id="'+esc(p.id)+'" aria-label="관리">⋯</button></div>'
           +(p.text?'<p class="ptx">'+esc(p.text)+"</p>":"")+ph+rx+"</div>"}).join("");
       if(BR.posts.length>BR.shown)h+='<div style="text-align:center;margin-top:10px"><button type="button" class="cc-obtn bmore">더 보기 ('+(BR.posts.length-BR.shown)+')</button></div>';
       list.innerHTML=h;
@@ -648,9 +648,9 @@ button[disabled]{opacity:.6;cursor:default}
       var files=[];
       var md=modal('<h3>🎉 나도 자랑하기</h3><div style="font-size:13px;color:rgba(255,255,255,.7)">예약한 크루즈를 자랑해 주세요. 올리면 바로 보여요.</div>'
         +'<label>닉네임 *</label><input type="text" name="nick" maxlength="20" placeholder="예: 김○○, 바다사랑">'
-        +'<label>배 이름 *</label><input type="text" name="ship" maxlength="60" placeholder="예: MSC 월드 유로파">'
-        +'<label>코스 *</label><input type="text" name="route" maxlength="80" placeholder="예: 서부 지중해 7박">'
-        +'<label>출발 (월)</label><input type="month" name="month">'
+        +'<label>크루즈 선사 *</label><input type="text" name="ship" maxlength="60" placeholder="예: MSC, 셀러브리티, 버진 보야지">'
+        +'<label>나라 *</label><input type="text" name="route" maxlength="80" placeholder="예: 이탈리아 · 스페인">'
+        +'<label>출발월 (몇 년 몇 월)</label><div style="display:flex;gap:8px"><select name="yy" style="width:100%;box-sizing:border-box;min-height:46px;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#fff;font-size:16px"><option value="">년</option>'+(function(){var y=new Date().getFullYear(),o="";for(var i=0;i<4;i++)o+='<option style="color:#000">'+(y+i)+'</option>';return o})()+'</select><select name="mo" style="width:100%;box-sizing:border-box;min-height:46px;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#fff;font-size:16px"><option value="">월</option>'+(function(){var o="";for(var i=1;i<=12;i++)o+='<option style="color:#000" value="'+i+'">'+i+'월</option>';return o})()+'</select></div>'
         +'<label>한마디</label><textarea name="text" maxlength="400" placeholder="예: 리워드 모아서 드디어 예약했어요!"></textarea>'
         +'<label>사진 (선택 · 10장까지)</label><input type="file" accept="image/*" multiple name="ph"><div class="cc-thumbs"></div>'
         +'<div class="rule">🎉 이곳은 내 예약을 자랑하고 축하받는 공간이에요<br>🔒 소중한 개인정보(예약번호·연락처)는 나만 간직해 주세요<br>• 규칙에 맞지 않는 글은 관리자가 삭제할 수 있어요.</div>'
@@ -668,8 +668,9 @@ button[disabled]{opacity:.6;cursor:default}
       el.querySelector(".cancel").onclick=md.close;
       el.querySelector(".send").onclick=function(){
         var b=this,f=function(n){return el.querySelector("[name="+n+"]").value.trim()};
-        if(!f("nick")||!f("ship")||!f("route")){msg.textContent="닉네임 · 배 이름 · 코스는 꼭 적어 주세요.";return}
-        var m=f("month"),mm=m?m.replace(/^(\d{4})-(\d{2})$/,function(_,y,mo){return y+"년 "+Number(mo)+"월"}):"";
+        if(!f("nick")||!f("ship")||!f("route")){msg.textContent="닉네임 · 크루즈 선사 · 나라는 꼭 적어 주세요.";return}
+        var yy=f("yy"),mo=f("mo");if(!!yy!==!!mo){msg.textContent="출발월은 년과 월을 둘 다 골라 주세요.";return}
+        var mm=yy?yy+"년 "+mo+"월":"";
         b.disabled=true;b.textContent="올리는 중…";msg.textContent=files.length?"사진 "+files.length+"장 올리는 중이에요. 잠시만 기다려 주세요.":"";
         ccApi({action:"post",nick:f("nick"),ship:f("ship"),route:f("route"),month:mm,text:f("text"),photos:files}).then(function(r){
           if(!r.ok){msg.textContent=r.msg||"올리지 못했어요.";b.disabled=false;b.textContent="올리기";return}
