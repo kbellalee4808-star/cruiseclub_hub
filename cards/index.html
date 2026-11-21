@@ -63,6 +63,9 @@ footer{text-align:center;color:var(--sub);font-size:.8rem;padding:10px 16px calc
 .acts{display:flex;gap:8px}
 .acts a{background:var(--gold);color:var(--navy)}
 .acts button{background:var(--cream);color:var(--navy)}
+.all{width:100%;min-height:56px;margin-top:8px;border:0;border-radius:12px;background:#FEE500;color:#191919;font:inherit;font-size:1.05rem;font-weight:800;cursor:pointer}
+.all[hidden]{display:none}
+.all:disabled{opacity:.6}
 .hint{font-size:.82rem;color:#9fb0c2;text-align:center;margin-top:8px}
 .toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:var(--cream);color:var(--navy);padding:10px 18px;border-radius:999px;font-weight:700;z-index:20;display:none}
 </style>
@@ -89,6 +92,7 @@ footer{text-align:center;color:var(--sub);font-size:.8rem;padding:10px 16px calc
     <div class="cnt" id="cnt"></div>
     <div class="nav"><button id="pv">‹</button><button id="nx">›</button></div>
     <div class="acts"><a id="dl" download>⬇</a><button id="sh"></button></div>
+    <button class="all" id="all" hidden></button>
     <div class="hint" id="hint"></div>
   </div>
 </div>
@@ -97,9 +101,9 @@ footer{text-align:center;color:var(--sub);font-size:.8rem;padding:10px 16px calc
 <script>
 var SETS=[{"l": "ko", "c": "start", "id": "ko-must1", "t": "가입 전 필독 ① 내고 쌓이는 구독", "n": 6}, {"l": "ko", "c": "start", "id": "ko-must2", "t": "가입 전 필독 ② 리워드 2배인 이유", "n": 6}, {"l": "ko", "c": "start", "id": "ko-must3", "t": "가입 전 필독 ③ 쌓은 리워드 쓰는 법", "n": 6}, {"l": "ko", "c": "start", "id": "ko-must4", "t": "가입 전 필독 ④ 구독을 멈추면?", "n": 7}, {"l": "ko", "c": "start", "id": "ko-refund", "t": "환불 · 결제 멈춤 · 탈퇴의 차이", "n": 8}, {"l": "ko", "c": "member", "id": "ko-allrw", "t": "올 리워드 — 리워드만으로 예약", "n": 5}, {"l": "ko", "c": "partner", "id": "ko-comp", "t": "파트너 보상, 한 계단씩", "n": 12, "lk": 1}, {"l": "ko", "c": "partner", "id": "ko-know", "t": "MD 가는 노하우 4가지", "n": 13, "lk": 1}, {"l": "ja", "c": "start", "id": "ja-must1", "t": "加入前に必読 ① 貯まるサブスク", "n": 6}, {"l": "ja", "c": "start", "id": "ja-must2", "t": "加入前に必読 ② リワード2倍の理由", "n": 6}, {"l": "ja", "c": "start", "id": "ja-must3", "t": "加入前に必読 ③ リワードの使い方", "n": 6}, {"l": "ja", "c": "start", "id": "ja-must4", "t": "加入前に必読 ④ 会費を止めたら？", "n": 7}, {"l": "ja", "c": "start", "id": "ja-refund", "t": "返金・支払い停止・退会のちがい", "n": 8}, {"l": "ja", "c": "member", "id": "ja-allrw", "t": "オールリワード — リワードだけで予約", "n": 5}, {"l": "en", "c": "start", "id": "en-must1", "t": "Must-read ① A subscription that adds up", "n": 6}, {"l": "en", "c": "start", "id": "en-must2", "t": "Must-read ② Why 2x rewards?", "n": 6}, {"l": "en", "c": "start", "id": "en-must3", "t": "Must-read ③ How to use your rewards", "n": 6}, {"l": "en", "c": "start", "id": "en-must4", "t": "Must-read ④ If you pause", "n": 7}, {"l": "en", "c": "start", "id": "en-refund", "t": "Refund · pause · cancel", "n": 8}, {"l": "en", "c": "member", "id": "en-allrw", "t": "All Reward — book with rewards only", "n": 5}, {"l": "en", "c": "partner", "id": "en-comp", "t": "Partner rewards, step by step", "n": 12, "lk": 1}, {"l": "en", "c": "partner", "id": "en-know", "t": "4 tips to reach MD", "n": 13, "lk": 1}];
 var T={
- ko:{h1:"카드뉴스 자료실",lead:"카드를 눌러 크게 보고, 저장해서 카톡으로 보내 주세요.",start:"처음 오셨어요 · 가입 전 필독",member:"멤버 활용",partner:"파트너 자료",n:"장",save:"⬇ 이미지 저장",share:"📤 보내기",link:"🔗 링크 복사",copied:"링크를 복사했어요",hint:"저장이 안 되면 카드를 길게 눌러 ‘이미지 저장’을 눌러 주세요.",close:"닫기",list:"목록",hub:"허브로 돌아가기",locked:"파트너 자료는 허브에 로그인한 분만 볼 수 있어요.",login:"허브에서 로그인하기"},
- ja:{h1:"カードニュース資料室",lead:"カードをタップして大きく見て、保存してLINEなどで送ってください。",start:"はじめての方・加入前に必読",member:"メンバー活用",partner:"パートナー資料",n:"枚",save:"⬇ 画像を保存",share:"📤 送る",link:"🔗 リンクをコピー",copied:"リンクをコピーしました",hint:"保存できない時は、カードを長押しして「画像を保存」を選んでください。",close:"閉じる",list:"一覧",hub:"ハブに戻る",locked:"パートナー資料はハブにログインした方だけ見られます。",login:"ハブでログイン"},
- en:{h1:"Card News Library",lead:"Tap a set to view it large, then save and share it.",start:"New here · Must-read before joining",member:"For members",partner:"For partners",n:"cards",save:"⬇ Save image",share:"📤 Share",link:"🔗 Copy link",copied:"Link copied",hint:"If saving doesn't work, press and hold the card and choose “Save image”.",close:"Close",list:"List",hub:"Back to hub",locked:"Partner materials are only for team members logged in to the hub.",login:"Log in at the hub"}
+ ko:{h1:"카드뉴스 자료실",lead:"카드를 눌러 크게 보고, 저장해서 카톡으로 보내 주세요.",start:"처음 오셨어요 · 가입 전 필독",member:"멤버 활용",partner:"파트너 자료",n:"장",save:"⬇ 이미지 저장",share:"📤 이 장만 보내기",all:"💬 {n}장 한번에 보내기",prep:"준비 중… {a}/{n}",link:"🔗 링크 복사",copied:"링크를 복사했어요",hint:"저장이 안 되면 카드를 길게 눌러 ‘이미지 저장’을 눌러 주세요.",close:"닫기",list:"목록",hub:"허브로 돌아가기",locked:"파트너 자료는 허브에 로그인한 분만 볼 수 있어요.",login:"허브에서 로그인하기"},
+ ja:{h1:"カードニュース資料室",lead:"カードをタップして大きく見て、保存してLINEなどで送ってください。",start:"はじめての方・加入前に必読",member:"メンバー活用",partner:"パートナー資料",n:"枚",save:"⬇ 画像を保存",share:"📤 この1枚を送る",all:"💬 {n}枚まとめて送る",prep:"準備中… {a}/{n}",link:"🔗 リンクをコピー",copied:"リンクをコピーしました",hint:"保存できない時は、カードを長押しして「画像を保存」を選んでください。",close:"閉じる",list:"一覧",hub:"ハブに戻る",locked:"パートナー資料はハブにログインした方だけ見られます。",login:"ハブでログイン"},
+ en:{h1:"Card News Library",lead:"Tap a set to view it large, then save and share it.",start:"New here · Must-read before joining",member:"For members",partner:"For partners",n:"cards",save:"⬇ Save image",share:"📤 Share this card",all:"💬 Share all {n} cards",prep:"Preparing… {a}/{n}",link:"🔗 Copy link",copied:"Link copied",hint:"If saving doesn't work, press and hold the card and choose “Save image”.",close:"Close",list:"List",hub:"Back to hub",locked:"Partner materials are only for team members logged in to the hub.",login:"Log in at the hub"}
 };
 var $=function(i){return document.getElementById(i)};
 var lang="ko",cur=null,idx=0;
@@ -142,7 +146,7 @@ function openSet(id,i){
   $("dl").textContent=t.save;$("hint").textContent=t.hint;$("vx").setAttribute("aria-label",t.close);
   $("sh").textContent=(navigator.share?t.share:t.link);
   if(location.hash!=="#"+id){history.pushState({v:1},"","#"+id);pushed=true}
-  go(i||0,true);
+  go(i||0,true);prepAll();
 }
 var pushed=false;
 function hide(){$("vw").classList.remove("on");document.body.style.overflow="";cur=null}
@@ -164,6 +168,21 @@ window.addEventListener("resize",function(){if(cur)go(idx,true)});
 $("list").addEventListener("click",function(e){var b=e.target.closest(".set");if(b)openSet(b.dataset.id,0)});
 document.querySelectorAll(".tabs button").forEach(function(b){b.onclick=function(){lang=b.dataset.l;render()}});
 function toast(m){var t=$("toast");t.textContent=m;t.style.display="block";setTimeout(function(){t.style.display="none"},1800)}
+
+/* 묶음 전체를 한 번에 보내기 — 열 때 모든 장을 미리 준비 */
+var allFiles=null,allFor="";
+function prepAll(){
+  var b=$("all");if(!cur||!navigator.share||!navigator.canShare){b.hidden=true;return}
+  var s=cur,t=T[lang];b.hidden=false;if(allFor===s.id&&allFiles){b.disabled=false;b.textContent=t.all.replace("{n}",s.n);return}
+  allFor=s.id;allFiles=null;b.disabled=true;var done=0,arr=[];b.textContent=t.prep.replace("{a}",0).replace("{n}",s.n);
+  for(var k=1;k<=s.n;k++)(function(k){url(s.id,k).then(function(u){return fetch(u)}).then(function(r){return r.blob()}).then(function(bl){
+    arr[k-1]=new File([bl],s.id+"-"+k+".jpg",{type:"image/jpeg"});done++;
+    if(allFor!==s.id)return;
+    if(done<s.n){b.textContent=t.prep.replace("{a}",done).replace("{n}",s.n);return}
+    if(navigator.canShare({files:arr})){allFiles=arr;b.disabled=false;b.textContent=t.all.replace("{n}",s.n)}else b.hidden=true;
+  })})(k);
+}
+$("all").onclick=function(){if(!allFiles)return;navigator.share({files:allFiles}).catch(function(){})};
 /* 보내기: 아이폰은 버튼을 누른 그 순간에 바로 공유창을 열어야 해서, 사진을 미리 준비해 둬요 */
 var shFile=null,shKey="";
 function prepShare(){
