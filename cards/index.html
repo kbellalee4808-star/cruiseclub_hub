@@ -38,6 +38,11 @@ h2 .dot{width:10px;height:10px;border-radius:50%;background:var(--gold)}
 .set .t{padding:10px 12px 4px;font-weight:700;font-size:1rem;line-height:1.35}
 .set .n{padding:0 12px 12px;color:var(--sub);font-size:.88rem}
 .empty{color:var(--sub);padding:8px 0}
+.lock{border:2px dashed var(--line);border-radius:16px;background:#fff;padding:22px 18px;text-align:center}
+.lock .ic{font-size:2rem}
+.lock p{margin:8px 0 14px;font-size:1rem;line-height:1.5}
+.lock a{display:inline-flex;align-items:center;min-height:52px;padding:0 22px;border-radius:12px;background:var(--navy);color:var(--cream);font-weight:700;text-decoration:none}
+.set img:not([src]){visibility:hidden}
 footer{text-align:center;color:var(--sub);font-size:.8rem;padding:10px 16px calc(28px + env(safe-area-inset-bottom,0px))}
 /* viewer */
 .vw{position:fixed;inset:0;background:#0E1E30;z-index:10;display:none;flex-direction:column}
@@ -90,34 +95,50 @@ footer{text-align:center;color:var(--sub);font-size:.8rem;padding:10px 16px calc
 <div class="toast" id="toast"></div>
 
 <script>
-var SETS=[{"l": "ko", "c": "start", "id": "ko-must1", "t": "가입 전 필독 ① 내고 쌓이는 구독", "n": 6}, {"l": "ko", "c": "start", "id": "ko-must2", "t": "가입 전 필독 ② 리워드 2배인 이유", "n": 6}, {"l": "ko", "c": "start", "id": "ko-must3", "t": "가입 전 필독 ③ 쌓은 리워드 쓰는 법", "n": 6}, {"l": "ko", "c": "start", "id": "ko-must4", "t": "가입 전 필독 ④ 구독을 멈추면?", "n": 7}, {"l": "ko", "c": "start", "id": "ko-refund", "t": "환불 · 결제 멈춤 · 탈퇴의 차이", "n": 8}, {"l": "ko", "c": "member", "id": "ko-allrw", "t": "올 리워드 — 리워드만으로 예약", "n": 5}, {"l": "ko", "c": "partner", "id": "ko-comp", "t": "파트너 보상, 한 계단씩", "n": 12}, {"l": "ko", "c": "partner", "id": "ko-know", "t": "MD 가는 노하우 4가지", "n": 13}, {"l": "ja", "c": "start", "id": "ja-must1", "t": "加入前に必読 ① 貯まるサブスク", "n": 6}, {"l": "ja", "c": "start", "id": "ja-must2", "t": "加入前に必読 ② リワード2倍の理由", "n": 6}, {"l": "ja", "c": "start", "id": "ja-must3", "t": "加入前に必読 ③ リワードの使い方", "n": 6}, {"l": "ja", "c": "start", "id": "ja-must4", "t": "加入前に必読 ④ 会費を止めたら？", "n": 7}, {"l": "ja", "c": "start", "id": "ja-refund", "t": "返金・支払い停止・退会のちがい", "n": 8}, {"l": "ja", "c": "member", "id": "ja-allrw", "t": "オールリワード — リワードだけで予約", "n": 5}, {"l": "en", "c": "start", "id": "en-must1", "t": "Must-read ① A subscription that adds up", "n": 6}, {"l": "en", "c": "start", "id": "en-must2", "t": "Must-read ② Why 2x rewards?", "n": 6}, {"l": "en", "c": "start", "id": "en-must3", "t": "Must-read ③ How to use your rewards", "n": 6}, {"l": "en", "c": "start", "id": "en-must4", "t": "Must-read ④ If you pause", "n": 7}, {"l": "en", "c": "start", "id": "en-refund", "t": "Refund · pause · cancel", "n": 8}, {"l": "en", "c": "member", "id": "en-allrw", "t": "All Reward — book with rewards only", "n": 5}, {"l": "en", "c": "partner", "id": "en-comp", "t": "Partner rewards, step by step", "n": 12}, {"l": "en", "c": "partner", "id": "en-know", "t": "4 tips to reach MD", "n": 13}];
+var SETS=[{"l": "ko", "c": "start", "id": "ko-must1", "t": "가입 전 필독 ① 내고 쌓이는 구독", "n": 6}, {"l": "ko", "c": "start", "id": "ko-must2", "t": "가입 전 필독 ② 리워드 2배인 이유", "n": 6}, {"l": "ko", "c": "start", "id": "ko-must3", "t": "가입 전 필독 ③ 쌓은 리워드 쓰는 법", "n": 6}, {"l": "ko", "c": "start", "id": "ko-must4", "t": "가입 전 필독 ④ 구독을 멈추면?", "n": 7}, {"l": "ko", "c": "start", "id": "ko-refund", "t": "환불 · 결제 멈춤 · 탈퇴의 차이", "n": 8}, {"l": "ko", "c": "member", "id": "ko-allrw", "t": "올 리워드 — 리워드만으로 예약", "n": 5}, {"l": "ko", "c": "partner", "id": "ko-comp", "t": "파트너 보상, 한 계단씩", "n": 12, "lk": 1}, {"l": "ko", "c": "partner", "id": "ko-know", "t": "MD 가는 노하우 4가지", "n": 13, "lk": 1}, {"l": "ja", "c": "start", "id": "ja-must1", "t": "加入前に必読 ① 貯まるサブスク", "n": 6}, {"l": "ja", "c": "start", "id": "ja-must2", "t": "加入前に必読 ② リワード2倍の理由", "n": 6}, {"l": "ja", "c": "start", "id": "ja-must3", "t": "加入前に必読 ③ リワードの使い方", "n": 6}, {"l": "ja", "c": "start", "id": "ja-must4", "t": "加入前に必読 ④ 会費を止めたら？", "n": 7}, {"l": "ja", "c": "start", "id": "ja-refund", "t": "返金・支払い停止・退会のちがい", "n": 8}, {"l": "ja", "c": "member", "id": "ja-allrw", "t": "オールリワード — リワードだけで予約", "n": 5}, {"l": "en", "c": "start", "id": "en-must1", "t": "Must-read ① A subscription that adds up", "n": 6}, {"l": "en", "c": "start", "id": "en-must2", "t": "Must-read ② Why 2x rewards?", "n": 6}, {"l": "en", "c": "start", "id": "en-must3", "t": "Must-read ③ How to use your rewards", "n": 6}, {"l": "en", "c": "start", "id": "en-must4", "t": "Must-read ④ If you pause", "n": 7}, {"l": "en", "c": "start", "id": "en-refund", "t": "Refund · pause · cancel", "n": 8}, {"l": "en", "c": "member", "id": "en-allrw", "t": "All Reward — book with rewards only", "n": 5}, {"l": "en", "c": "partner", "id": "en-comp", "t": "Partner rewards, step by step", "n": 12, "lk": 1}, {"l": "en", "c": "partner", "id": "en-know", "t": "4 tips to reach MD", "n": 13, "lk": 1}];
 var T={
- ko:{h1:"카드뉴스 자료실",lead:"카드를 눌러 크게 보고, 저장해서 카톡으로 보내 주세요.",start:"처음 오셨어요 · 가입 전 필독",member:"멤버 활용",partner:"파트너 자료",n:"장",save:"⬇ 이미지 저장",share:"📤 보내기",link:"🔗 링크 복사",copied:"링크를 복사했어요",hint:"저장이 안 되면 카드를 길게 눌러 ‘이미지 저장’을 눌러 주세요.",close:"닫기",list:"목록",hub:"허브로 돌아가기"},
- ja:{h1:"カードニュース資料室",lead:"カードをタップして大きく見て、保存してLINEなどで送ってください。",start:"はじめての方・加入前に必読",member:"メンバー活用",partner:"パートナー資料",n:"枚",save:"⬇ 画像を保存",share:"📤 送る",link:"🔗 リンクをコピー",copied:"リンクをコピーしました",hint:"保存できない時は、カードを長押しして「画像を保存」を選んでください。",close:"閉じる",list:"一覧",hub:"ハブに戻る"},
- en:{h1:"Card News Library",lead:"Tap a set to view it large, then save and share it.",start:"New here · Must-read before joining",member:"For members",partner:"For partners",n:"cards",save:"⬇ Save image",share:"📤 Share",link:"🔗 Copy link",copied:"Link copied",hint:"If saving doesn't work, press and hold the card and choose “Save image”.",close:"Close",list:"List",hub:"Back to hub"}
+ ko:{h1:"카드뉴스 자료실",lead:"카드를 눌러 크게 보고, 저장해서 카톡으로 보내 주세요.",start:"처음 오셨어요 · 가입 전 필독",member:"멤버 활용",partner:"파트너 자료",n:"장",save:"⬇ 이미지 저장",share:"📤 보내기",link:"🔗 링크 복사",copied:"링크를 복사했어요",hint:"저장이 안 되면 카드를 길게 눌러 ‘이미지 저장’을 눌러 주세요.",close:"닫기",list:"목록",hub:"허브로 돌아가기",locked:"파트너 자료는 허브에 로그인한 분만 볼 수 있어요.",login:"허브에서 로그인하기"},
+ ja:{h1:"カードニュース資料室",lead:"カードをタップして大きく見て、保存してLINEなどで送ってください。",start:"はじめての方・加入前に必読",member:"メンバー活用",partner:"パートナー資料",n:"枚",save:"⬇ 画像を保存",share:"📤 送る",link:"🔗 リンクをコピー",copied:"リンクをコピーしました",hint:"保存できない時は、カードを長押しして「画像を保存」を選んでください。",close:"閉じる",list:"一覧",hub:"ハブに戻る",locked:"パートナー資料はハブにログインした方だけ見られます。",login:"ハブでログイン"},
+ en:{h1:"Card News Library",lead:"Tap a set to view it large, then save and share it.",start:"New here · Must-read before joining",member:"For members",partner:"For partners",n:"cards",save:"⬇ Save image",share:"📤 Share",link:"🔗 Copy link",copied:"Link copied",hint:"If saving doesn't work, press and hold the card and choose “Save image”.",close:"Close",list:"List",hub:"Back to hub",locked:"Partner materials are only for team members logged in to the hub.",login:"Log in at the hub"}
 };
 var $=function(i){return document.getElementById(i)};
 var lang="ko",cur=null,idx=0;
 function src(id,i,s){return "img/"+id+"-"+i+(s?"-s":"")+".jpg"}
+/* 허브에 로그인하면 이 기기에 저장되는 열쇠로 파트너 카드(암호화)를 풀어요 */
+function hubKey(){try{var a=JSON.parse(sessionStorage.getItem("cc_gate_v1")||"null");if(a&&a.k)return a.k;
+  var b=JSON.parse(localStorage.getItem("cc_gate_keep_v1")||"null");if(b&&b.k&&(!b.x||b.x>Date.now()))return b.k}catch(e){}return ""}
+var KEY=hubKey(),CK=null,URLS={};
+function cryptoKey(){if(!CK){var r=atob(KEY),u=new Uint8Array(r.length);for(var i=0;i<r.length;i++)u[i]=r.charCodeAt(i);
+  CK=crypto.subtle.importKey("raw",u,"AES-GCM",false,["decrypt"])}return CK}
+function isLk(id){var s=SETS.find(function(x){return x.id===id});return !!(s&&s.lk)}
+function url(id,i,sm){
+  if(!isLk(id))return Promise.resolve(src(id,i,sm));
+  var n=id+"-"+i+(sm?"-s":"");if(URLS[n])return URLS[n];
+  return URLS[n]=Promise.all([cryptoKey(),fetch("p/"+n+".bin").then(function(r){return r.arrayBuffer()})]).then(function(a){
+    var b=new Uint8Array(a[1]);return crypto.subtle.decrypt({name:"AES-GCM",iv:b.slice(0,12)},a[0],b.slice(12))
+  }).then(function(pt){return URL.createObjectURL(new Blob([pt],{type:"image/jpeg"}))});
+}
+function fill(root){root.querySelectorAll("img[data-id]").forEach(function(im){url(im.dataset.id,+im.dataset.i,im.dataset.s==="1").then(function(u){im.src=u})})}
 function render(){
   var t=T[lang];document.documentElement.lang=lang;
   $("h1").textContent=t.h1;$("backt").textContent=t.hub;$("vbt").textContent=t.list;$("lead").textContent=t.lead;
   document.querySelectorAll(".tabs button").forEach(function(b){b.setAttribute("aria-selected",b.dataset.l===lang)});
   var h="";["start","member","partner"].forEach(function(c){
     var ss=SETS.filter(function(s){return s.l===lang&&s.c===c});if(!ss.length)return;
+    if(c==="partner"&&!KEY){h+='<h2><span class="dot"></span>'+t[c]+' 🔒</h2><div class="lock"><div class="ic">🔒</div><p>'+t.locked+'</p><a href="../">'+t.login+'</a></div>';return}
     h+='<h2><span class="dot"></span>'+t[c]+'</h2><div class="grid">';
-    ss.forEach(function(s){h+='<button class="set" data-id="'+s.id+'"><img loading="lazy" src="'+src(s.id,1,1)+'" alt=""><div class="t">'+s.t+'</div><div class="n">'+s.n+' '+t.n+'</div></button>'});
+    ss.forEach(function(s){h+='<button class="set" data-id="'+s.id+'"><img loading="lazy" data-id="'+s.id+'" data-i="1" data-s="1" alt=""><div class="t">'+s.t+'</div><div class="n">'+s.n+' '+t.n+'</div></button>'});
     h+='</div>';
   });
-  $("list").innerHTML=h;
+  $("list").innerHTML=h;fill($("list"));
   try{localStorage.setItem("cc_cards_lang",lang)}catch(e){}
 }
 function openSet(id,i){
-  var s=SETS.find(function(x){return x.id===id});if(!s)return;
+  var s=SETS.find(function(x){return x.id===id});if(!s||(s.lk&&!KEY))return;
   cur=s;if(s.l!==lang){lang=s.l;render()}
   var t=T[lang];$("vt").textContent=s.t;
-  var h="";for(var k=1;k<=s.n;k++)h+='<div class="slide"><img src="'+src(s.id,k)+'" alt="'+s.t+' '+k+'"></div>';
-  $("strip").innerHTML=h;$("vw").classList.add("on");document.body.style.overflow="hidden";
+  var h="";for(var k=1;k<=s.n;k++)h+='<div class="slide"><img data-id="'+s.id+'" data-i="'+k+'" alt="'+s.t+' '+k+'"></div>';
+  $("strip").innerHTML=h;fill($("strip"));$("vw").classList.add("on");document.body.style.overflow="hidden";
   $("dl").textContent=t.save;$("hint").textContent=t.hint;$("vx").setAttribute("aria-label",t.close);
   $("sh").textContent=(navigator.share?t.share:t.link);
   if(location.hash!=="#"+id){history.pushState({v:1},"","#"+id);pushed=true}
@@ -133,7 +154,7 @@ function go(i,instant){
 }
 function upd(){
   $("cnt").textContent=(idx+1)+" / "+cur.n;$("pv").disabled=idx===0;$("nx").disabled=idx===cur.n-1;
-  $("dl").href=src(cur.id,idx+1);$("dl").setAttribute("download",cur.id+"-"+(idx+1)+".jpg");
+  var me=cur.id,mi=idx;url(me,mi+1).then(function(u){if(cur&&cur.id===me&&idx===mi)$("dl").href=u});$("dl").setAttribute("download",cur.id+"-"+(idx+1)+".jpg");
 }
 var tm;$("strip").addEventListener("scroll",function(){clearTimeout(tm);tm=setTimeout(function(){var st=$("strip");var i=Math.round(st.scrollLeft/st.clientWidth);if(cur&&i!==idx){idx=i;upd()}},80)});
 $("pv").onclick=function(){go(idx-1)};$("nx").onclick=function(){go(idx+1)};$("vx").onclick=close;$("vb").onclick=close;
@@ -145,8 +166,8 @@ function toast(m){var t=$("toast");t.textContent=m;t.style.display="block";setTi
 $("sh").onclick=function(){
   var url=location.origin+location.pathname+"#"+cur.id;
   if(navigator.share){
-    var f=src(cur.id,idx+1);
-    fetch(f).then(function(r){return r.blob()}).then(function(b){
+    var f=null;
+    url(cur.id,idx+1).then(function(u){return fetch(u)}).then(function(r){return r.blob()}).then(function(b){
       var file=new File([b],cur.id+"-"+(idx+1)+".jpg",{type:"image/jpeg"});
       if(navigator.canShare&&navigator.canShare({files:[file]}))return navigator.share({files:[file]});
       return navigator.share({title:cur.t,url:url});
