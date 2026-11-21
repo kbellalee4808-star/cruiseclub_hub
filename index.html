@@ -62,6 +62,8 @@ button[disabled]{opacity:.6;cursor:default}
 (function(){
   /* 자주 묻는 질문 링크(#faq...)는 로그인 없이 공개 FAQ 페이지로 바로 */
   if(/^#faq/i.test(location.hash)){location.replace("faq.html"+(location.hash.toLowerCase()==="#faq"?"":location.hash));return}
+  /* 카드뉴스 자료실 링크(#cards)도 로그인 없이 공개 페이지로 바로 */
+  if(/^#cards/i.test(location.hash)){location.replace("cards/"+(location.hash.toLowerCase()==="#cards"?"":location.hash.replace(/^#cards-?/i,"#")));return}
   var URL_="https://script.google.com/macros/s/AKfycbwpPXi9xD0A7lNM8YYo8_DausKLxWDGhOLZdLQi6eERW3XaV0Vs_gcv0kaYcnziApHNBg/exec", IV="31Rav2d2rGrcMivA", LOGO="";
   try{history.scrollRestoration="manual"}catch(e){}
   var LK="cc_gate_keep_v1";
