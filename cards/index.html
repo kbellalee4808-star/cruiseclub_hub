@@ -19,6 +19,9 @@ body{margin:0;background:var(--cream);color:var(--ink);font-family:"Noto Sans KR
 header{background:var(--navy);color:var(--cream);padding:calc(20px + env(safe-area-inset-top,0px)) 16px 0}
 .wrap{max-width:760px;margin:0 auto}
 .brand{font-size:.85rem;color:var(--gold);font-weight:700;letter-spacing:.02em}
+.back{display:inline-flex;align-items:center;gap:4px;min-height:44px;padding:0 16px 0 12px;margin:0 0 10px;border-radius:999px;background:rgba(250,247,242,.15);color:var(--cream);font-weight:700;font-size:1rem;text-decoration:none}
+.back[hidden]{display:none}
+.vback{min-height:48px;padding:0 16px 0 12px;border:0;border-radius:12px;background:var(--gold);color:var(--navy);font:inherit;font-size:1rem;font-weight:700;cursor:pointer;white-space:nowrap}
 h1{margin:6px 0 6px;font-size:1.6rem;line-height:1.3}
 .lead{margin:0 0 18px;color:#c9d3de;font-size:1rem}
 .tabs{display:flex;gap:6px}
@@ -61,6 +64,7 @@ footer{text-align:center;color:var(--sub);font-size:.8rem;padding:10px 16px calc
 </head>
 <body>
 <header><div class="wrap">
+  <a class="back" id="back" href="../" hidden>‹ <span id="backt">허브로 돌아가기</span></a>
   <div class="brand">⚓ CRUISE CLUB</div>
   <h1 id="h1">카드뉴스 자료실</h1>
   <p class="lead" id="lead">카드를 눌러 크게 보고, 저장해서 카톡으로 보내 주세요.</p>
@@ -74,7 +78,7 @@ footer{text-align:center;color:var(--sub);font-size:.8rem;padding:10px 16px calc
 <footer>&copy; Bella · Cruise Club</footer>
 
 <div class="vw" id="vw" role="dialog" aria-modal="true" aria-labelledby="vt">
-  <div class="vbar"><div class="vt" id="vt"></div><button class="x" id="vx" aria-label="닫기">✕</button></div>
+  <div class="vbar"><button class="vback" id="vb">‹ <span id="vbt">목록</span></button><div class="vt" id="vt"></div><button class="x" id="vx" aria-label="닫기">✕</button></div>
   <div class="strip" id="strip"></div>
   <div class="vfoot">
     <div class="cnt" id="cnt"></div>
@@ -88,16 +92,16 @@ footer{text-align:center;color:var(--sub);font-size:.8rem;padding:10px 16px calc
 <script>
 var SETS=[{"l": "ko", "c": "start", "id": "ko-must1", "t": "가입 전 필독 ① 내고 쌓이는 구독", "n": 6}, {"l": "ko", "c": "start", "id": "ko-must2", "t": "가입 전 필독 ② 리워드 2배인 이유", "n": 6}, {"l": "ko", "c": "start", "id": "ko-must3", "t": "가입 전 필독 ③ 쌓은 리워드 쓰는 법", "n": 6}, {"l": "ko", "c": "start", "id": "ko-must4", "t": "가입 전 필독 ④ 구독을 멈추면?", "n": 7}, {"l": "ko", "c": "start", "id": "ko-refund", "t": "환불 · 결제 멈춤 · 탈퇴의 차이", "n": 8}, {"l": "ko", "c": "member", "id": "ko-allrw", "t": "올 리워드 — 리워드만으로 예약", "n": 5}, {"l": "ko", "c": "partner", "id": "ko-comp", "t": "파트너 보상, 한 계단씩", "n": 12}, {"l": "ko", "c": "partner", "id": "ko-know", "t": "MD 가는 노하우 4가지", "n": 13}, {"l": "ja", "c": "start", "id": "ja-must1", "t": "加入前に必読 ① 貯まるサブスク", "n": 6}, {"l": "ja", "c": "start", "id": "ja-must2", "t": "加入前に必読 ② リワード2倍の理由", "n": 6}, {"l": "ja", "c": "start", "id": "ja-must3", "t": "加入前に必読 ③ リワードの使い方", "n": 6}, {"l": "ja", "c": "start", "id": "ja-must4", "t": "加入前に必読 ④ 会費を止めたら？", "n": 7}, {"l": "ja", "c": "start", "id": "ja-refund", "t": "返金・支払い停止・退会のちがい", "n": 8}, {"l": "ja", "c": "member", "id": "ja-allrw", "t": "オールリワード — リワードだけで予約", "n": 5}, {"l": "en", "c": "start", "id": "en-must1", "t": "Must-read ① A subscription that adds up", "n": 6}, {"l": "en", "c": "start", "id": "en-must2", "t": "Must-read ② Why 2x rewards?", "n": 6}, {"l": "en", "c": "start", "id": "en-must3", "t": "Must-read ③ How to use your rewards", "n": 6}, {"l": "en", "c": "start", "id": "en-must4", "t": "Must-read ④ If you pause", "n": 7}, {"l": "en", "c": "start", "id": "en-refund", "t": "Refund · pause · cancel", "n": 8}, {"l": "en", "c": "member", "id": "en-allrw", "t": "All Reward — book with rewards only", "n": 5}, {"l": "en", "c": "partner", "id": "en-comp", "t": "Partner rewards, step by step", "n": 12}, {"l": "en", "c": "partner", "id": "en-know", "t": "4 tips to reach MD", "n": 13}];
 var T={
- ko:{h1:"카드뉴스 자료실",lead:"카드를 눌러 크게 보고, 저장해서 카톡으로 보내 주세요.",start:"처음 오셨어요 · 가입 전 필독",member:"멤버 활용",partner:"파트너 자료",n:"장",save:"⬇ 이미지 저장",share:"📤 보내기",link:"🔗 링크 복사",copied:"링크를 복사했어요",hint:"저장이 안 되면 카드를 길게 눌러 ‘이미지 저장’을 눌러 주세요.",close:"닫기"},
- ja:{h1:"カードニュース資料室",lead:"カードをタップして大きく見て、保存してLINEなどで送ってください。",start:"はじめての方・加入前に必読",member:"メンバー活用",partner:"パートナー資料",n:"枚",save:"⬇ 画像を保存",share:"📤 送る",link:"🔗 リンクをコピー",copied:"リンクをコピーしました",hint:"保存できない時は、カードを長押しして「画像を保存」を選んでください。",close:"閉じる"},
- en:{h1:"Card News Library",lead:"Tap a set to view it large, then save and share it.",start:"New here · Must-read before joining",member:"For members",partner:"For partners",n:"cards",save:"⬇ Save image",share:"📤 Share",link:"🔗 Copy link",copied:"Link copied",hint:"If saving doesn't work, press and hold the card and choose “Save image”.",close:"Close"}
+ ko:{h1:"카드뉴스 자료실",lead:"카드를 눌러 크게 보고, 저장해서 카톡으로 보내 주세요.",start:"처음 오셨어요 · 가입 전 필독",member:"멤버 활용",partner:"파트너 자료",n:"장",save:"⬇ 이미지 저장",share:"📤 보내기",link:"🔗 링크 복사",copied:"링크를 복사했어요",hint:"저장이 안 되면 카드를 길게 눌러 ‘이미지 저장’을 눌러 주세요.",close:"닫기",list:"목록",hub:"허브로 돌아가기"},
+ ja:{h1:"カードニュース資料室",lead:"カードをタップして大きく見て、保存してLINEなどで送ってください。",start:"はじめての方・加入前に必読",member:"メンバー活用",partner:"パートナー資料",n:"枚",save:"⬇ 画像を保存",share:"📤 送る",link:"🔗 リンクをコピー",copied:"リンクをコピーしました",hint:"保存できない時は、カードを長押しして「画像を保存」を選んでください。",close:"閉じる",list:"一覧",hub:"ハブに戻る"},
+ en:{h1:"Card News Library",lead:"Tap a set to view it large, then save and share it.",start:"New here · Must-read before joining",member:"For members",partner:"For partners",n:"cards",save:"⬇ Save image",share:"📤 Share",link:"🔗 Copy link",copied:"Link copied",hint:"If saving doesn't work, press and hold the card and choose “Save image”.",close:"Close",list:"List",hub:"Back to hub"}
 };
 var $=function(i){return document.getElementById(i)};
 var lang="ko",cur=null,idx=0;
 function src(id,i,s){return "img/"+id+"-"+i+(s?"-s":"")+".jpg"}
 function render(){
   var t=T[lang];document.documentElement.lang=lang;
-  $("h1").textContent=t.h1;$("lead").textContent=t.lead;
+  $("h1").textContent=t.h1;$("backt").textContent=t.hub;$("vbt").textContent=t.list;$("lead").textContent=t.lead;
   document.querySelectorAll(".tabs button").forEach(function(b){b.setAttribute("aria-selected",b.dataset.l===lang)});
   var h="";["start","member","partner"].forEach(function(c){
     var ss=SETS.filter(function(s){return s.l===lang&&s.c===c});if(!ss.length)return;
@@ -116,10 +120,13 @@ function openSet(id,i){
   $("strip").innerHTML=h;$("vw").classList.add("on");document.body.style.overflow="hidden";
   $("dl").textContent=t.save;$("hint").textContent=t.hint;$("vx").setAttribute("aria-label",t.close);
   $("sh").textContent=(navigator.share?t.share:t.link);
-  if(location.hash!=="#"+id)history.replaceState(null,"","#"+id);
+  if(location.hash!=="#"+id){history.pushState({v:1},"","#"+id);pushed=true}
   go(i||0,true);
 }
-function close(){$("vw").classList.remove("on");document.body.style.overflow="";cur=null;history.replaceState(null,"",location.pathname+location.search)}
+var pushed=false;
+function hide(){$("vw").classList.remove("on");document.body.style.overflow="";cur=null}
+function close(){if(pushed){pushed=false;history.back();return}hide();history.replaceState(null,"",location.pathname+location.search)}
+window.addEventListener("popstate",function(){var h=location.hash.slice(1);if(!h){pushed=false;if(cur)hide()}else if(!cur||cur.id!==h)openSet(h,0)});
 function go(i,instant){
   if(!cur)return;idx=Math.max(0,Math.min(cur.n-1,i));
   var st=$("strip");st.scrollTo({left:idx*st.clientWidth,behavior:instant?"auto":"smooth"});upd();
@@ -129,7 +136,7 @@ function upd(){
   $("dl").href=src(cur.id,idx+1);$("dl").setAttribute("download",cur.id+"-"+(idx+1)+".jpg");
 }
 var tm;$("strip").addEventListener("scroll",function(){clearTimeout(tm);tm=setTimeout(function(){var st=$("strip");var i=Math.round(st.scrollLeft/st.clientWidth);if(cur&&i!==idx){idx=i;upd()}},80)});
-$("pv").onclick=function(){go(idx-1)};$("nx").onclick=function(){go(idx+1)};$("vx").onclick=close;
+$("pv").onclick=function(){go(idx-1)};$("nx").onclick=function(){go(idx+1)};$("vx").onclick=close;$("vb").onclick=close;
 document.addEventListener("keydown",function(e){if(!cur)return;if(e.key==="Escape")close();if(e.key==="ArrowLeft")go(idx-1);if(e.key==="ArrowRight")go(idx+1)});
 window.addEventListener("resize",function(){if(cur)go(idx,true)});
 $("list").addEventListener("click",function(e){var b=e.target.closest(".set");if(b)openSet(b.dataset.id,0)});
@@ -151,10 +158,13 @@ $("sh").onclick=function(){
 (function(){
   var q=new URLSearchParams(location.search).get("lang");
   try{var sv=localStorage.getItem("cc_cards_lang")}catch(e){}
+  var fromHub=new URLSearchParams(location.search).get("from")==="hub"||/\/cruiseclub_hub\/(?!cards)/.test(document.referrer||"");
+  try{if(fromHub)sessionStorage.setItem("cc_from_hub","1");else fromHub=sessionStorage.getItem("cc_from_hub")==="1"}catch(e){}
+  if(fromHub)$("back").hidden=false;
   lang=(q&&T[q])?q:(sv&&T[sv])?sv:"ko";render();
   var h=location.hash.slice(1);if(h)openSet(h,0);
 })();
-window.addEventListener("hashchange",function(){var h=location.hash.slice(1);if(h&&(!cur||cur.id!==h))openSet(h,0)});
+
 </script>
 </body>
 </html>

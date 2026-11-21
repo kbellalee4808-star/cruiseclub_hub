@@ -215,9 +215,9 @@ button[disabled]{opacity:.6;cursor:default}
           if(/테마송/.test(v))t.nodeValue="카드뉴스 자료실";
           else if(/Should|여기 있어야/.test(v))t.nodeValue="그림 카드로 쉽게 · 한국어 · 日本語 · English";
           else if(/[\u{1F3B5}\u{1F3B6}\u266A\u266B]/u.test(v))t.nodeValue="📚"});
-        var CN_URL="https://kbellalee4808-star.github.io/cruiseclub_hub/cards/";
-        if(cn.tagName==="A"){cn.href=CN_URL;cn.target="_blank";cn.rel="noopener"}
-        else{cn.style.cursor="pointer";cn.onclick=function(){window.open(CN_URL,"_blank","noopener")}}
+        var CN_URL="https://kbellalee4808-star.github.io/cruiseclub_hub/cards/?from=hub";
+        if(cn.tagName==="A"){cn.href=CN_URL;cn.removeAttribute("target");cn.removeAttribute("rel")}
+        else{cn.style.cursor="pointer";cn.onclick=function(){location.href=CN_URL}}
         var after=document.getElementById("cc-photo")||song;
         after.parentNode.insertBefore(cn,after.nextSibling);
       }
