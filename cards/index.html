@@ -154,6 +154,7 @@ function go(i,instant){
 }
 function upd(){
   $("cnt").textContent=(idx+1)+" / "+cur.n;$("pv").disabled=idx===0;$("nx").disabled=idx===cur.n-1;
+  prepShare();
   var me=cur.id,mi=idx;url(me,mi+1).then(function(u){if(cur&&cur.id===me&&idx===mi)$("dl").href=u});$("dl").setAttribute("download",cur.id+"-"+(idx+1)+".jpg");
 }
 var tm;$("strip").addEventListener("scroll",function(){clearTimeout(tm);tm=setTimeout(function(){var st=$("strip");var i=Math.round(st.scrollLeft/st.clientWidth);if(cur&&i!==idx){idx=i;upd()}},80)});
@@ -163,18 +164,23 @@ window.addEventListener("resize",function(){if(cur)go(idx,true)});
 $("list").addEventListener("click",function(e){var b=e.target.closest(".set");if(b)openSet(b.dataset.id,0)});
 document.querySelectorAll(".tabs button").forEach(function(b){b.onclick=function(){lang=b.dataset.l;render()}});
 function toast(m){var t=$("toast");t.textContent=m;t.style.display="block";setTimeout(function(){t.style.display="none"},1800)}
+/* 보내기: 아이폰은 버튼을 누른 그 순간에 바로 공유창을 열어야 해서, 사진을 미리 준비해 둬요 */
+var shFile=null,shKey="";
+function prepShare(){
+  if(!cur||!navigator.share)return;var me=cur.id,mi=idx,k=me+"-"+(mi+1);if(shKey===k)return;shKey=k;shFile=null;
+  url(me,mi+1).then(function(u){return fetch(u)}).then(function(r){return r.blob()}).then(function(b){
+    if(shKey===k)shFile=new File([b],k+".jpg",{type:"image/jpeg"})}).catch(function(){});
+}
+function copyLink(u){
+  (navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(function(){toast(T[lang].copied)}).catch(function(){prompt("",u)});
+}
 $("sh").onclick=function(){
-  var url=location.origin+location.pathname+"#"+cur.id;
+  var u=location.origin+location.pathname+"#"+cur.id;
   if(navigator.share){
-    var f=null;
-    url(cur.id,idx+1).then(function(u){return fetch(u)}).then(function(r){return r.blob()}).then(function(b){
-      var file=new File([b],cur.id+"-"+(idx+1)+".jpg",{type:"image/jpeg"});
-      if(navigator.canShare&&navigator.canShare({files:[file]}))return navigator.share({files:[file]});
-      return navigator.share({title:cur.t,url:url});
-    }).catch(function(){});
-  }else{
-    (navigator.clipboard?navigator.clipboard.writeText(url):Promise.reject()).then(function(){toast(T[lang].copied)}).catch(function(){prompt("",url)});
-  }
+    var d=(shFile&&navigator.canShare&&navigator.canShare({files:[shFile]}))?{files:[shFile]}:{title:cur.t,url:u};
+    navigator.share(d).catch(function(e){if(e&&e.name==="AbortError")return;
+      if(d.files)navigator.share({title:cur.t,url:u}).catch(function(e2){if(!e2||e2.name!=="AbortError")copyLink(u)});else copyLink(u)});
+  }else copyLink(u);
 };
 (function(){
   var q=new URLSearchParams(location.search).get("lang");
