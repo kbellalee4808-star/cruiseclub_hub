@@ -843,14 +843,14 @@ button[disabled]{opacity:.6;cursor:default}
     function extras(){try{ccRouter()}catch(e){console.error(e)}try{fixTitles();ccVideoTabs(document)}catch(e){}try{ccAddons()}catch(e){console.error(e)}}
     /* 미납 안내 문자: 다정한 문구로 (복사되는 글 + 화면에 보이는 글 모두) */
     var UNPAID_T="🌊 크루즈 멤버십 결제 안내",
-        UNPAID_B="안녕하세요, 잘 지내셨죠? 😊\n이번 달 멤버십 결제가 아직 안 된 것 같아서 살짝 알려드려요.\n카드 한도나 유효기간 때문에 자동결제가 안 되는 경우가 많더라고요.\n\n아래 안내 페이지 보시면 금방 해결하실 수 있어요 🙏\n혹시 어려우시면 편하게 말씀 주세요, 같이 도와드릴게요!",
+        UNPAID_B="안녕하세요, 잘 지내셨죠? 😊\n이번 달 멤버십 결제가 아직 안 된 것 같아서 살짝 알려드려요.\n결제 안내 메일도 가 있을 거예요. 혹시 안 보이면 스팸함도 한 번 봐 주세요!\n카드 한도나 유효기간 때문에 자동결제가 안 되는 경우가 많더라고요.\n\n아래 안내 페이지 보시면 금방 해결하실 수 있어요 🙏\n혹시 어려우시면 편하게 말씀 주세요, 같이 도와드릴게요!",
         UNPAID_L="👇 결제 안내 바로가기\nhttps://kbellalee4808-star.github.io/-_/";
     function fixUnpaid(){
-      try{if(window.unpaidTexts&&unpaidTexts[1]&&unpaidTexts[1].indexOf(UNPAID_T)<0)unpaidTexts[1]=UNPAID_T+"\n\n"+UNPAID_B+"\n\n"+UNPAID_L}catch(e){}
+      try{if(window.unpaidTexts&&unpaidTexts[1]&&unpaidTexts[1].indexOf(UNPAID_B)<0)unpaidTexts[1]=UNPAID_T+"\n\n"+UNPAID_B+"\n\n"+UNPAID_L}catch(e){}
       [].forEach.call(document.querySelectorAll("div"),function(d){
         if(d.children.length)return;var v=d.textContent.trim();
         if(v==="⚠️ 크루즈 멤버십 구독료 결제 안내")d.textContent=UNPAID_T;
-        else if(/^안녕하세요 😊\s*미납이 확인되었습니다/.test(v))d.textContent=UNPAID_B;
+        else if(/^안녕하세요 😊\s*미납이 확인되었습니다/.test(v)||(/^안녕하세요, 잘 지내셨죠/.test(v)&&v!==UNPAID_B))d.textContent=UNPAID_B;
       });
     }
     ensure();addRefund();addSearch();extras();fixUnpaid();setInterval(function(){ensure();addRefund();addSearch();extras();fixUnpaid()},1500);
