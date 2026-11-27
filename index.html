@@ -844,9 +844,17 @@ button[disabled]{opacity:.6;cursor:default}
     /* 미납 안내 문자: 다정한 문구로 (복사되는 글 + 화면에 보이는 글 모두) */
     var UNPAID_T="🌊 크루즈 멤버십 결제 안내",
         UNPAID_B="안녕하세요, 잘 지내셨죠? 😊\n이번 달 멤버십 결제가 아직 안 된 것 같아서 살짝 알려드려요.\n결제 안내 메일도 가 있을 거예요. 혹시 안 보이면 스팸함도 한 번 봐 주세요!\n카드 한도나 유효기간 때문에 자동결제가 안 되는 경우가 많더라고요.\n\n아래 안내 페이지 보시면 금방 해결하실 수 있어요 🙏\n혹시 어려우시면 편하게 말씀 주세요, 같이 도와드릴게요!",
-        UNPAID_L="👇 결제 안내 바로가기\nhttps://kbellalee4808-star.github.io/-_/";
+        UNPAID_L="👇 결제 안내 바로가기\nhttps://kbellalee4808-star.github.io/-_/",
+        UNPAID_M="📮 메일 찾는 법 (그림으로 쉽게)\nhttps://kbellalee4808-star.github.io/cruiseclub_hub/cards/#ko-myacct";
     function fixUnpaid(){
-      try{if(window.unpaidTexts&&unpaidTexts[1]&&unpaidTexts[1].indexOf(UNPAID_B)<0)unpaidTexts[1]=UNPAID_T+"\n\n"+UNPAID_B+"\n\n"+UNPAID_L}catch(e){}
+      var full=UNPAID_T+"\n\n"+UNPAID_B+"\n\n"+UNPAID_L+"\n\n"+UNPAID_M;
+      try{if(window.unpaidTexts&&unpaidTexts[1]&&unpaidTexts[1]!==full)unpaidTexts[1]=full}catch(e){}
+      /* 화면: 결제 안내 상자 아래에 "메일 찾는 법" 상자 하나 더 */
+      if(!document.getElementById("cc-unpaid-mail"))[].some.call(document.querySelectorAll("div"),function(d){
+        if(!/^👇 결제 안내 바로가기/.test(d.textContent.trim())||!/-_\//.test(d.textContent))return false;
+        var m=d.cloneNode(true);m.id="cc-unpaid-mail";
+        m.innerHTML='📮 메일 찾는 법 (그림으로 쉽게)<br><span style="color:rgba(255,255,255,0.55);font-size:11px;">https://kbellalee4808-star.github.io/cruiseclub_hub/cards/#ko-myacct</span>';
+        d.parentNode.insertBefore(m,d.nextSibling);return true});
       [].forEach.call(document.querySelectorAll("div"),function(d){
         if(d.children.length)return;var v=d.textContent.trim();
         if(v==="⚠️ 크루즈 멤버십 구독료 결제 안내")d.textContent=UNPAID_T;
