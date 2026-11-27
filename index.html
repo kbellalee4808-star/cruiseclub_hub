@@ -584,9 +584,9 @@ button[disabled]{opacity:.6;cursor:default}
       fromHash();
     
       /* 검색 등에서 쓰는 도우미: 이 요소가 있는 화면으로 바꿔 주기 */
-      window.ccShowFor=function(n){var v=n&&n.closest&&n.closest("[data-ccv]");if(!v)return;
+      window.ccShowFor=function(n){var v=n&&n.closest&&n.closest("[data-ccv]");if(!v){if(n&&n.closest&&n.closest(".cc-top")&&cur!=="home")show("home");return}
         var k=v.getAttribute("data-ccv");if(k!==cur)show(k);var a=n.closest(".cca");if(a)a.classList.add("open")};
-      window.ccAllOn=function(on){document.body.classList.toggle("ccv-all",!!on)};
+      window.ccAllOn=function(on){var B=document.body.classList;B.toggle("ccv-all",!!on);/* 검색할 땐 첫 화면 위쪽 카드(카드뉴스·여행사진·테마송 등)도 같이 찾기 */if(on){ccAllOn._h=B.contains("ccv-home");B.add("ccv-home")}else if(ccAllOn._h===false)B.remove("ccv-home")};
     }
     
 
