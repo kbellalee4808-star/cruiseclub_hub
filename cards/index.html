@@ -50,20 +50,18 @@ footer{text-align:center;color:var(--sub);font-size:.8rem;padding:10px 16px calc
 .vbar{display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top,0px)) 12px 10px;color:var(--cream)}
 .vbar .vt{flex:1;font-weight:700;font-size:1rem;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .x{min-width:48px;min-height:48px;border:0;border-radius:12px;background:rgba(250,247,242,.15);color:var(--cream);font-size:1.4rem;cursor:pointer}
-.strip{flex:1;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
-.strip::-webkit-scrollbar{display:none}
-.slide{flex:0 0 100%;scroll-snap-align:center;display:flex;align-items:center;justify-content:center;padding:4px 12px}
-.slide img{max-width:100%;max-height:100%;border-radius:10px;-webkit-touch-callout:default}
-.vfoot{padding:10px 12px calc(14px + env(safe-area-inset-bottom,0px));color:var(--cream)}
-.cnt{text-align:center;font-size:1.05rem;font-weight:700;margin-bottom:10px}
-.nav{display:flex;gap:8px;margin-bottom:8px}
-.nav button,.acts a,.acts button{flex:1;min-height:52px;border:0;border-radius:12px;font:inherit;font-size:1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none}
-.nav button{background:rgba(250,247,242,.15);color:var(--cream)}
-.nav button:disabled{opacity:.35}
-.acts{display:flex;gap:8px}
-.acts a{background:var(--gold);color:var(--navy)}
-.acts button{background:var(--cream);color:var(--navy)}
-.all{width:100%;min-height:56px;margin-top:8px;border:0;border-radius:12px;background:#FEE500;color:#191919;font:inherit;font-size:1.05rem;font-weight:800;cursor:pointer}
+.strip{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:4px 12px 8px}
+.slide{max-width:520px;margin:0 auto 22px}
+.slide img{display:block;width:100%;height:auto;min-height:120px;border-radius:10px;background:rgba(250,247,242,.06);-webkit-touch-callout:default}
+.sbar{display:flex;align-items:center;gap:8px;margin-top:8px}
+.sbar .no{flex:0 0 auto;min-width:52px;color:#c9d3de;font-weight:700;font-size:.95rem}
+.sbar a,.sbar button{flex:1;min-height:46px;border:0;border-radius:12px;font:inherit;font-size:.95rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none}
+.sbar a{background:var(--gold);color:var(--navy)}
+.sbar button{background:var(--cream);color:var(--navy)}
+.endnote{max-width:520px;margin:0 auto 10px;text-align:center;color:#9fb0c2;font-size:.85rem;line-height:1.6}
+.vfoot{padding:10px 12px calc(12px + env(safe-area-inset-bottom,0px));color:var(--cream);border-top:1px solid rgba(250,247,242,.1)}
+.lnk{width:100%;min-height:48px;margin-top:8px;border:0;border-radius:12px;background:rgba(250,247,242,.15);color:var(--cream);font:inherit;font-size:1rem;font-weight:700;cursor:pointer}
+.all{width:100%;min-height:56px;border:0;border-radius:12px;background:#FEE500;color:#191919;font:inherit;font-size:1.05rem;font-weight:800;cursor:pointer}
 .all[hidden]{display:none}
 .all:disabled{opacity:.6}
 .hint{font-size:.82rem;color:#9fb0c2;text-align:center;margin-top:8px}
@@ -89,11 +87,8 @@ footer{text-align:center;color:var(--sub);font-size:.8rem;padding:10px 16px calc
   <div class="vbar"><button class="vback" id="vb">‹ <span id="vbt">목록</span></button><div class="vt" id="vt"></div><button class="x" id="vx" aria-label="닫기">✕</button></div>
   <div class="strip" id="strip"></div>
   <div class="vfoot">
-    <div class="cnt" id="cnt"></div>
-    <div class="nav"><button id="pv">‹</button><button id="nx">›</button></div>
-    <div class="acts"><a id="dl" download>⬇</a><button id="sh"></button></div>
     <button class="all" id="all" hidden></button>
-    <div class="hint" id="hint"></div>
+    <button class="lnk" id="lnk"></button>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -101,9 +96,9 @@ footer{text-align:center;color:var(--sub);font-size:.8rem;padding:10px 16px calc
 <script>
 var SETS=[{"l": "ko", "c": "start", "id": "ko-must1", "t": "가입 전 필독 ① 내고 쌓이는 구독", "n": 6}, {"l": "ko", "c": "start", "id": "ko-must2", "t": "가입 전 필독 ② 리워드 2배인 이유", "n": 6}, {"l": "ko", "c": "start", "id": "ko-must3", "t": "가입 전 필독 ③ 쌓은 리워드 쓰는 법", "n": 6}, {"l": "ko", "c": "start", "id": "ko-must4", "t": "가입 전 필독 ④ 구독을 멈추면?", "n": 7}, {"l": "ko", "c": "start", "id": "ko-refund", "t": "환불 · 결제 멈춤 · 탈퇴의 차이", "n": 8}, {"l": "ko", "c": "member", "id": "ko-allrw", "t": "올 리워드 — 리워드만으로 예약", "n": 5}, {"l": "ko", "c": "member", "id": "ko-myacct", "t": "내 계정은 내가 챙겨요 · 결제 메일 확인", "n": 3}, {"l": "ko", "c": "partner", "id": "ko-comp", "t": "파트너 보상, 한 계단씩", "n": 12, "lk": 1}, {"l": "ko", "c": "partner", "id": "ko-know", "t": "MD 가는 노하우 4가지", "n": 13, "lk": 1}, {"l": "ja", "c": "start", "id": "ja-must1", "t": "加入前に必読 ① 貯まるサブスク", "n": 6}, {"l": "ja", "c": "start", "id": "ja-must2", "t": "加入前に必読 ② リワード2倍の理由", "n": 6}, {"l": "ja", "c": "start", "id": "ja-must3", "t": "加入前に必読 ③ リワードの使い方", "n": 6}, {"l": "ja", "c": "start", "id": "ja-must4", "t": "加入前に必読 ④ 会費を止めたら？", "n": 7}, {"l": "ja", "c": "start", "id": "ja-refund", "t": "返金・支払い停止・退会のちがい", "n": 8}, {"l": "ja", "c": "member", "id": "ja-allrw", "t": "オールリワード — リワードだけで予約", "n": 5}, {"l": "en", "c": "start", "id": "en-must1", "t": "Must-read ① A subscription that adds up", "n": 6}, {"l": "en", "c": "start", "id": "en-must2", "t": "Must-read ② Why 2x rewards?", "n": 6}, {"l": "en", "c": "start", "id": "en-must3", "t": "Must-read ③ How to use your rewards", "n": 6}, {"l": "en", "c": "start", "id": "en-must4", "t": "Must-read ④ If you pause", "n": 7}, {"l": "en", "c": "start", "id": "en-refund", "t": "Refund · pause · cancel", "n": 8}, {"l": "en", "c": "member", "id": "en-allrw", "t": "All Reward — book with rewards only", "n": 5}, {"l": "en", "c": "partner", "id": "en-comp", "t": "Partner rewards, step by step", "n": 12, "lk": 1}, {"l": "en", "c": "partner", "id": "en-know", "t": "4 tips to reach MD", "n": 13, "lk": 1}];
 var T={
- ko:{h1:"카드뉴스 자료실",lead:"카드를 눌러 크게 보고, 저장해서 카톡으로 보내 주세요.",start:"처음 오셨어요 · 가입 전 필독",member:"멤버 활용",partner:"파트너 자료",n:"장",save:"⬇ 이미지 저장",share:"📤 이 장만 보내기",all:"💬 {n}장 한번에 보내기",prep:"준비 중… {a}/{n}",link:"🔗 링크 복사",copied:"링크를 복사했어요",hint:"저장이 안 되면 카드를 길게 눌러 ‘이미지 저장’을 눌러 주세요.",close:"닫기",list:"목록",hub:"허브로 돌아가기",locked:"파트너 자료는 허브에 로그인한 분만 볼 수 있어요.",login:"허브에서 로그인하기"},
- ja:{h1:"カードニュース資料室",lead:"カードをタップして大きく見て、保存してLINEなどで送ってください。",start:"はじめての方・加入前に必読",member:"メンバー活用",partner:"パートナー資料",n:"枚",save:"⬇ 画像を保存",share:"📤 この1枚を送る",all:"💬 {n}枚まとめて送る",prep:"準備中… {a}/{n}",link:"🔗 リンクをコピー",copied:"リンクをコピーしました",hint:"保存できない時は、カードを長押しして「画像を保存」を選んでください。",close:"閉じる",list:"一覧",hub:"ハブに戻る",locked:"パートナー資料はハブにログインした方だけ見られます。",login:"ハブでログイン"},
- en:{h1:"Card News Library",lead:"Tap a set to view it large, then save and share it.",start:"New here · Must-read before joining",member:"For members",partner:"For partners",n:"cards",save:"⬇ Save image",share:"📤 Share this card",all:"💬 Share all {n} cards",prep:"Preparing… {a}/{n}",link:"🔗 Copy link",copied:"Link copied",hint:"If saving doesn't work, press and hold the card and choose “Save image”.",close:"Close",list:"List",hub:"Back to hub",locked:"Partner materials are only for team members logged in to the hub.",login:"Log in at the hub"}
+ ko:{h1:"카드뉴스 자료실",lead:"카드를 눌러 크게 보고, 저장해서 카톡으로 보내 주세요.",start:"처음 오셨어요 · 가입 전 필독",member:"멤버 활용",partner:"파트너 자료",n:"장",save:"⬇ 이미지 저장",share:"📤 이 장만 보내기",all:"💬 {n}장 한번에 보내기",prep:"준비 중… {a}/{n}",link:"🔗 링크 복사",copied:"링크를 복사했어요",save1:"⬇ 저장",share1:"📤 보내기",scroll:"👇 아래로 내리면 다음 장이 나와요",end:"끝까지 보셨어요 😊",hint:"저장이 안 되면 카드를 길게 눌러 ‘이미지 저장’을 눌러 주세요.",close:"닫기",list:"목록",hub:"허브로 돌아가기",locked:"파트너 자료는 허브에 로그인한 분만 볼 수 있어요.",login:"허브에서 로그인하기"},
+ ja:{h1:"カードニュース資料室",lead:"カードをタップして大きく見て、保存してLINEなどで送ってください。",start:"はじめての方・加入前に必読",member:"メンバー活用",partner:"パートナー資料",n:"枚",save:"⬇ 画像を保存",share:"📤 この1枚を送る",all:"💬 {n}枚まとめて送る",prep:"準備中… {a}/{n}",link:"🔗 リンクをコピー",copied:"リンクをコピーしました",save1:"⬇ 保存",share1:"📤 送る",scroll:"👇 下にスクロールすると次のカードが出ます",end:"最後まで見ました 😊",hint:"保存できない時は、カードを長押しして「画像を保存」を選んでください。",close:"閉じる",list:"一覧",hub:"ハブに戻る",locked:"パートナー資料はハブにログインした方だけ見られます。",login:"ハブでログイン"},
+ en:{h1:"Card News Library",lead:"Tap a set to view it large, then save and share it.",start:"New here · Must-read before joining",member:"For members",partner:"For partners",n:"cards",save:"⬇ Save image",share:"📤 Share this card",all:"💬 Share all {n} cards",prep:"Preparing… {a}/{n}",link:"🔗 Copy link",copied:"Link copied",save1:"⬇ Save",share1:"📤 Share",scroll:"👇 Scroll down for the next card",end:"That's all 😊",hint:"If saving doesn't work, press and hold the card and choose “Save image”.",close:"Close",list:"List",hub:"Back to hub",locked:"Partner materials are only for team members logged in to the hub.",login:"Log in at the hub"}
 };
 var $=function(i){return document.getElementById(i)};
 var lang="ko",cur=null,idx=0;
@@ -141,66 +136,58 @@ function openSet(id,i){
   var s=SETS.find(function(x){return x.id===id});if(!s||(s.lk&&!KEY))return;
   cur=s;if(s.l!==lang){lang=s.l;render()}
   var t=T[lang];$("vt").textContent=s.t;
-  var h="";for(var k=1;k<=s.n;k++)h+='<div class="slide"><img data-id="'+s.id+'" data-i="'+k+'" alt="'+s.t+' '+k+'"></div>';
-  $("strip").innerHTML=h;fill($("strip"));$("vw").classList.add("on");document.body.style.overflow="hidden";
-  $("dl").textContent=t.save;$("hint").textContent=t.hint;$("vx").setAttribute("aria-label",t.close);
-  $("sh").textContent=(navigator.share?t.share:t.link);
+  var h='<div class="endnote">'+t.scroll+'</div>';
+  for(var k=1;k<=s.n;k++)h+='<div class="slide"><img data-id="'+s.id+'" data-i="'+k+'" alt="'+s.t+' '+k+'"><div class="sbar"><span class="no">'+k+' / '+s.n+'</span><a data-k="'+k+'" download="'+s.id+'-'+k+'.jpg">'+t.save1+'</a>'+(navigator.share?'<button type="button" data-k="'+k+'">'+t.share1+'</button>':'')+'</div></div>';
+  h+='<div class="endnote">'+t.end+'</div>';
+  var st=$("strip");st.innerHTML=h;fill(st);st.scrollTop=0;
+  st.querySelectorAll("a[data-k]").forEach(function(a){url(s.id,+a.dataset.k).then(function(u){if(cur===s)a.href=u})});
+  $("vw").classList.add("on");document.body.style.overflow="hidden";$("vx").setAttribute("aria-label",t.close);
+  $("lnk").textContent=t.link;
   if(location.hash!=="#"+id){history.pushState({v:1},"","#"+id);pushed=true}
-  go(i||0,true);prepAll();
+  prepAll();
 }
 var pushed=false;
 function hide(){$("vw").classList.remove("on");document.body.style.overflow="";cur=null}
 function close(){if(pushed){pushed=false;history.back();return}hide();history.replaceState(null,"",location.pathname+location.search)}
 window.addEventListener("popstate",function(){var h=location.hash.slice(1);if(!h){pushed=false;if(cur)hide()}else if(!cur||cur.id!==h)openSet(h,0)});
-function go(i,instant){
-  if(!cur)return;idx=Math.max(0,Math.min(cur.n-1,i));
-  var st=$("strip");st.scrollTo({left:idx*st.clientWidth,behavior:instant?"auto":"smooth"});upd();
-}
-function upd(){
-  $("cnt").textContent=(idx+1)+" / "+cur.n;$("pv").disabled=idx===0;$("nx").disabled=idx===cur.n-1;
-  prepShare();
-  var me=cur.id,mi=idx;url(me,mi+1).then(function(u){if(cur&&cur.id===me&&idx===mi)$("dl").href=u});$("dl").setAttribute("download",cur.id+"-"+(idx+1)+".jpg");
-}
-var tm;$("strip").addEventListener("scroll",function(){clearTimeout(tm);tm=setTimeout(function(){var st=$("strip");var i=Math.round(st.scrollLeft/st.clientWidth);if(cur&&i!==idx){idx=i;upd()}},80)});
-$("pv").onclick=function(){go(idx-1)};$("nx").onclick=function(){go(idx+1)};$("vx").onclick=close;$("vb").onclick=close;
-document.addEventListener("keydown",function(e){if(!cur)return;if(e.key==="Escape")close();if(e.key==="ArrowLeft")go(idx-1);if(e.key==="ArrowRight")go(idx+1)});
-window.addEventListener("resize",function(){if(cur)go(idx,true)});
+$("vx").onclick=close;$("vb").onclick=close;
+document.addEventListener("keydown",function(e){if(cur&&e.key==="Escape")close()});
 $("list").addEventListener("click",function(e){var b=e.target.closest(".set");if(b)openSet(b.dataset.id,0)});
 document.querySelectorAll(".tabs button").forEach(function(b){b.onclick=function(){lang=b.dataset.l;render()}});
 function toast(m){var t=$("toast");t.textContent=m;t.style.display="block";setTimeout(function(){t.style.display="none"},1800)}
 
-/* 묶음 전체를 한 번에 보내기 — 열 때 모든 장을 미리 준비 */
-var allFiles=null,allFor="";
+/* 열 때 모든 장을 미리 준비 — 아이폰은 버튼을 누른 그 순간에 바로 공유창을 열어야 해서 */
+var allFiles=null,files=[],allFor="";
 function prepAll(){
-  var b=$("all");if(!cur||!navigator.share||!navigator.canShare){b.hidden=true;return}
-  var s=cur,t=T[lang];b.hidden=false;if(allFor===s.id&&allFiles){b.disabled=false;b.textContent=t.all.replace("{n}",s.n);return}
-  allFor=s.id;allFiles=null;b.disabled=true;var done=0,arr=[];b.textContent=t.prep.replace("{a}",0).replace("{n}",s.n);
+  var b=$("all"),s=cur,t=T[lang];
+  if(allFor===s.id&&allFiles){b.hidden=false;b.disabled=false;b.textContent=t.all.replace("{n}",s.n);return}
+  allFor=s.id;allFiles=null;files=[];
+  var canAll=!!(navigator.share&&navigator.canShare);b.hidden=!canAll;
+  if(canAll){b.disabled=true;b.textContent=t.prep.replace("{a}",0).replace("{n}",s.n)}
+  if(!navigator.share)return;
+  var done=0;
   for(var k=1;k<=s.n;k++)(function(k){url(s.id,k).then(function(u){return fetch(u)}).then(function(r){return r.blob()}).then(function(bl){
-    arr[k-1]=new File([bl],s.id+"-"+k+".jpg",{type:"image/jpeg"});done++;
     if(allFor!==s.id)return;
+    files[k-1]=new File([bl],s.id+"-"+k+".jpg",{type:"image/jpeg"});done++;
+    if(!canAll)return;
     if(done<s.n){b.textContent=t.prep.replace("{a}",done).replace("{n}",s.n);return}
-    if(navigator.canShare({files:arr})){allFiles=arr;b.disabled=false;b.textContent=t.all.replace("{n}",s.n)}else b.hidden=true;
-  })})(k);
+    if(navigator.canShare({files:files})){allFiles=files.slice();b.disabled=false;b.textContent=t.all.replace("{n}",s.n)}else b.hidden=true;
+  }).catch(function(){})})(k);
 }
 $("all").onclick=function(){if(!allFiles)return;navigator.share({files:allFiles}).catch(function(){})};
-/* 보내기: 아이폰은 버튼을 누른 그 순간에 바로 공유창을 열어야 해서, 사진을 미리 준비해 둬요 */
-var shFile=null,shKey="";
-function prepShare(){
-  if(!cur||!navigator.share)return;var me=cur.id,mi=idx,k=me+"-"+(mi+1);if(shKey===k)return;shKey=k;shFile=null;
-  url(me,mi+1).then(function(u){return fetch(u)}).then(function(r){return r.blob()}).then(function(b){
-    if(shKey===k)shFile=new File([b],k+".jpg",{type:"image/jpeg"})}).catch(function(){});
-}
 function copyLink(u){
   (navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(function(){toast(T[lang].copied)}).catch(function(){prompt("",u)});
 }
-$("sh").onclick=function(){
-  var u=location.origin+location.pathname+"#"+cur.id;
-  if(navigator.share){
-    var d=(shFile&&navigator.canShare&&navigator.canShare({files:[shFile]}))?{files:[shFile]}:{title:cur.t,url:u};
-    navigator.share(d).catch(function(e){if(e&&e.name==="AbortError")return;
-      if(d.files)navigator.share({title:cur.t,url:u}).catch(function(e2){if(!e2||e2.name!=="AbortError")copyLink(u)});else copyLink(u)});
-  }else copyLink(u);
-};
+function setUrl(){return location.origin+location.pathname+"#"+cur.id}
+$("lnk").onclick=function(){if(cur)copyLink(setUrl())};
+/* 한 장씩 보내기 */
+$("strip").addEventListener("click",function(e){
+  var b=e.target.closest("button[data-k]");if(!b||!cur)return;
+  var f=files[+b.dataset.k-1],u=setUrl();
+  var d=(f&&navigator.canShare&&navigator.canShare({files:[f]}))?{files:[f]}:{title:cur.t,url:u};
+  navigator.share(d).catch(function(err){if(err&&err.name==="AbortError")return;
+    if(d.files)navigator.share({title:cur.t,url:u}).catch(function(e2){if(!e2||e2.name!=="AbortError")copyLink(u)});else copyLink(u)});
+});
 (function(){
   var q=new URLSearchParams(location.search).get("lang");
   try{var sv=localStorage.getItem("cc_cards_lang")}catch(e){}

@@ -853,7 +853,7 @@ button[disabled]{opacity:.6;cursor:default}
       if(!document.getElementById("cc-unpaid-mail"))[].some.call(document.querySelectorAll("div"),function(d){
         if(!/^👇 결제 안내 바로가기/.test(d.textContent.trim())||!/-_\//.test(d.textContent))return false;
         var m=d.cloneNode(true);m.id="cc-unpaid-mail";
-        m.innerHTML='📮 메일 찾는 법 (그림으로 쉽게)<br><span style="color:rgba(255,255,255,0.55);font-size:11px;">https://kbellalee4808-star.github.io/cruiseclub_hub/cards/#ko-myacct</span>';
+        m.innerHTML='📮 메일 찾는 법 (그림으로 쉽게)<br><span style="color:rgba(255,255,255,0.55);font-size:11px;word-break:break-all;overflow-wrap:anywhere;">https://kbellalee4808-star.github.io/cruiseclub_hub/cards/#ko-myacct</span>';
         d.parentNode.insertBefore(m,d.nextSibling);return true});
       [].forEach.call(document.querySelectorAll("div"),function(d){
         if(d.children.length)return;var v=d.textContent.trim();
