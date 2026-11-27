@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#1B3A5C">
 <title>여행자보험 가입 방법</title>
+<meta name="description" content="카카오톡에서 바로 가입하는 해외여행보험 — 출발 전 5분, 순서대로 따라 하세요">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cruise Club">
+<meta property="og:title" content="🛟 여행자보험, 카카오톡에서 바로 가입">
+<meta property="og:description" content="출발 전 5분, 순서대로 따라 하세요 — 크루즈클럽 안내">
+<meta property="og:image" content="https://kbellalee4808-star.github.io/cruiseclub_hub/og-hub.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://kbellalee4808-star.github.io/cruiseclub_hub/insurance/">
+<meta name="twitter:card" content="summary_large_image">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
 :root{--navy:#1B3A5C;--deep:#13293f;--gold:#D4A94A;--ivory:#FAF7F2;--line:#e7e0d4;--muted:#6b7785;--kakao:#FEE500}
@@ -30,6 +40,10 @@ header p{font-size:14px;color:rgba(255,255,255,.78)}
 .note{font-size:12px;color:#9a9a9a;margin-top:10px}
 .btn{display:block;text-align:center;min-height:54px;line-height:54px;border-radius:14px;background:var(--kakao);color:#3a1d1d;font-weight:900;font-size:16px;text-decoration:none;margin-top:6px}
 .must{background:#FDECEC;border:2px solid #E25555;color:#8a1f1f;border-radius:14px;padding:14px 16px;font-size:15px;line-height:1.6;margin-bottom:14px;text-align:center}.must b{font-size:17px;color:#c0392b}
+.share{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:54px;border:0;border-radius:14px;background:var(--kakao);color:#3a1d1d;font:inherit;font-weight:900;font-size:16px;cursor:pointer;margin:0 0 14px}
+.share:active{transform:scale(.98)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);background:rgba(27,58,92,.95);color:#fff;font-size:14px;padding:10px 18px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9}
+.toast.on{opacity:1}
 </style>
 </head>
 <body>
@@ -40,6 +54,7 @@ header p{font-size:14px;color:rgba(255,255,255,.78)}
   <p>카카오페이손해보험 해외여행보험 가입 방법</p>
 </header>
 <div class="wrap">
+<button type="button" class="share" data-share>📤 이 안내 카톡으로 보내기</button>
 
 <div class="must">⚠️ <b>꼭 출발 전에 가입하세요!</b><br>집을 나서기 전에 가입해야 보장받을 수 있어요. 공항이나 배에 타고 나서 하면 늦어요.</div>
 
@@ -96,6 +111,21 @@ header p{font-size:14px;color:rgba(255,255,255,.78)}
   <div class="note">※ 보험료는 나이·기간·나라에 따라 달라요. 2026년 10월 화면 기준이고, 앱 화면과 보장 내용은 바뀔 수 있어요.</div>
 </section>
 
+<button type="button" class="share" data-share>📤 이 안내 카톡으로 보내기</button>
+
 </div>
+<div class="toast" id="toast">링크를 복사했어요. 카톡에 붙여넣기 해 주세요 😊</div>
+<script>
+(function(){
+  var U="https://kbellalee4808-star.github.io/cruiseclub_hub/insurance/",T="여행자보험, 카카오톡에서 바로 가입 🛟",X="출발 전에 이 순서대로 가입하세요!";
+  function toast(){var t=document.getElementById("toast");t.classList.add("on");setTimeout(function(){t.classList.remove("on")},2200)}
+  function copy(){(navigator.clipboard?navigator.clipboard.writeText(U):Promise.reject()).then(toast).catch(function(){prompt("이 링크를 복사해 주세요",U)})}
+  var bs=document.querySelectorAll("[data-share]");
+  for(var i=0;i<bs.length;i++)bs[i].onclick=function(){
+    if(navigator.share)navigator.share({title:T,text:X,url:U}).catch(function(e){if(!e||e.name!=="AbortError")copy()});
+    else copy();
+  };
+})();
+</script>
 </body>
 </html>
